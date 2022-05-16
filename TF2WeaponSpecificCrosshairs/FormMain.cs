@@ -279,6 +279,16 @@ namespace TF2WeaponSpecificCrosshairs
             }
             writeLineToDebugger("Yes.");
 
+            // Check if vtf2tga.exe exists
+            writeToDebugger("Does \"tier0.dll\" exist? ");
+            if (!File.Exists(path + @"\bin\tier0.dll"))
+            {
+                writeLineToDebugger("No!");
+                MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            writeLineToDebugger("Yes.");
+
             // Check if project contains ffmpeg.exe
             writeToDebugger("Does \"ffmpeg.exe\" exist? ");
             if (!File.Exists(PATH_TF2WSC + @"\resources\ffmpeg.exe"))
