@@ -129,6 +129,8 @@
     <None Include="Resources\arrow-circle-double-135.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\cross.png" />
+    <None Include="Resources\tick.png" />
     <None Include="bin\Debug\resources\TF2WSC.png" />
     <None Include="bin\Debug\resources\cp_badlands.png" />
     <Content Include="FFMPEG\bin\x64\ffmpeg.exe" />

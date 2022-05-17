@@ -38,6 +38,9 @@
             this.lblClass = new System.Windows.Forms.Label();
             this.lblWeapon = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.listViewChosenCrosshairs = new System.Windows.Forms.ListView();
+            this.btnRemoveSelected = new System.Windows.Forms.Button();
+            this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
             this.btnReload = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
@@ -86,6 +89,7 @@
             // 
             this.cbWeapon.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbWeapon.DropDownWidth = 420;
+            this.cbWeapon.Enabled = false;
             this.cbWeapon.FormattingEnabled = true;
             this.cbWeapon.Location = new System.Drawing.Point(71, 77);
             this.cbWeapon.Name = "cbWeapon";
@@ -96,6 +100,7 @@
             // 
             this.cbCrosshair.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCrosshair.DropDownWidth = 140;
+            this.cbCrosshair.Enabled = false;
             this.cbCrosshair.FormattingEnabled = true;
             this.cbCrosshair.Location = new System.Drawing.Point(71, 104);
             this.cbCrosshair.Name = "cbCrosshair";
@@ -129,6 +134,45 @@
             this.label2.TabIndex = 10;
             this.label2.Text = "Crosshair:";
             // 
+            // listViewChosenCrosshairs
+            // 
+            this.listViewChosenCrosshairs.FullRowSelect = true;
+            this.listViewChosenCrosshairs.GridLines = true;
+            this.listViewChosenCrosshairs.HideSelection = false;
+            this.listViewChosenCrosshairs.Location = new System.Drawing.Point(12, 225);
+            this.listViewChosenCrosshairs.Name = "listViewChosenCrosshairs";
+            this.listViewChosenCrosshairs.Size = new System.Drawing.Size(837, 154);
+            this.listViewChosenCrosshairs.TabIndex = 12;
+            this.listViewChosenCrosshairs.UseCompatibleStateImageBehavior = false;
+            this.listViewChosenCrosshairs.View = System.Windows.Forms.View.Details;
+            // 
+            // btnRemoveSelected
+            // 
+            this.btnRemoveSelected.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.cross;
+            this.btnRemoveSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnRemoveSelected.Location = new System.Drawing.Point(12, 197);
+            this.btnRemoveSelected.Name = "btnRemoveSelected";
+            this.btnRemoveSelected.Size = new System.Drawing.Size(113, 22);
+            this.btnRemoveSelected.TabIndex = 14;
+            this.btnRemoveSelected.Text = "Remove selected";
+            this.btnRemoveSelected.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRemoveSelected.UseVisualStyleBackColor = true;
+            this.btnRemoveSelected.Click += new System.EventHandler(this.btnDeleteSelected_Click);
+            // 
+            // btnAddCrosshair
+            // 
+            this.btnAddCrosshair.Enabled = false;
+            this.btnAddCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick;
+            this.btnAddCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAddCrosshair.Location = new System.Drawing.Point(231, 131);
+            this.btnAddCrosshair.Name = "btnAddCrosshair";
+            this.btnAddCrosshair.Size = new System.Drawing.Size(75, 29);
+            this.btnAddCrosshair.TabIndex = 13;
+            this.btnAddCrosshair.Text = "   Add";
+            this.btnAddCrosshair.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddCrosshair.UseVisualStyleBackColor = true;
+            this.btnAddCrosshair.Click += new System.EventHandler(this.btnAddCrosshair_Click);
+            // 
             // pictureBoxCrosshair
             // 
             this.pictureBoxCrosshair.BackgroundImage = global::TF2WeaponSpecificCrosshairs.Properties.Resources.cp_badlands;
@@ -156,6 +200,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(864, 551);
+            this.Controls.Add(this.btnRemoveSelected);
+            this.Controls.Add(this.btnAddCrosshair);
+            this.Controls.Add(this.listViewChosenCrosshairs);
             this.Controls.Add(this.pictureBoxCrosshair);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblWeapon);
@@ -191,6 +238,9 @@
         private System.Windows.Forms.Label lblWeapon;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBoxCrosshair;
+        private System.Windows.Forms.ListView listViewChosenCrosshairs;
+        private System.Windows.Forms.Button btnAddCrosshair;
+        private System.Windows.Forms.Button btnRemoveSelected;
     }
 }
 
