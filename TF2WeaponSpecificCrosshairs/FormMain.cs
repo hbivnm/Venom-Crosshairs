@@ -28,14 +28,14 @@ namespace TF2WeaponSpecificCrosshairs
 
         private readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
-        private readonly string[] tf2ScoutWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine", "Mad Milk (Gas Passer, Jarate)", "Pretty Boy's Pocket Pistol, Winger", "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin" };
+        private readonly string[] tf2ScoutWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine", "Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin" };
         private readonly string[] tf2SoldierWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Cow Mangler 5000", "Direct Hit", "Shotgun, Reserve Shooter, Panic Attack", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi" };
-        private readonly string[] tf2PyroWeapons = { "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "Dragon's Fury", "Shotgun, Reserve Shooter, Panic Attack", "Flare Gun, Detonator, Scorch Shot", "Gas Passer (Mad Milk, Jarate)", "Manmelter", "Thermal Thruster", "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand" };
+        private readonly string[] tf2PyroWeapons = { "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "Dragon's Fury", "Shotgun, Reserve Shooter, Panic Attack", "Flare Gun, Detonator, Scorch Shot", "Mad Milk, Gas Passer, Jarate", "Manmelter", "Thermal Thruster", "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand" };
         private readonly string[] tf2DemomanWeapons = { "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Half-Zatoichi", "Ullapool Caber" };
         private readonly string[] tf2HeavyWeapons = { "Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater", "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch" };
         private readonly string[] tf2EngineerWeapons = { "Shotgun, Widowmaker, Panic Attack", "Frontier Justice", "Pomson 6000", "Rescue Ranger", "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter", "Wrench, Southern Hospitality, Jag, Eureka Effect", "Gunslinger", "Construction PDA", "Destruction PDA", "While placing a building" };
         private readonly string[] tf2MedicWeapons = { "Syringe Gun, Blutsauger, Overdose", "Crusader's Crossbow", "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow" };
-        private readonly string[] tf2SniperWeapons = { "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound", "SMG", "Cleaner's Carbine", "Jarate (Mad Milk, Gas Passer)", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah" };
+        private readonly string[] tf2SniperWeapons = { "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound", "SMG", "Cleaner's Carbine", "Mad Milk, Gas Passer, Jarate", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah" };
         private readonly string[] tf2SpyWeapons = { "Revolver, Ambassador, L'Etranger, Enforcer, Diamondback", "Sapper, Red-Tape Recorder", "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle", "Disguise kit" };
 
 
@@ -47,19 +47,34 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnReload_Click(object sender, EventArgs e)
         {
-            if (performSanityCheck())
+            DialogResult dialogResult = MessageBox.Show("This will clear the currently selected crosshairs.\nAre you sure you want to continue?", "Reload crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+            if (dialogResult == DialogResult.Yes && performSanityCheck())
                 new Thread(generateCrosshairs).Start();
         }
         private void btnAddCrosshair_Click(object sender, EventArgs e)
         {
-            listViewChosenCrosshairs.Items.Add(new ListViewItem(new string[] { cbCrosshair.Text, cbWeapon.Text }));
+            if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
+            {
+                ListViewItem crosshairWeaponItem = new ListViewItem(new string[] { cbCrosshair.Text, cbWeapon.Text });
+
+                if (!listViewItemExists(listViewChosenCrosshairs, crosshairWeaponItem))
+                    listViewChosenCrosshairs.Items.Add(crosshairWeaponItem);
+
+                btnRemoveSelected.Enabled = true;
+            }
         }
 
-        private void btnDeleteSelected_Click(object sender, EventArgs e)
+        private void btnRemoveSelected_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < listViewChosenCrosshairs.Items.Count; i++)
                 if (listViewChosenCrosshairs.Items[i].Selected)
                     listViewChosenCrosshairs.Items[i].SubItems.Clear();
+
+            cleanListViewOfEmptyRows(listViewChosenCrosshairs);
+
+            if (listViewChosenCrosshairs.Items.Count < 1)
+                btnRemoveSelected.Enabled = false;
         }
 
         // Functions
@@ -115,78 +130,30 @@ namespace TF2WeaponSpecificCrosshairs
             }));
         }
 
-        private void onCBClassChangeEvent(object sender, EventArgs e)
+        private void cleanListViewOfEmptyRows(ListView listView)
         {
-            cbWeapon.Items.Clear();
-            switch (cbClass.Text)
-            {
-                case "Scout":
-                    foreach (var weapon in tf2ScoutWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 420;
-                    break;
-                case "Soldier":
-                    foreach (var weapon in tf2SoldierWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 460;
-                    break;
-                case "Pyro":
-                    foreach (var weapon in tf2PyroWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 735;
-                    break;
-                case "Demoman":
-                    foreach (var weapon in tf2DemomanWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 400;
-                    break;
-                case "Heavy":
-                    foreach (var weapon in tf2HeavyWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 645;
-                    break;
-                case "Engineer":
-                    foreach (var weapon in tf2EngineerWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 240;
-                    break;
-                case "Medic":
-                    foreach (var weapon in tf2MedicWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 340;
-                    break;
-                case "Sniper":
-                    foreach (var weapon in tf2SniperWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 315;
-                    break;
-                case "Spy":
-                    foreach (var weapon in tf2SpyWeapons)
-                        cbWeapon.Items.Add(weapon);
-                    cbWeapon.DropDownWidth = 395;
-                    break;
-            }
+            List<ListViewItem> oldListViewItems = new List<ListViewItem>();
 
-            // Should have a check on btnAdd, not reset comboboxes like we do here
-            cbWeapon.SelectedIndex = -1;
-            cbCrosshair.SelectedIndex = -1;
-            cbWeapon.Enabled = true;
-            cbCrosshair.Enabled = false;
+            // Sort out ListViewItems that are empty
+            foreach (ListViewItem listViewItem in listView.Items)
+                if (listViewItem.SubItems[0].Text.Length > 0)
+                    oldListViewItems.Add(listViewItem);
+                else
+                    continue;
+
+            listView.Items.Clear();
+
+            foreach (ListViewItem listViewItem in oldListViewItems)
+                listView.Items.Add(listViewItem);
         }
 
-        private void onCBWeaponChangeEvent(object sender, EventArgs e)
+        private bool listViewItemExists(ListView listView, ListViewItem listViewItem)
         {
-            cbCrosshair.Enabled = true;
-        }
-
-        private void onCBCrosshairChangeEvent(object sender, EventArgs e)
-        {
-            if (cbCrosshair.Text.Length > 0)
-                pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES_PREVIEWS + cbCrosshair.Text + ".png";
-            else
-                pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES + @"TF2WSC.png";
-
-            btnAddCrosshair.Enabled = true;
+            foreach (ListViewItem item in listView.Items)
+                if (item.SubItems[1].Text == listViewItem.SubItems[1].Text)
+                    return true;
+                    
+            return false;
         }
 
         private void generateCrosshairs()
@@ -195,12 +162,15 @@ namespace TF2WeaponSpecificCrosshairs
             {
                 pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES + @"TF2WSC.png";
 
+                listViewChosenCrosshairs.Items.Clear();
+
                 textBoxTF2Path.Enabled = false;
                 btnReload.Enabled = false;
                 cbClass.Enabled = false;
                 cbCrosshair.Enabled = false;
                 cbWeapon.Enabled = false;
                 btnAddCrosshair.Enabled = false;
+                btnRemoveSelected.Enabled = false;
             }));
 
             writeToDebugger("Preparing vtf2tga process... ");
@@ -339,6 +309,76 @@ namespace TF2WeaponSpecificCrosshairs
             writeLineToDebugger("Yes.");
 
             return true;
+        }
+
+        // Events
+        private void onCBClassChangeEvent(object sender, EventArgs e)
+        {
+            cbWeapon.Items.Clear();
+            switch (cbClass.Text)
+            {
+                case "Scout":
+                    foreach (var weapon in tf2ScoutWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 420;
+                    break;
+                case "Soldier":
+                    foreach (var weapon in tf2SoldierWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 460;
+                    break;
+                case "Pyro":
+                    foreach (var weapon in tf2PyroWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 735;
+                    break;
+                case "Demoman":
+                    foreach (var weapon in tf2DemomanWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 400;
+                    break;
+                case "Heavy":
+                    foreach (var weapon in tf2HeavyWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 645;
+                    break;
+                case "Engineer":
+                    foreach (var weapon in tf2EngineerWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 240;
+                    break;
+                case "Medic":
+                    foreach (var weapon in tf2MedicWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 340;
+                    break;
+                case "Sniper":
+                    foreach (var weapon in tf2SniperWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 315;
+                    break;
+                case "Spy":
+                    foreach (var weapon in tf2SpyWeapons)
+                        cbWeapon.Items.Add(weapon);
+                    cbWeapon.DropDownWidth = 395;
+                    break;
+            }
+            cbWeapon.Enabled = true;
+        }
+
+        private void onCBWeaponChangeEvent(object sender, EventArgs e)
+        {
+            cbCrosshair.Enabled = true;
+        }
+
+        private void onCBCrosshairChangeEvent(object sender, EventArgs e)
+        {
+            if (cbCrosshair.Text.Length > 0)
+                pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES_PREVIEWS + cbCrosshair.Text + ".png";
+            else
+                pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES + @"TF2WSC.png";
+
+            btnAddCrosshair.Enabled = true;
         }
     }
 }

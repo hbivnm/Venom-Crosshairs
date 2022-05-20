@@ -148,6 +148,7 @@
             // 
             // btnRemoveSelected
             // 
+            this.btnRemoveSelected.Enabled = false;
             this.btnRemoveSelected.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.cross;
             this.btnRemoveSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRemoveSelected.Location = new System.Drawing.Point(12, 197);
@@ -157,7 +158,7 @@
             this.btnRemoveSelected.Text = "Remove selected";
             this.btnRemoveSelected.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRemoveSelected.UseVisualStyleBackColor = true;
-            this.btnRemoveSelected.Click += new System.EventHandler(this.btnDeleteSelected_Click);
+            this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);
             // 
             // btnAddCrosshair
             // 
