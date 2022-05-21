@@ -4,13 +4,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using System.IO;
 
 namespace TF2WeaponSpecificCrosshairs
 {
@@ -52,6 +53,23 @@ namespace TF2WeaponSpecificCrosshairs
             if (dialogResult == DialogResult.Yes && performSanityCheck())
                 new Thread(generateCrosshairs).Start();
         }
+
+        private void btnPrevCrosshair_Click(object sender, EventArgs e)
+        {
+            if (cbCrosshair.SelectedIndex == 0 || cbCrosshair.SelectedIndex == -1)
+                cbCrosshair.SelectedIndex = cbCrosshair.Items.Count - 1;
+            else
+                cbCrosshair.SelectedIndex -= 1;
+        }
+
+        private void btnNextCrosshair_Click(object sender, EventArgs e)
+        {
+            if (cbCrosshair.SelectedIndex == cbCrosshair.Items.Count - 1 || cbCrosshair.SelectedIndex == -1)
+                cbCrosshair.SelectedIndex = 0;
+            else
+                cbCrosshair.SelectedIndex += 1;
+        }
+
         private void btnAddCrosshair_Click(object sender, EventArgs e)
         {
             if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
@@ -77,7 +95,20 @@ namespace TF2WeaponSpecificCrosshairs
                 btnRemoveSelected.Enabled = false;
         }
 
-        // Functions
+        private void btnInstall_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Feature not implemented yet.", "Feature not implemented!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnInstallClean_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Feature not implemented yet.", "Feature not implemented!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show("This will reset any installed TF2WSC config.\nAre you sure you want to continue?", "Feature not implemented!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        /*
+            Functions
+         */
         private void initTF2WSC()
         {
             // Prevent initTF2WSC from running more than once
@@ -368,6 +399,8 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void onCBWeaponChangeEvent(object sender, EventArgs e)
         {
+            btnPrevCrosshair.Enabled = true;
+            btnNextCrosshair.Enabled = true;
             cbCrosshair.Enabled = true;
         }
 
