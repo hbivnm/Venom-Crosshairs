@@ -47,6 +47,7 @@
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
             this.btnReload = new System.Windows.Forms.Button();
+            this.btnAddAllCrosshair = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,7 +87,7 @@
             this.cbClass.FormattingEnabled = true;
             this.cbClass.Location = new System.Drawing.Point(71, 50);
             this.cbClass.Name = "cbClass";
-            this.cbClass.Size = new System.Drawing.Size(154, 21);
+            this.cbClass.Size = new System.Drawing.Size(182, 21);
             this.cbClass.TabIndex = 5;
             // 
             // cbWeapon
@@ -97,7 +98,7 @@
             this.cbWeapon.FormattingEnabled = true;
             this.cbWeapon.Location = new System.Drawing.Point(71, 77);
             this.cbWeapon.Name = "cbWeapon";
-            this.cbWeapon.Size = new System.Drawing.Size(154, 21);
+            this.cbWeapon.Size = new System.Drawing.Size(182, 21);
             this.cbWeapon.TabIndex = 6;
             // 
             // cbCrosshair
@@ -108,7 +109,7 @@
             this.cbCrosshair.FormattingEnabled = true;
             this.cbCrosshair.Location = new System.Drawing.Point(71, 104);
             this.cbCrosshair.Name = "cbCrosshair";
-            this.cbCrosshair.Size = new System.Drawing.Size(154, 21);
+            this.cbCrosshair.Size = new System.Drawing.Size(182, 21);
             this.cbCrosshair.TabIndex = 7;
             // 
             // lblClass
@@ -154,9 +155,9 @@
             // 
             this.btnNextCrosshair.Enabled = false;
             this.btnNextCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.arrow;
-            this.btnNextCrosshair.Location = new System.Drawing.Point(149, 131);
+            this.btnNextCrosshair.Location = new System.Drawing.Point(299, 127);
             this.btnNextCrosshair.Name = "btnNextCrosshair";
-            this.btnNextCrosshair.Size = new System.Drawing.Size(52, 22);
+            this.btnNextCrosshair.Size = new System.Drawing.Size(36, 22);
             this.btnNextCrosshair.TabIndex = 18;
             this.btnNextCrosshair.UseVisualStyleBackColor = true;
             this.btnNextCrosshair.Click += new System.EventHandler(this.btnNextCrosshair_Click);
@@ -165,18 +166,19 @@
             // 
             this.btnPrevCrosshair.Enabled = false;
             this.btnPrevCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.arrow_1801;
-            this.btnPrevCrosshair.Location = new System.Drawing.Point(91, 131);
+            this.btnPrevCrosshair.Location = new System.Drawing.Point(258, 127);
             this.btnPrevCrosshair.Name = "btnPrevCrosshair";
-            this.btnPrevCrosshair.Size = new System.Drawing.Size(52, 22);
+            this.btnPrevCrosshair.Size = new System.Drawing.Size(36, 22);
             this.btnPrevCrosshair.TabIndex = 17;
             this.btnPrevCrosshair.UseVisualStyleBackColor = true;
             this.btnPrevCrosshair.Click += new System.EventHandler(this.btnPrevCrosshair_Click);
             // 
             // btnInstallClean
             // 
+            this.btnInstallClean.Enabled = false;
             this.btnInstallClean.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.compile_warning;
             this.btnInstallClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInstallClean.Location = new System.Drawing.Point(694, 197);
+            this.btnInstallClean.Location = new System.Drawing.Point(654, 197);
             this.btnInstallClean.Name = "btnInstallClean";
             this.btnInstallClean.Size = new System.Drawing.Size(94, 22);
             this.btnInstallClean.TabIndex = 16;
@@ -187,13 +189,14 @@
             // 
             // btnInstall
             // 
+            this.btnInstall.Enabled = false;
             this.btnInstall.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.compile;
             this.btnInstall.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInstall.Location = new System.Drawing.Point(794, 197);
+            this.btnInstall.Location = new System.Drawing.Point(754, 197);
             this.btnInstall.Name = "btnInstall";
-            this.btnInstall.Size = new System.Drawing.Size(58, 22);
+            this.btnInstall.Size = new System.Drawing.Size(98, 22);
             this.btnInstall.TabIndex = 15;
-            this.btnInstall.Text = "Install";
+            this.btnInstall.Text = "Install/Update";
             this.btnInstall.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnInstall.UseVisualStyleBackColor = true;
             this.btnInstall.Click += new System.EventHandler(this.btnInstall_Click);
@@ -217,7 +220,7 @@
             this.btnAddCrosshair.Enabled = false;
             this.btnAddCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick1;
             this.btnAddCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAddCrosshair.Location = new System.Drawing.Point(231, 131);
+            this.btnAddCrosshair.Location = new System.Drawing.Point(178, 127);
             this.btnAddCrosshair.Name = "btnAddCrosshair";
             this.btnAddCrosshair.Size = new System.Drawing.Size(75, 29);
             this.btnAddCrosshair.TabIndex = 13;
@@ -231,7 +234,7 @@
             this.pictureBoxCrosshair.BackgroundImage = global::TF2WeaponSpecificCrosshairs.Properties.Resources.cp_badlands;
             this.pictureBoxCrosshair.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBoxCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.TF2WSC;
-            this.pictureBoxCrosshair.Location = new System.Drawing.Point(231, 50);
+            this.pictureBoxCrosshair.Location = new System.Drawing.Point(259, 50);
             this.pictureBoxCrosshair.Name = "pictureBoxCrosshair";
             this.pictureBoxCrosshair.Size = new System.Drawing.Size(75, 75);
             this.pictureBoxCrosshair.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -248,11 +251,26 @@
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
+            // btnAddAllCrosshair
+            // 
+            this.btnAddAllCrosshair.Enabled = false;
+            this.btnAddAllCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick1;
+            this.btnAddAllCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAddAllCrosshair.Location = new System.Drawing.Point(83, 127);
+            this.btnAddAllCrosshair.Name = "btnAddAllCrosshair";
+            this.btnAddAllCrosshair.Size = new System.Drawing.Size(89, 29);
+            this.btnAddAllCrosshair.TabIndex = 19;
+            this.btnAddAllCrosshair.Text = " Add to all";
+            this.btnAddAllCrosshair.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddAllCrosshair.UseVisualStyleBackColor = true;
+            this.btnAddAllCrosshair.Click += new System.EventHandler(this.btnAddAllCrosshair_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(864, 551);
+            this.Controls.Add(this.btnAddAllCrosshair);
             this.Controls.Add(this.btnNextCrosshair);
             this.Controls.Add(this.btnPrevCrosshair);
             this.Controls.Add(this.btnInstallClean);
@@ -302,6 +320,7 @@
         private System.Windows.Forms.Button btnInstallClean;
         private System.Windows.Forms.Button btnPrevCrosshair;
         private System.Windows.Forms.Button btnNextCrosshair;
+        private System.Windows.Forms.Button btnAddAllCrosshair;
     }
 }
 
