@@ -18,10 +18,12 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 - [ ] Show/Hide console (state saved inbetween session).
 - [ ] Read current config.
 - [ ] Add "Update TF2WSC" button for when update is available from repo.
+- [ ] Suggestion from Pijukazz: Add no explosion.
 ### **Maybe** planned features
 - [ ] Read from selected config.
 - [ ] Progress bar.
 - [ ] Easier to read/understand state of installation/update.
+- [ ] Suggestion from Kanga: Add hitsounds and killsounds.
 
 ## Help / FAQ
 **Q:** How do I add my own crosshairs to TF2WSC?
@@ -30,7 +32,7 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 ***
 
 # Original idea
-Credit where it's due, the original idea of weapon specific crosshairs in Team Fortress 2 (as far as I know) comes from a [tearmfortress.tv thread](https://www.teamfortress.tv/30866/guide-weapon-specific-custom-crosshairs) by [joshuawn](https://www.teamfortress.tv/user/joshuawn).
+Credit where it's due, the original idea of weapon specific crosshairs in Team Fortress 2 (as far as I know) comes from a [teamfortress.tv thread](https://www.teamfortress.tv/30866/guide-weapon-specific-custom-crosshairs) by [joshuawn](https://www.teamfortress.tv/user/joshuawn).
 
 # Icons (Fugue Icons 3.5.6)
 Most icons used was provided by [Yusuke Kamiyamane](http://p.yusukekamiyamane.com/). Licensed under a [Creative Commons Attribution 3.0 License](https://creativecommons.org/licenses/by/3.0/).
