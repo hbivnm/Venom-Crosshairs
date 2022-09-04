@@ -7,7 +7,9 @@ Preview image of first beta version:
 ## Download
 Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/releases).
 
-## Installation and mini-tutorial
+## Tutorial
+**NOTE:** If you already have an old custom crosshair folder in `tf\custom` rename it to `TF2WeaponSpecificCrosshairs`
+
 1. Download the latest release found [here](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/releases).
 2. Extract the folder named `TF2WeaponSpecificCrosshairs` to a directory of your liking.
 3. Run TF2WSC and customize your crosshair config.
@@ -19,15 +21,15 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 ## Planned features
 - [ ] Add current version label.
 - [ ] Rename "Add to all" button.
-- [ ] TF2 Path input field saved inbetween sessions (currently resets to default `C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2`).
+- [x] TF2 Path input field saved inbetween sessions (currently resets to default `C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2`).
 - [ ] Show/Hide console (state saved inbetween session).
-- [ ] Read current config.
+- [ ] Read current config button.
 - [ ] Add "Update TF2WSC" button for when update is available from repo.
 - [ ] Suggestion by Pijukazz: Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
 - [ ] Suggestion by Pijukazz: Add no explosion.
-- [ ] Suggestion by Kanga: Buttons for "Add to only PRIMARY/SECONDARY/MELEE.
+- [ ] Suggestion by Kanga: Buttons for "Add to all PRIMARY/SECONDARY/MELEE.
 - [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Not to self: add class listviewentry)
-- [ ] Make console read-only (thanks depi LOL)
+- [x] Make console read-only (thanks depi LOL)
 ### **Maybe** planned features
 - [ ] Read from selected config.
 - [ ] Progress bar.
