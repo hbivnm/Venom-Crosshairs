@@ -41,7 +41,6 @@
             this.listViewChosenCrosshairs = new System.Windows.Forms.ListView();
             this.btnGitHub = new System.Windows.Forms.Button();
             this.btnSteam = new System.Windows.Forms.Button();
-            this.btnAddAllCrosshair = new System.Windows.Forms.Button();
             this.btnNextCrosshair = new System.Windows.Forms.Button();
             this.btnPrevCrosshair = new System.Windows.Forms.Button();
             this.btnInstallClean = new System.Windows.Forms.Button();
@@ -154,9 +153,9 @@
             this.listViewChosenCrosshairs.FullRowSelect = true;
             this.listViewChosenCrosshairs.GridLines = true;
             this.listViewChosenCrosshairs.HideSelection = false;
-            this.listViewChosenCrosshairs.Location = new System.Drawing.Point(12, 385);
+            this.listViewChosenCrosshairs.Location = new System.Drawing.Point(12, 343);
             this.listViewChosenCrosshairs.Name = "listViewChosenCrosshairs";
-            this.listViewChosenCrosshairs.Size = new System.Drawing.Size(840, 154);
+            this.listViewChosenCrosshairs.Size = new System.Drawing.Size(840, 196);
             this.listViewChosenCrosshairs.TabIndex = 12;
             this.listViewChosenCrosshairs.UseCompatibleStateImageBehavior = false;
             this.listViewChosenCrosshairs.View = System.Windows.Forms.View.Details;
@@ -180,20 +179,6 @@
             this.btnSteam.TabIndex = 20;
             this.btnSteam.UseVisualStyleBackColor = true;
             this.btnSteam.Click += new System.EventHandler(this.btnSteam_Click);
-            // 
-            // btnAddAllCrosshair
-            // 
-            this.btnAddAllCrosshair.Enabled = false;
-            this.btnAddAllCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick1;
-            this.btnAddAllCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAddAllCrosshair.Location = new System.Drawing.Point(502, 221);
-            this.btnAddAllCrosshair.Name = "btnAddAllCrosshair";
-            this.btnAddAllCrosshair.Size = new System.Drawing.Size(89, 29);
-            this.btnAddAllCrosshair.TabIndex = 19;
-            this.btnAddAllCrosshair.Text = " Add to all";
-            this.btnAddAllCrosshair.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddAllCrosshair.UseVisualStyleBackColor = true;
-            this.btnAddAllCrosshair.Click += new System.EventHandler(this.btnAddAllCrosshair_Click);
             // 
             // btnNextCrosshair
             // 
@@ -222,7 +207,7 @@
             this.btnInstallClean.Enabled = false;
             this.btnInstallClean.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.compile_warning;
             this.btnInstallClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInstallClean.Location = new System.Drawing.Point(655, 357);
+            this.btnInstallClean.Location = new System.Drawing.Point(655, 315);
             this.btnInstallClean.Name = "btnInstallClean";
             this.btnInstallClean.Size = new System.Drawing.Size(94, 22);
             this.btnInstallClean.TabIndex = 16;
@@ -236,7 +221,7 @@
             this.btnInstall.Enabled = false;
             this.btnInstall.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.compile;
             this.btnInstall.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInstall.Location = new System.Drawing.Point(755, 357);
+            this.btnInstall.Location = new System.Drawing.Point(755, 315);
             this.btnInstall.Name = "btnInstall";
             this.btnInstall.Size = new System.Drawing.Size(98, 22);
             this.btnInstall.TabIndex = 15;
@@ -250,7 +235,7 @@
             this.btnRemoveSelected.Enabled = false;
             this.btnRemoveSelected.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.cross;
             this.btnRemoveSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(11, 357);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(11, 315);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(113, 22);
             this.btnRemoveSelected.TabIndex = 14;
@@ -383,7 +368,6 @@
             this.Controls.Add(this.btnBrowseTF2Path);
             this.Controls.Add(this.btnGitHub);
             this.Controls.Add(this.btnSteam);
-            this.Controls.Add(this.btnAddAllCrosshair);
             this.Controls.Add(this.btnNextCrosshair);
             this.Controls.Add(this.btnPrevCrosshair);
             this.Controls.Add(this.btnInstallClean);
@@ -433,7 +417,6 @@
         private System.Windows.Forms.Button btnInstallClean;
         private System.Windows.Forms.Button btnPrevCrosshair;
         private System.Windows.Forms.Button btnNextCrosshair;
-        private System.Windows.Forms.Button btnAddAllCrosshair;
         private System.Windows.Forms.Button btnSteam;
         private System.Windows.Forms.Button btnGitHub;
         private System.Windows.Forms.Button btnBrowseTF2Path;

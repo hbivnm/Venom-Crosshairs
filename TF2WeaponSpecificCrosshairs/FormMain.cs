@@ -147,24 +147,6 @@ namespace TF2WeaponSpecificCrosshairs
             }
         }
 
-        private void btnAddAllCrosshair_Click(object sender, EventArgs e)
-        {
-            if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
-            {
-                listViewChosenCrosshairs.Items.Clear();
-
-                cbCrosshair.Enabled = false;
-
-                foreach (string weapon in tf2AllWeapons)
-                    listViewChosenCrosshairs.Items.Add(new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-
-                cbCrosshair.Enabled = true;
-                btnRemoveSelected.Enabled = true;
-                btnInstall.Enabled = true;
-                btnInstallClean.Enabled = true;
-            }
-        }
-
         private void btnRemoveSelected_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < listViewChosenCrosshairs.Items.Count; i++)
@@ -270,7 +252,6 @@ namespace TF2WeaponSpecificCrosshairs
             checkBoxAddSecondaryWeapons.Enabled = true;
             checkBoxAddMeleeWeapons.Enabled = true;
             checkBoxAddMiscWeapons.Enabled = true;
-            btnAddAllCrosshair.Enabled = true;
         }
 
         /// 
@@ -422,7 +403,6 @@ namespace TF2WeaponSpecificCrosshairs
                 checkBoxAddSecondaryWeapons.Enabled = false;
                 checkBoxAddMeleeWeapons.Enabled = false;
                 checkBoxAddMiscWeapons.Enabled = false;
-                btnAddAllCrosshair.Enabled = false;
                 btnRemoveSelected.Enabled = false;
                 btnPrevCrosshair.Enabled = false;
                 btnNextCrosshair.Enabled = false;
@@ -501,7 +481,6 @@ namespace TF2WeaponSpecificCrosshairs
                 checkBoxAddSecondaryWeapons.Enabled = true;
                 checkBoxAddMeleeWeapons.Enabled = true;
                 checkBoxAddMiscWeapons.Enabled = true;
-                btnAddAllCrosshair.Enabled = true;
                 btnRemoveSelected.Enabled = true;
                 btnPrevCrosshair.Enabled = true;
                 btnNextCrosshair.Enabled = true;
@@ -529,7 +508,6 @@ namespace TF2WeaponSpecificCrosshairs
                 checkBoxAddSecondaryWeapons.Enabled = false;
                 checkBoxAddMeleeWeapons.Enabled = false;
                 checkBoxAddMiscWeapons.Enabled = false;
-                btnAddAllCrosshair.Enabled = false;
                 btnRemoveSelected.Enabled = false;
                 btnPrevCrosshair.Enabled = false;
                 btnNextCrosshair.Enabled = false;
