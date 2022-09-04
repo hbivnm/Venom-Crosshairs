@@ -39,6 +39,9 @@
             this.lblWeapon = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.listViewChosenCrosshairs = new System.Windows.Forms.ListView();
+            this.btnGitHub = new System.Windows.Forms.Button();
+            this.btnSteam = new System.Windows.Forms.Button();
+            this.btnAddAllCrosshair = new System.Windows.Forms.Button();
             this.btnNextCrosshair = new System.Windows.Forms.Button();
             this.btnPrevCrosshair = new System.Windows.Forms.Button();
             this.btnInstallClean = new System.Windows.Forms.Button();
@@ -47,7 +50,6 @@
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
             this.btnReload = new System.Windows.Forms.Button();
-            this.btnAddAllCrosshair = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
             this.SuspendLayout();
             // 
@@ -151,6 +153,40 @@
             this.listViewChosenCrosshairs.UseCompatibleStateImageBehavior = false;
             this.listViewChosenCrosshairs.View = System.Windows.Forms.View.Details;
             // 
+            // btnGitHub
+            // 
+            this.btnGitHub.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.github_logo_24px;
+            this.btnGitHub.Location = new System.Drawing.Point(782, 9);
+            this.btnGitHub.Name = "btnGitHub";
+            this.btnGitHub.Size = new System.Drawing.Size(32, 32);
+            this.btnGitHub.TabIndex = 21;
+            this.btnGitHub.UseVisualStyleBackColor = true;
+            this.btnGitHub.Click += new System.EventHandler(this.btnGitHub_Click);
+            // 
+            // btnSteam
+            // 
+            this.btnSteam.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.steam_logo_black_transparent_24px;
+            this.btnSteam.Location = new System.Drawing.Point(744, 9);
+            this.btnSteam.Name = "btnSteam";
+            this.btnSteam.Size = new System.Drawing.Size(32, 32);
+            this.btnSteam.TabIndex = 20;
+            this.btnSteam.UseVisualStyleBackColor = true;
+            this.btnSteam.Click += new System.EventHandler(this.btnSteam_Click);
+            // 
+            // btnAddAllCrosshair
+            // 
+            this.btnAddAllCrosshair.Enabled = false;
+            this.btnAddAllCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick1;
+            this.btnAddAllCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAddAllCrosshair.Location = new System.Drawing.Point(83, 127);
+            this.btnAddAllCrosshair.Name = "btnAddAllCrosshair";
+            this.btnAddAllCrosshair.Size = new System.Drawing.Size(89, 29);
+            this.btnAddAllCrosshair.TabIndex = 19;
+            this.btnAddAllCrosshair.Text = " Add to all";
+            this.btnAddAllCrosshair.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddAllCrosshair.UseVisualStyleBackColor = true;
+            this.btnAddAllCrosshair.Click += new System.EventHandler(this.btnAddAllCrosshair_Click);
+            // 
             // btnNextCrosshair
             // 
             this.btnNextCrosshair.Enabled = false;
@@ -251,25 +287,13 @@
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
-            // btnAddAllCrosshair
-            // 
-            this.btnAddAllCrosshair.Enabled = false;
-            this.btnAddAllCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick1;
-            this.btnAddAllCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAddAllCrosshair.Location = new System.Drawing.Point(83, 127);
-            this.btnAddAllCrosshair.Name = "btnAddAllCrosshair";
-            this.btnAddAllCrosshair.Size = new System.Drawing.Size(89, 29);
-            this.btnAddAllCrosshair.TabIndex = 19;
-            this.btnAddAllCrosshair.Text = " Add to all";
-            this.btnAddAllCrosshair.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddAllCrosshair.UseVisualStyleBackColor = true;
-            this.btnAddAllCrosshair.Click += new System.EventHandler(this.btnAddAllCrosshair_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(864, 551);
+            this.Controls.Add(this.btnGitHub);
+            this.Controls.Add(this.btnSteam);
             this.Controls.Add(this.btnAddAllCrosshair);
             this.Controls.Add(this.btnNextCrosshair);
             this.Controls.Add(this.btnPrevCrosshair);
@@ -321,6 +345,8 @@
         private System.Windows.Forms.Button btnPrevCrosshair;
         private System.Windows.Forms.Button btnNextCrosshair;
         private System.Windows.Forms.Button btnAddAllCrosshair;
+        private System.Windows.Forms.Button btnSteam;
+        private System.Windows.Forms.Button btnGitHub;
     }
 }
 

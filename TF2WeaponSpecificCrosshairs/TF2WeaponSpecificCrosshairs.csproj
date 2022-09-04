@@ -113,5 +113,11 @@
   <ItemGroup>
     <None Include="Resources\arrow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\steam-logo-black-transparent_24px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\github-logo_24px.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -55,6 +55,16 @@ namespace TF2WeaponSpecificCrosshairs
                 new Thread(generateCrosshairs).Start();
         }
 
+        private void btnGitHub_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"https://github.com/hbivnm/TF2WeaponSpecificCrosshairs");
+        }
+
+        private void btnSteam_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"http://steamcommunity.com/profiles/76561197996468677");
+        }
+
         private void btnPrevCrosshair_Click(object sender, EventArgs e)
         {
             if (cbCrosshair.SelectedIndex == 0 || cbCrosshair.SelectedIndex == -1)
