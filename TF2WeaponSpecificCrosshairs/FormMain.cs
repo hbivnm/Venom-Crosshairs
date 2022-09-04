@@ -57,7 +57,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnReload_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("This will clear the currently selected crosshairs.\nAre you sure you want to continue?", "Reload crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            DialogResult dialogResult = MessageBox.Show("You are about to reload the crosshair list. This will clear the currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take a long time!", "Reload crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
                 new Thread(generateCrosshairs).Start();
