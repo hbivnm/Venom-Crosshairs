@@ -23,6 +23,7 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 - [ ] Suggestion by Pijukazz: Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
 - [ ] Suggestion by Pijukazz: Add no explosion.
 - [ ] Suggestion by Kanga: Buttons for "Add to only PRIMARY/SECONDARY/MELEE.
+- [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Not to self: add class listviewentry)
 ### **Maybe** planned features
 - [ ] Read from selected config.
 - [ ] Progress bar.
