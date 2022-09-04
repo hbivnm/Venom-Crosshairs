@@ -50,6 +50,13 @@
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
             this.btnReload = new System.Windows.Forms.Button();
+            this.btnBrowseTF2Path = new System.Windows.Forms.Button();
+            this.checkBoxAddClassWeapons = new System.Windows.Forms.CheckBox();
+            this.lblSettings = new System.Windows.Forms.Label();
+            this.checkBoxAddPrimaryWeapons = new System.Windows.Forms.CheckBox();
+            this.checkBoxAddSecondaryWeapons = new System.Windows.Forms.CheckBox();
+            this.checkBoxAddMeleeWeapons = new System.Windows.Forms.CheckBox();
+            this.checkBoxAddMiscWeapons = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,7 +66,6 @@
             this.textBoxTF2Path.Name = "textBoxTF2Path";
             this.textBoxTF2Path.Size = new System.Drawing.Size(364, 20);
             this.textBoxTF2Path.TabIndex = 3;
-            this.textBoxTF2Path.Text = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2";
             // 
             // lblTF2Path
             // 
@@ -76,11 +82,12 @@
             this.textBoxDebugger.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBoxDebugger.Location = new System.Drawing.Point(12, 385);
+            this.textBoxDebugger.Location = new System.Drawing.Point(858, 9);
             this.textBoxDebugger.Multiline = true;
             this.textBoxDebugger.Name = "textBoxDebugger";
+            this.textBoxDebugger.ReadOnly = true;
             this.textBoxDebugger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDebugger.Size = new System.Drawing.Size(840, 154);
+            this.textBoxDebugger.Size = new System.Drawing.Size(297, 530);
             this.textBoxDebugger.TabIndex = 4;
             // 
             // cbClass
@@ -112,6 +119,7 @@
             this.cbCrosshair.Location = new System.Drawing.Point(71, 104);
             this.cbCrosshair.Name = "cbCrosshair";
             this.cbCrosshair.Size = new System.Drawing.Size(182, 21);
+            this.cbCrosshair.Sorted = true;
             this.cbCrosshair.TabIndex = 7;
             // 
             // lblClass
@@ -146,7 +154,7 @@
             this.listViewChosenCrosshairs.FullRowSelect = true;
             this.listViewChosenCrosshairs.GridLines = true;
             this.listViewChosenCrosshairs.HideSelection = false;
-            this.listViewChosenCrosshairs.Location = new System.Drawing.Point(12, 225);
+            this.listViewChosenCrosshairs.Location = new System.Drawing.Point(12, 385);
             this.listViewChosenCrosshairs.Name = "listViewChosenCrosshairs";
             this.listViewChosenCrosshairs.Size = new System.Drawing.Size(840, 154);
             this.listViewChosenCrosshairs.TabIndex = 12;
@@ -178,7 +186,7 @@
             this.btnAddAllCrosshair.Enabled = false;
             this.btnAddAllCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick1;
             this.btnAddAllCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAddAllCrosshair.Location = new System.Drawing.Point(83, 127);
+            this.btnAddAllCrosshair.Location = new System.Drawing.Point(502, 221);
             this.btnAddAllCrosshair.Name = "btnAddAllCrosshair";
             this.btnAddAllCrosshair.Size = new System.Drawing.Size(89, 29);
             this.btnAddAllCrosshair.TabIndex = 19;
@@ -214,7 +222,7 @@
             this.btnInstallClean.Enabled = false;
             this.btnInstallClean.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.compile_warning;
             this.btnInstallClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInstallClean.Location = new System.Drawing.Point(654, 197);
+            this.btnInstallClean.Location = new System.Drawing.Point(655, 357);
             this.btnInstallClean.Name = "btnInstallClean";
             this.btnInstallClean.Size = new System.Drawing.Size(94, 22);
             this.btnInstallClean.TabIndex = 16;
@@ -228,7 +236,7 @@
             this.btnInstall.Enabled = false;
             this.btnInstall.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.compile;
             this.btnInstall.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInstall.Location = new System.Drawing.Point(754, 197);
+            this.btnInstall.Location = new System.Drawing.Point(755, 357);
             this.btnInstall.Name = "btnInstall";
             this.btnInstall.Size = new System.Drawing.Size(98, 22);
             this.btnInstall.TabIndex = 15;
@@ -242,7 +250,7 @@
             this.btnRemoveSelected.Enabled = false;
             this.btnRemoveSelected.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.cross;
             this.btnRemoveSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(12, 197);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(11, 357);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(113, 22);
             this.btnRemoveSelected.TabIndex = 14;
@@ -256,11 +264,11 @@
             this.btnAddCrosshair.Enabled = false;
             this.btnAddCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick1;
             this.btnAddCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnAddCrosshair.Location = new System.Drawing.Point(178, 127);
+            this.btnAddCrosshair.Location = new System.Drawing.Point(71, 271);
             this.btnAddCrosshair.Name = "btnAddCrosshair";
-            this.btnAddCrosshair.Size = new System.Drawing.Size(75, 29);
+            this.btnAddCrosshair.Size = new System.Drawing.Size(120, 29);
             this.btnAddCrosshair.TabIndex = 13;
-            this.btnAddCrosshair.Text = "   Add";
+            this.btnAddCrosshair.Text = "   Add crosshair";
             this.btnAddCrosshair.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAddCrosshair.UseVisualStyleBackColor = true;
             this.btnAddCrosshair.Click += new System.EventHandler(this.btnAddCrosshair_Click);
@@ -287,11 +295,92 @@
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
+            // btnBrowseTF2Path
+            // 
+            this.btnBrowseTF2Path.Location = new System.Drawing.Point(379, 23);
+            this.btnBrowseTF2Path.Name = "btnBrowseTF2Path";
+            this.btnBrowseTF2Path.Size = new System.Drawing.Size(63, 22);
+            this.btnBrowseTF2Path.TabIndex = 22;
+            this.btnBrowseTF2Path.Text = "Browse...";
+            this.btnBrowseTF2Path.UseVisualStyleBackColor = true;
+            this.btnBrowseTF2Path.Click += new System.EventHandler(this.btnBrowseTF2Path_Click);
+            // 
+            // checkBoxAddClassWeapons
+            // 
+            this.checkBoxAddClassWeapons.AutoSize = true;
+            this.checkBoxAddClassWeapons.Enabled = false;
+            this.checkBoxAddClassWeapons.Location = new System.Drawing.Point(71, 156);
+            this.checkBoxAddClassWeapons.Name = "checkBoxAddClassWeapons";
+            this.checkBoxAddClassWeapons.Size = new System.Drawing.Size(175, 17);
+            this.checkBoxAddClassWeapons.TabIndex = 23;
+            this.checkBoxAddClassWeapons.Text = "Add to EVERY class weapons?";
+            this.checkBoxAddClassWeapons.UseVisualStyleBackColor = true;
+            // 
+            // lblSettings
+            // 
+            this.lblSettings.AutoSize = true;
+            this.lblSettings.Location = new System.Drawing.Point(28, 157);
+            this.lblSettings.Name = "lblSettings";
+            this.lblSettings.Size = new System.Drawing.Size(35, 13);
+            this.lblSettings.TabIndex = 24;
+            this.lblSettings.Text = "And...";
+            // 
+            // checkBoxAddPrimaryWeapons
+            // 
+            this.checkBoxAddPrimaryWeapons.AutoSize = true;
+            this.checkBoxAddPrimaryWeapons.Enabled = false;
+            this.checkBoxAddPrimaryWeapons.Location = new System.Drawing.Point(71, 183);
+            this.checkBoxAddPrimaryWeapons.Name = "checkBoxAddPrimaryWeapons";
+            this.checkBoxAddPrimaryWeapons.Size = new System.Drawing.Size(167, 17);
+            this.checkBoxAddPrimaryWeapons.TabIndex = 25;
+            this.checkBoxAddPrimaryWeapons.Text = "Add to ALL primary weapons?";
+            this.checkBoxAddPrimaryWeapons.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAddSecondaryWeapons
+            // 
+            this.checkBoxAddSecondaryWeapons.AutoSize = true;
+            this.checkBoxAddSecondaryWeapons.Enabled = false;
+            this.checkBoxAddSecondaryWeapons.Location = new System.Drawing.Point(71, 202);
+            this.checkBoxAddSecondaryWeapons.Name = "checkBoxAddSecondaryWeapons";
+            this.checkBoxAddSecondaryWeapons.Size = new System.Drawing.Size(183, 17);
+            this.checkBoxAddSecondaryWeapons.TabIndex = 26;
+            this.checkBoxAddSecondaryWeapons.Text = "Add to ALL secondary weapons?";
+            this.checkBoxAddSecondaryWeapons.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAddMeleeWeapons
+            // 
+            this.checkBoxAddMeleeWeapons.AutoSize = true;
+            this.checkBoxAddMeleeWeapons.Enabled = false;
+            this.checkBoxAddMeleeWeapons.Location = new System.Drawing.Point(71, 221);
+            this.checkBoxAddMeleeWeapons.Name = "checkBoxAddMeleeWeapons";
+            this.checkBoxAddMeleeWeapons.Size = new System.Drawing.Size(162, 17);
+            this.checkBoxAddMeleeWeapons.TabIndex = 27;
+            this.checkBoxAddMeleeWeapons.Text = "Add to ALL melee weapons?";
+            this.checkBoxAddMeleeWeapons.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAddMiscWeapons
+            // 
+            this.checkBoxAddMiscWeapons.AutoSize = true;
+            this.checkBoxAddMiscWeapons.Enabled = false;
+            this.checkBoxAddMiscWeapons.Location = new System.Drawing.Point(71, 248);
+            this.checkBoxAddMiscWeapons.Name = "checkBoxAddMiscWeapons";
+            this.checkBoxAddMiscWeapons.Size = new System.Drawing.Size(158, 17);
+            this.checkBoxAddMiscWeapons.TabIndex = 28;
+            this.checkBoxAddMiscWeapons.Text = "Add to ALL misc. weapons?";
+            this.checkBoxAddMiscWeapons.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(864, 551);
+            this.ClientSize = new System.Drawing.Size(1167, 551);
+            this.Controls.Add(this.checkBoxAddMiscWeapons);
+            this.Controls.Add(this.checkBoxAddMeleeWeapons);
+            this.Controls.Add(this.checkBoxAddSecondaryWeapons);
+            this.Controls.Add(this.checkBoxAddPrimaryWeapons);
+            this.Controls.Add(this.lblSettings);
+            this.Controls.Add(this.checkBoxAddClassWeapons);
+            this.Controls.Add(this.btnBrowseTF2Path);
             this.Controls.Add(this.btnGitHub);
             this.Controls.Add(this.btnSteam);
             this.Controls.Add(this.btnAddAllCrosshair);
@@ -347,6 +436,13 @@
         private System.Windows.Forms.Button btnAddAllCrosshair;
         private System.Windows.Forms.Button btnSteam;
         private System.Windows.Forms.Button btnGitHub;
+        private System.Windows.Forms.Button btnBrowseTF2Path;
+        private System.Windows.Forms.CheckBox checkBoxAddClassWeapons;
+        private System.Windows.Forms.Label lblSettings;
+        private System.Windows.Forms.CheckBox checkBoxAddPrimaryWeapons;
+        private System.Windows.Forms.CheckBox checkBoxAddSecondaryWeapons;
+        private System.Windows.Forms.CheckBox checkBoxAddMeleeWeapons;
+        private System.Windows.Forms.CheckBox checkBoxAddMiscWeapons;
     }
 }
 
