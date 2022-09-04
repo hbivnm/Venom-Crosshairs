@@ -36,6 +36,14 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 
 **A:** You can add your own crosshairs by copying the `.vmt`- and `.vft`-file to `\resources\materials` in TF2WSC. Once placed inside reload the crosshair list by clicking the arrows located in the top right corner.
 ***
+**Q:** How do I change color of the crosshairs?
+
+**A:** This is done through in-game commands `cl_crosshair_red`, `cl_crosshair_green` and `cl_crosshair_blue`.
+***
+**Q:** How do I change the size of the crosshairs?
+
+**A:** This is done through in-game commands `cl_crosshair_scale`.
+***
 
 # Original idea
 Credit where it's due, the original idea of weapon specific crosshairs in Team Fortress 2 (as far as I know) comes from a [teamfortress.tv thread](https://www.teamfortress.tv/30866/guide-weapon-specific-custom-crosshairs) by [joshuawn](https://www.teamfortress.tv/user/joshuawn).
