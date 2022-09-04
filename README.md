@@ -24,7 +24,7 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 ## Planned features
 - [ ] Add a "Help" button.
 - [ ] Add current version label.
-~~- [ ] Rename "Add to all" button.~~
+- [x] ~~Rename "Add to all" button.~~ Removed button instead.
 - [x] TF2 Path input field saved inbetween sessions (currently resets to default `C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2`).
 - [ ] Show/Hide console (state saved inbetween session).
 - [ ] Read current config button.
