@@ -4,14 +4,17 @@ TF2WSC (Team Fortress 2 Weapon Specific Crosshairs) is a client-side solution to
 ## Download
 Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/releases).
 
-## Installation
+## Installation and mini-tutorial
 1. Download the latest release found [here](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/releases).
 2. Extract the folder named `TF2WeaponSpecificCrosshairs` to a directory of your liking.
-3. Run it.
+3. Run TF2WSC and customize your crosshair config.
+4. Hit Install/Update.
+5. Set `cl_crosshair_file ""` in Team Fortress 2.
 
 **NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.100%`, you will have to manually exclude the `TF2WeaponSpecificCrosshairs` folder to be able to use TF2WSC alongside Malwayrebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) explained by a Staff member on Malwarebytes forum.
 
 ## Planned features
+- [ ] Add current version label.
 - [ ] Rename "Add to all" button.
 - [ ] TF2 Path input field saved inbetween sessions (currently resets to default `C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2`).
 - [ ] Show/Hide console (state saved inbetween session).
