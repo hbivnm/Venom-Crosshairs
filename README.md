@@ -21,6 +21,20 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 
 **NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.100%`, you will have to manually exclude the `TF2WeaponSpecificCrosshairs` folder to be able to use TF2WSC alongside Malwayrebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) explained by a Staff member on Malwarebytes forum.
 
+## Help / FAQ
+**Q:** How do I add my own crosshairs to TF2WSC?
+
+**A:** You can add your own crosshairs by copying the `.vmt`- and `.vft`-file to `\resources\materials` in TF2WSC. Once placed inside reload the crosshair list by clicking the arrows located in the top right corner.
+***
+**Q:** How do I change color of the crosshairs?
+
+**A:** This is done through in-game commands `cl_crosshair_red`, `cl_crosshair_green` and `cl_crosshair_blue`.
+***
+**Q:** How do I change the size of the crosshairs?
+
+**A:** This is done through in-game commands `cl_crosshair_scale`.
+***
+
 ## Planned features
 - [ ] Add a "Help" button.
 - [ ] Add current version label.
@@ -39,20 +53,6 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 - [ ] Progress bar.
 - [ ] Easier to read/understand state of installation/update.
 - [ ] Suggestion by Kanga: Add hitsounds and killsounds.
-
-## Help / FAQ
-**Q:** How do I add my own crosshairs to TF2WSC?
-
-**A:** You can add your own crosshairs by copying the `.vmt`- and `.vft`-file to `\resources\materials` in TF2WSC. Once placed inside reload the crosshair list by clicking the arrows located in the top right corner.
-***
-**Q:** How do I change color of the crosshairs?
-
-**A:** This is done through in-game commands `cl_crosshair_red`, `cl_crosshair_green` and `cl_crosshair_blue`.
-***
-**Q:** How do I change the size of the crosshairs?
-
-**A:** This is done through in-game commands `cl_crosshair_scale`.
-***
 
 # Original idea
 Credit where it's due, the original idea of weapon specific crosshairs in Team Fortress 2 (as far as I know) comes from a [teamfortress.tv thread](https://www.teamfortress.tv/30866/guide-weapon-specific-custom-crosshairs) by [joshuawn](https://www.teamfortress.tv/user/joshuawn).
