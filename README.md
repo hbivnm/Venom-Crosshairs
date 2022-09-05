@@ -35,23 +35,22 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 **A:** This is done through in-game commands `cl_crosshair_scale`.
 ***
 
-## Planned features
+## Planned features (somewhat prioritized)
+- [ ] Suggestion by Pijukazz: Add no explosion to scripts for explosive weapons. (this will also solve crosshair issues related to explosive weapons, big thanks to shinso)
+- [ ] Easier to read/understand state of installation/update.
 - [ ] Add a "Help" button.
 - [ ] Add current version label.
+- [ ] Add "Update TF2WSC" button for when update is available from repo.
+- [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Not to self: add class listviewentry)
+- [ ] Read current config button.
+- [ ] Show/Hide console (state saved inbetween session).
 - [x] ~~Rename "Add to all" button.~~ Removed button instead.
 - [x] TF2 Path input field saved inbetween sessions (currently resets to default `C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2`).
-- [ ] Show/Hide console (state saved inbetween session).
-- [ ] Read current config button.
-- [ ] Add "Update TF2WSC" button for when update is available from repo.
 - [x] Suggestion by Pijukazz: Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
-- [ ] Suggestion by Pijukazz: Add no explosion.
 - [x] Suggestion by Kanga: Buttons for "Add to all PRIMARY/SECONDARY/MELEE.
-- [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Not to self: add class listviewentry)
 - [x] Make console read-only (thanks depi LOL)
 ### **Maybe** planned features
-- [ ] Read from selected config.
 - [ ] Progress bar.
-- [ ] Easier to read/understand state of installation/update.
 - [ ] Suggestion by Kanga: Add hitsounds and killsounds.
 
 # Original idea
