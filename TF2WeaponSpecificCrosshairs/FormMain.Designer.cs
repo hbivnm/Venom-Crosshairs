@@ -400,7 +400,7 @@
             this.panel1.Controls.Add(this.lblNoExplosion);
             this.panel1.Location = new System.Drawing.Point(340, 69);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(250, 250);
+            this.panel1.Size = new System.Drawing.Size(206, 231);
             this.panel1.TabIndex = 33;
             // 
             // FormMain

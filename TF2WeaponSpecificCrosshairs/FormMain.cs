@@ -75,7 +75,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnBrowseTF2Path_Click(object sender, EventArgs e)
         {
-            using(var cofd = new CommonOpenFileDialog())
+            using (var cofd = new CommonOpenFileDialog())
             {
                 cofd.InitialDirectory = @"C:\";
                 cofd.IsFolderPicker = true;
@@ -480,10 +480,10 @@ namespace TF2WeaponSpecificCrosshairs
             }
             else
                 if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs"))
-                {
-                    writeLineToDebugger("Updating current TF2WSC config...");
-                    isUpdate = true;
-                }
+            {
+                writeLineToDebugger("Updating current TF2WSC config...");
+                isUpdate = true;
+            }
             else
                 writeLineToDebugger("Installation of TF2WSC started...");
 
@@ -804,12 +804,13 @@ namespace TF2WeaponSpecificCrosshairs
                     return "tf_weapon_pda_spy.txt";
 
                 default:
-                    return "";
+                    throw new ArgumentException($"There is no script associated with '{weapon}'!");
             }
         }
 
         private bool performSanityCheck(string path)
         {
+            writeLineToDebugger("");
             // Check if specified directory exist
             writeToDebugger("Does given path exist? ");
             if (!Directory.Exists(path))
