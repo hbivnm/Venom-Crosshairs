@@ -56,7 +56,12 @@
             this.checkBoxAddSecondaryWeapons = new System.Windows.Forms.CheckBox();
             this.checkBoxAddMeleeWeapons = new System.Windows.Forms.CheckBox();
             this.checkBoxAddMiscWeapons = new System.Windows.Forms.CheckBox();
+            this.lblAdditionalSettings = new System.Windows.Forms.Label();
+            this.comboBoxExplosionEffect = new System.Windows.Forms.ComboBox();
+            this.lblNoExplosion = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxTF2Path
@@ -354,11 +359,57 @@
             this.checkBoxAddMiscWeapons.Text = "Add to ALL misc. weapons?";
             this.checkBoxAddMiscWeapons.UseVisualStyleBackColor = true;
             // 
+            // lblAdditionalSettings
+            // 
+            this.lblAdditionalSettings.AutoSize = true;
+            this.lblAdditionalSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAdditionalSettings.Location = new System.Drawing.Point(340, 51);
+            this.lblAdditionalSettings.Name = "lblAdditionalSettings";
+            this.lblAdditionalSettings.Size = new System.Drawing.Size(106, 15);
+            this.lblAdditionalSettings.TabIndex = 29;
+            this.lblAdditionalSettings.Text = "Additional settings";
+            // 
+            // comboBoxExplosionEffect
+            // 
+            this.comboBoxExplosionEffect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxExplosionEffect.FormattingEnabled = true;
+            this.comboBoxExplosionEffect.Items.AddRange(new object[] {
+            "Default",
+            "Electric shock",
+            "Muzzle flash",
+            "Spy sapper",
+            "Pyro pool"});
+            this.comboBoxExplosionEffect.Location = new System.Drawing.Point(96, 3);
+            this.comboBoxExplosionEffect.Name = "comboBoxExplosionEffect";
+            this.comboBoxExplosionEffect.Size = new System.Drawing.Size(95, 21);
+            this.comboBoxExplosionEffect.TabIndex = 31;
+            // 
+            // lblNoExplosion
+            // 
+            this.lblNoExplosion.AutoSize = true;
+            this.lblNoExplosion.Location = new System.Drawing.Point(5, 6);
+            this.lblNoExplosion.Name = "lblNoExplosion";
+            this.lblNoExplosion.Size = new System.Drawing.Size(85, 13);
+            this.lblNoExplosion.TabIndex = 32;
+            this.lblNoExplosion.Text = "Explosion effect:";
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.comboBoxExplosionEffect);
+            this.panel1.Controls.Add(this.lblNoExplosion);
+            this.panel1.Location = new System.Drawing.Point(340, 69);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(250, 250);
+            this.panel1.TabIndex = 33;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1167, 551);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lblAdditionalSettings);
             this.Controls.Add(this.checkBoxAddMiscWeapons);
             this.Controls.Add(this.checkBoxAddMeleeWeapons);
             this.Controls.Add(this.checkBoxAddSecondaryWeapons);
@@ -392,6 +443,8 @@
             this.Name = "FormMain";
             this.Text = "TF2 Weapon Specific Crosshairs";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -426,6 +479,10 @@
         private System.Windows.Forms.CheckBox checkBoxAddSecondaryWeapons;
         private System.Windows.Forms.CheckBox checkBoxAddMeleeWeapons;
         private System.Windows.Forms.CheckBox checkBoxAddMiscWeapons;
+        private System.Windows.Forms.Label lblAdditionalSettings;
+        private System.Windows.Forms.ComboBox comboBoxExplosionEffect;
+        private System.Windows.Forms.Label lblNoExplosion;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

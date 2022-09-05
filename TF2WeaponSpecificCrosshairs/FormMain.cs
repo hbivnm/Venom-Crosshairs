@@ -279,6 +279,9 @@ namespace TF2WeaponSpecificCrosshairs
                 }
                 cbCrosshair.SelectedIndexChanged += new EventHandler(onCBCrosshairChangeEvent);
 
+                // No explosion
+                comboBoxExplosionEffect.SelectedIndex = 0;
+
                 // ListView
                 listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
                 listViewChosenCrosshairs.Columns.Add("Weapon", 420);
@@ -379,6 +382,60 @@ namespace TF2WeaponSpecificCrosshairs
             }
         }
 
+        private string getExplosionEffectParticleName(string name)
+        {
+            switch (name)
+            {
+                case "Default":
+                    return "ExplosionCore_wall";
+                case "Electric shock":
+                    return "electrocuted_red_flash";
+                case "Muzzle flash":
+                    return "muzzle_minigun_starflash01";
+                case "Spy sapper":
+                    return "ExplosionCore_sapperdestroyed";
+                case "Pyro pool":
+                    return "eotl_pyro_pool_explosion_flash";
+            }
+            throw new ArgumentException($"Could not find ExplosionEffect particle name for '{name}'!");
+        }
+
+        private string getExplosionPlayerEffectParticleName(string name)
+        {
+            switch (name)
+            {
+                case "Default":
+                    return "ExplosionCore_MidAir";
+                case "Electric shock":
+                    return "electrocuted_blue_flash";
+                case "Muzzle flash":
+                    return "muzzle_minigun_starflash01";
+                case "Spy sapper":
+                    return "ExplosionCore_sapperdestroyed";
+                case "Pyro pool":
+                    return "eotl_pyro_pool_explosion_flash";
+            }
+            throw new ArgumentException($"Could not find ExplosionPlayerEffect particle name for '{name}'!");
+        }
+
+        private string getExplosionWaterEffectParticleName(string name)
+        {
+            switch (name)
+            {
+                case "Default":
+                    return "ExplosionCore_MidAir_underwater";
+                case "Electric shock":
+                    return "electrocuted_red_flash";
+                case "Muzzle flash":
+                    return "muzzle_minigun_starflash01";
+                case "Spy sapper":
+                    return "ExplosionCore_sapperdestroyed";
+                case "Pyro pool":
+                    return "eotl_pyro_pool_explosion_flash";
+            }
+            throw new ArgumentException($"Could not find ExplosionWaterEffect particle name for '{name}'!");
+        }
+
         private void moveFilesByExtensionOrDelete(string sourceDirectory, string targetDirectory, string extension) // Should probably re-write so it overwrites, not sure of the thoughtprocess of moving or deleting (same filename =/= same file content)
         {
             foreach (string file in Directory.GetFiles(sourceDirectory, "*." + extension))
@@ -411,6 +468,7 @@ namespace TF2WeaponSpecificCrosshairs
 
             }));
 
+            writeLineToDebugger("");
             bool isUpdate = false;
             if (removeOldConfig)
             {
@@ -435,14 +493,14 @@ namespace TF2WeaponSpecificCrosshairs
             if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts"))
                 Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts");
 
-            writeToDebugger("Copying materials...");
+            writeToDebugger("Copying materials... ");
             foreach (var crosshairVMT in Directory.GetFiles(PATH_TF2WSC_RESOURCES_MATERIALS, "*.vmt"))
                 File.Copy(crosshairVMT, $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVMT)}", true);
             foreach (var crosshairVTF in Directory.GetFiles(PATH_TF2WSC_RESOURCES_MATERIALS, "*.vtf"))
                 File.Copy(crosshairVTF, $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVTF)}", true);
             writeLineToDebugger("Done!");
 
-            writeToDebugger("Adding scripts...");
+            writeToDebugger("Adding scripts... ");
             Invoke(new MethodInvoker(delegate ()
             {
                 foreach (ListViewItem item in listViewChosenCrosshairs.Items)
@@ -457,16 +515,26 @@ namespace TF2WeaponSpecificCrosshairs
 
                     File.WriteAllText(
                         $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponFilename}",
-                        File.ReadAllText($@"{PATH_TF2WSC_RESOURCES_SCRIPTS}\{weaponFilename}").Replace("TF2WSC_PLACEHOLDER", crosshair)
+                        File.ReadAllText($@"{PATH_TF2WSC_RESOURCES_SCRIPTS}\{weaponFilename}")
+                            .Replace("TF2WSC_PLACEHOLDER", crosshair)
+                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(comboBoxExplosionEffect.Text))
+                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(comboBoxExplosionEffect.Text))
+                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(comboBoxExplosionEffect.Text))
                     );
                 }
             }));
             writeLineToDebugger("Done!");
 
             if (!isUpdate)
+            {
+                writeLineToDebugger("==============================");
                 writeLineToDebugger("TF2WSC successfully installed!");
+            }
             else
+            {
+                writeLineToDebugger("======================");
                 writeLineToDebugger("TF2WSC config updated!");
+            }
 
             Invoke(new MethodInvoker(delegate ()
             {
