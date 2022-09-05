@@ -1,8 +1,8 @@
 # TF2 Weapon Specific Crosshairs by HbiVnm
 TF2WSC (Team Fortress 2 Weapon Specific Crosshairs) is a client-side solution to automating the installation and customization of crosshairs in Team Fortress 2.
 
-Preview image of first beta version:
-![Preview image of TF2WSC.](https://i.imgur.com/rH8tulZ.png)
+Preview image of current beta version:
+![Preview image of TF2WSC.](https://i.imgur.com/qkcGEld.png)
 
 ## What does TF2WSC specifically do?
 When installing a config through TF2WSC, a new folder in `tf\custom` called `TF2WeaponSpecificCrosshairs` will be created. This folder will contain crosshair materials and script files necessary for your chosen weapon specific crosshairs.
@@ -19,7 +19,7 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 4. Hit Install/Update.
 5. Set `cl_crosshair_file ""` in Team Fortress 2.
 
-**NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.100%`, you will have to manually exclude the `TF2WeaponSpecificCrosshairs` folder to be able to use TF2WSC alongside Malwayrebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) explained by a Staff member on Malwarebytes forum.
+**NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.X%`, you will have to manually exclude the `TF2WeaponSpecificCrosshairs` folder to be able to use TF2WSC alongside Malwayrebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) explained by a Staff member on Malwarebytes forum.
 
 ## Help / FAQ
 **Q:** How do I add my own crosshairs to TF2WSC?
@@ -34,9 +34,12 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 
 **A:** This is done through in-game commands `cl_crosshair_scale`.
 ***
+**Q:** Soldier/Demoman crosshairs are all default!
+
+**A:** Remove any "no explosion" `.vpk` from `\tf\custom`.
+***
 
 ## Planned features (somewhat prioritized)
-- [ ] Suggestion by Pijukazz: Add no explosion to scripts for explosive weapons. (this will also solve crosshair issues related to explosive weapons, big thanks to shinso)
 - [ ] Easier to read/understand state of installation/update.
 - [ ] Add a "Help" button.
 - [ ] Add current version label.
@@ -44,6 +47,7 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 - [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Not to self: add class listviewentry)
 - [ ] Read current config button.
 - [ ] Show/Hide console (state saved inbetween session).
+- [x] Suggestion by Pijukazz: Add no explosion to scripts for explosive weapons. (this will also solve crosshair issues related to explosive weapons, big thanks to shinso)
 - [x] ~~Rename "Add to all" button.~~ Removed button instead.
 - [x] TF2 Path input field saved inbetween sessions (currently resets to default `C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2`).
 - [x] Suggestion by Pijukazz: Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
