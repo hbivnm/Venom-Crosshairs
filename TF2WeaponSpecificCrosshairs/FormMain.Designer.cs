@@ -123,7 +123,6 @@
             this.cbCrosshair.Location = new System.Drawing.Point(71, 104);
             this.cbCrosshair.Name = "cbCrosshair";
             this.cbCrosshair.Size = new System.Drawing.Size(182, 21);
-            this.cbCrosshair.Sorted = true;
             this.cbCrosshair.TabIndex = 7;
             // 
             // lblClass

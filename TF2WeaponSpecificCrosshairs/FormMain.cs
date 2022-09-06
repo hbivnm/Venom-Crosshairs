@@ -516,10 +516,10 @@ namespace TF2WeaponSpecificCrosshairs
                     File.WriteAllText(
                         $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponFilename}",
                         File.ReadAllText($@"{PATH_TF2WSC_RESOURCES_SCRIPTS}\{weaponFilename}")
-                            .Replace("TF2WSC_PLACEHOLDER", crosshair)
                             .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(comboBoxExplosionEffect.Text))
                             .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(comboBoxExplosionEffect.Text))
                             .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(comboBoxExplosionEffect.Text))
+                            .Replace("TF2WSC_PLACEHOLDER", crosshair)
                     );
                 }
             }));
