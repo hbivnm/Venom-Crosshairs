@@ -26,7 +26,7 @@ namespace TF2WeaponSpecificCrosshairs
         private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS = Directory.GetCurrentDirectory() + @"\resources\previews\";
         private static readonly string PATH_TF2WSC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
 
-        private static readonly string FILEPATH_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
+        private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
 
         private bool hasInitialized = false;
 
@@ -107,40 +107,51 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnAddCrosshair_Click(object sender, EventArgs e)
         {
+            bool crosshairAdded = false;
+
             if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
             {
                 addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, cbWeapon.Text }));
+                crosshairAdded = true;
+            }
 
-                if (checkBoxAddClassWeapons.Checked)
-                {
-                    foreach (var weapon in getWeaponsFromClassName(cbClass.Text))
-                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                }
+            if (checkBoxAddClassWeapons.Checked)
+            {
+                foreach (var weapon in getWeaponsFromClassName(cbClass.Text))
+                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                crosshairAdded = true;
+            }
 
-                if (checkBoxAddPrimaryWeapons.Checked)
-                {
-                    foreach (var weapon in tf2PrimaryWeapons)
-                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                }
+            if (checkBoxAddPrimaryWeapons.Checked)
+            {
+                foreach (var weapon in tf2PrimaryWeapons)
+                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                crosshairAdded = true;
+            }
 
-                if (checkBoxAddSecondaryWeapons.Checked)
-                {
-                    foreach (var weapon in tf2SecondaryWeapons)
-                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                }
+            if (checkBoxAddSecondaryWeapons.Checked)
+            {
+                foreach (var weapon in tf2SecondaryWeapons)
+                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                crosshairAdded = true;
+            }
 
-                if (checkBoxAddMeleeWeapons.Checked)
-                {
-                    foreach (var weapon in tf2MeleeWeapons)
-                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                }
+            if (checkBoxAddMeleeWeapons.Checked)
+            {
+                foreach (var weapon in tf2MeleeWeapons)
+                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                crosshairAdded = true;
+            }
 
-                if (checkBoxAddMiscWeapons.Checked)
-                {
-                    foreach (var weapon in tf2MiscWeapons)
-                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                }
+            if (checkBoxAddMiscWeapons.Checked)
+            {
+                foreach (var weapon in tf2MiscWeapons)
+                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                crosshairAdded = true;
+            }
 
+            if (crosshairAdded) // This could be changed to an event that triggers when addCrosshairToListView is called
+            {
                 btnRemoveSelected.Enabled = true;
                 btnInstall.Enabled = true;
                 btnInstallClean.Enabled = true;
@@ -609,9 +620,9 @@ namespace TF2WeaponSpecificCrosshairs
 
             writeToDebugger("Generating preview creation process... ");
             // Create or clear generatepreviews.bat
-            File.Create(FILEPATH_GENERATEPREVIEWSBAT).Close();
+            File.Create(PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
 
-            using (StreamWriter sw = new StreamWriter(FILEPATH_GENERATEPREVIEWSBAT))
+            using (StreamWriter sw = new StreamWriter(PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
             {
                 foreach (string tgaFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.tga"))
                 {
@@ -625,7 +636,7 @@ namespace TF2WeaponSpecificCrosshairs
             writeToDebugger("Preparing preview creation process... ");
             Process generatepreviewsProcess = new Process();
             generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            generatepreviewsProcess.StartInfo.FileName = FILEPATH_GENERATEPREVIEWSBAT;
+            generatepreviewsProcess.StartInfo.FileName = PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
             writeLineToDebugger("Done!");
 
             writeToDebugger("Running generatepreviews.bat... ");
@@ -634,8 +645,8 @@ namespace TF2WeaponSpecificCrosshairs
             writeLineToDebugger("Done!");
 
             writeToDebugger("Performing cleanup... ");
-            moveFilesByExtensionOrDelete(PATH_TF2WSC, PATH_TF2WSC_RESOURCES_PREVIEWS, "png");
-            File.Delete($@"{PATH_TF2WSC_RESOURCES_PREVIEWS}\generatepreviews.bat");
+            moveFilesByExtensionOrDelete(PATH_TF2WSC, PATH_TF2WSC_RESOURCES_PREVIEWS, "png"); // Function no longer needed due to cleanup steps, remove/refactor?
+            File.Delete(PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
             foreach (string tgaFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.tga"))
                 File.Delete(tgaFile);
             writeLineToDebugger("Done!");
