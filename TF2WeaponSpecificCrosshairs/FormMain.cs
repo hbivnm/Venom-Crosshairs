@@ -460,6 +460,7 @@ namespace TF2WeaponSpecificCrosshairs
         {
             Invoke(new MethodInvoker(delegate ()
             {
+                pictureBoxLoading.Visible = true;
                 textBoxTF2Path.Enabled = false;
                 btnReload.Enabled = false;
                 cbClass.Enabled = false;
@@ -549,6 +550,7 @@ namespace TF2WeaponSpecificCrosshairs
 
             Invoke(new MethodInvoker(delegate ()
             {
+                pictureBoxLoading.Visible = false;
                 textBoxTF2Path.Enabled = true;
                 btnReload.Enabled = true;
                 cbClass.Enabled = true;
@@ -572,6 +574,7 @@ namespace TF2WeaponSpecificCrosshairs
         {
             Invoke(new MethodInvoker(delegate ()
             {
+                pictureBoxLoading.Visible = true;
                 pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES + @"TF2WSC.png";
 
                 listViewChosenCrosshairs.Items.Clear();
@@ -618,10 +621,8 @@ namespace TF2WeaponSpecificCrosshairs
 
             moveFilesByExtensionOrDelete(PATH_TF2WSC_RESOURCES_MATERIALS, PATH_TF2WSC_RESOURCES_PREVIEWS, "tga");
 
-            writeToDebugger("Generating preview creation process... ");
-            // Create or clear generatepreviews.bat
+            writeToDebugger("Generating generatepreviews.bat... ");
             File.Create(PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
-
             using (StreamWriter sw = new StreamWriter(PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
             {
                 foreach (string tgaFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.tga"))
@@ -633,7 +634,7 @@ namespace TF2WeaponSpecificCrosshairs
             }
             writeLineToDebugger("Done!");
 
-            writeToDebugger("Preparing preview creation process... ");
+            writeToDebugger("Preparing generatepreviews process... ");
             Process generatepreviewsProcess = new Process();
             generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             generatepreviewsProcess.StartInfo.FileName = PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
@@ -665,6 +666,8 @@ namespace TF2WeaponSpecificCrosshairs
 
             Invoke(new MethodInvoker(delegate ()
             {
+                pictureBoxLoading.Visible = false;
+
                 cbClass.SelectedIndex = -1;
                 cbWeapon.SelectedIndex = -1;
                 cbWeapon.Enabled = false;

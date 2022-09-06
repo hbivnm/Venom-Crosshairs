@@ -133,6 +133,8 @@
     <None Include="Resources\github-logo_24px.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\Debug\resources\Loading_icon.gif" />
+    <None Include="Resources\loading.gif" />
     <Content Include="TF2WSC.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
