@@ -21,6 +21,7 @@ namespace TF2WeaponSpecificCrosshairs
     {
         private static readonly string PATH_TF2WSC = Directory.GetCurrentDirectory();
         private static readonly string PATH_TF2WSC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
+        private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_expeff.cfg";
         private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_userpath.cfg";
         private static readonly string PATH_TF2WSC_RESOURCES_MATERIALS = Directory.GetCurrentDirectory() + @"\resources\materials\";
         private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS = Directory.GetCurrentDirectory() + @"\resources\previews\";
@@ -265,6 +266,11 @@ namespace TF2WeaponSpecificCrosshairs
             checkBoxAddMiscWeapons.Enabled = true;
         }
 
+        private void onCBExplosionEffectChangeEvent(object server, EventArgs e)
+        {
+            File.WriteAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE, Convert.ToString(comboBoxExplosionEffect.SelectedIndex));
+        }
+
         /// 
         /// Functions
         /// 
@@ -291,7 +297,19 @@ namespace TF2WeaponSpecificCrosshairs
                 cbCrosshair.SelectedIndexChanged += new EventHandler(onCBCrosshairChangeEvent);
 
                 // No explosion
-                comboBoxExplosionEffect.SelectedIndex = 0;
+                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE))
+                    try
+                    {
+                        comboBoxExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE));
+                    }
+                    catch (Exception)
+                    {
+                        throw new FormatException($@"The contents of {PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE} could not be parsed to an Integer.");
+                    }
+                else
+                    comboBoxExplosionEffect.SelectedIndex = 0;
+
+                comboBoxExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
 
                 // ListView
                 listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
