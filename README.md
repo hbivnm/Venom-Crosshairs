@@ -40,13 +40,13 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 ***
 
 ## Planned features (somewhat prioritized)
-- [ ] Easier to read/understand state of installation/update.
 - [ ] Add a "Help" button.
 - [ ] Add current version label.
 - [ ] Add "Update TF2WSC" button for when update is available from repo.
 - [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Not to self: add class listviewentry)
 - [ ] Read current config button.
 - [ ] Show/Hide console (state saved inbetween session).
+- [x] Easier to read/understand state of installation/update.
 - [x] Suggestion by Pijukazz: Add no explosion to scripts for explosive weapons. (this will also solve crosshair issues related to explosive weapons, big thanks to shinso)
 - [x] ~~Rename "Add to all" button.~~ Removed button instead.
 - [x] TF2 Path input field saved inbetween sessions (currently resets to default `C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2`).
