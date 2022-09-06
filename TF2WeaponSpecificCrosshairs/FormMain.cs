@@ -583,6 +583,11 @@ namespace TF2WeaponSpecificCrosshairs
                 btnInstallClean.Enabled = false;
             }));
 
+            writeToDebugger("Deleting old previews... ");
+            foreach (string previewFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS))
+                File.Delete(previewFile);
+            writeLineToDebugger("Done!");
+
             writeToDebugger("Preparing vtf2tga process... ");
             Process vtf2tgaProcess = new Process();
             vtf2tgaProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -602,7 +607,7 @@ namespace TF2WeaponSpecificCrosshairs
 
             moveFilesByExtensionOrDelete(PATH_TF2WSC_RESOURCES_MATERIALS, PATH_TF2WSC_RESOURCES_PREVIEWS, "tga");
 
-            writeToDebugger("Generating generatepreviews.bat... ");
+            writeToDebugger("Generating preview creation process... ");
             // Create or clear generatepreviews.bat
             File.Create(FILEPATH_GENERATEPREVIEWSBAT).Close();
 
@@ -617,7 +622,7 @@ namespace TF2WeaponSpecificCrosshairs
             }
             writeLineToDebugger("Done!");
 
-            writeToDebugger("Preparing generatepreviews process... ");
+            writeToDebugger("Preparing preview creation process... ");
             Process generatepreviewsProcess = new Process();
             generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             generatepreviewsProcess.StartInfo.FileName = FILEPATH_GENERATEPREVIEWSBAT;
@@ -628,7 +633,13 @@ namespace TF2WeaponSpecificCrosshairs
             generatepreviewsProcess.WaitForExit();
             writeLineToDebugger("Done!");
 
+            writeToDebugger("Performing cleanup... ");
             moveFilesByExtensionOrDelete(PATH_TF2WSC, PATH_TF2WSC_RESOURCES_PREVIEWS, "png");
+            File.Delete($@"{PATH_TF2WSC_RESOURCES_PREVIEWS}\generatepreviews.bat");
+            foreach (string tgaFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.tga"))
+                File.Delete(tgaFile);
+            writeLineToDebugger("Done!");
+
 
             // Add to ComboBox
             Invoke(new MethodInvoker(delegate ()
@@ -652,6 +663,7 @@ namespace TF2WeaponSpecificCrosshairs
                 cbClass.Enabled = true;
             }));
 
+            writeLineToDebugger("==================================");
             writeLineToDebugger("Finished reloading crosshair list!");
         }
 
