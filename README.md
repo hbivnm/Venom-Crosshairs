@@ -19,7 +19,7 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 4. Hit Install/Update.
 5. Set `cl_crosshair_file ""` in Team Fortress 2.
 
-**NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.X%`, you will have to manually exclude the `TF2WeaponSpecificCrosshairs` folder to be able to use TF2WSC alongside Malwayrebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) explained by a Staff member on Malwarebytes forum.
+**NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.X%`, you will have to manually exclude the `TF2WeaponSpecificCrosshairs` folder to be able to use TF2WSC alongside Malwayrebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) and [also here](https://forums.malwarebytes.com/topic/238670-machinelearninganomalous-detections-and-explanation/), explained by a Staff member on Malwarebytes forum.
 
 ## Help / FAQ
 **Q:** How do I add my own crosshairs to TF2WSC?
