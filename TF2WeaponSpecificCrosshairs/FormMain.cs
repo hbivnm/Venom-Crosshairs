@@ -30,6 +30,7 @@ namespace TF2WeaponSpecificCrosshairs
         private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
 
         private bool hasInitialized = false;
+        private bool showConsole = false;
 
         private readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
@@ -104,6 +105,11 @@ namespace TF2WeaponSpecificCrosshairs
                 cbCrosshair.SelectedIndex = 0;
             else
                 cbCrosshair.SelectedIndex += 1;
+        }
+
+        private void btnToggleConsole_Click(object sender, EventArgs e)
+        {
+            toggleConsole();
         }
 
         private void btnAddCrosshair_Click(object sender, EventArgs e)
@@ -268,7 +274,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void onCBExplosionEffectChangeEvent(object server, EventArgs e)
         {
-            File.WriteAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE, Convert.ToString(comboBoxExplosionEffect.SelectedIndex));
+            File.WriteAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE, Convert.ToString(cbExplosionEffect.SelectedIndex));
         }
 
         /// 
@@ -279,6 +285,8 @@ namespace TF2WeaponSpecificCrosshairs
             // Prevent initTF2WSC from running more than once
             if (!hasInitialized)
             {
+                pictureBoxLoading.Visible = true;
+
                 // Classes
                 foreach (var tf2Class in tf2Classes)
                     cbClass.Items.Add(tf2Class);
@@ -296,28 +304,61 @@ namespace TF2WeaponSpecificCrosshairs
                 }
                 cbCrosshair.SelectedIndexChanged += new EventHandler(onCBCrosshairChangeEvent);
 
-                // No explosion
-                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE))
+                // ListView
+                listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
+                listViewChosenCrosshairs.Columns.Add("Weapon", 599);
+
+                // Read settings
+                if (showConsole)
+                {
+                    showConsole = false;
+                    textBoxDebugger.Visible = false;
+                    lblStatus.Visible = true;
+                    this.Width = 876;
+                }
+                else
+                {
+                    showConsole = true;
+                    textBoxDebugger.Visible = true;
+                    lblStatus.Visible = false;
+                    this.Width = 1183;
+                }
+
+                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE)) // Explosion effect
                     try
                     {
-                        comboBoxExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE));
+                        cbExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE));
                     }
                     catch (Exception)
                     {
                         throw new FormatException($@"The contents of {PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE} could not be parsed to an Integer.");
                     }
                 else
-                    comboBoxExplosionEffect.SelectedIndex = 0;
+                    cbExplosionEffect.SelectedIndex = 0;
+                cbExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
 
-                comboBoxExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
-
-                // ListView
-                listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
-                listViewChosenCrosshairs.Columns.Add("Weapon", 420);
-
-                // Read settings
-                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE))
+                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE)) // User TF2 path
                     textBoxTF2Path.Text = File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE);
+
+                pictureBoxLoading.Visible = false;
+            }
+        }
+
+        private void toggleConsole()
+        {
+            if (showConsole)
+            {
+                showConsole = false;
+                lblStatus.Visible = true;
+                textBoxDebugger.Visible = false;
+                ActiveForm.Width = 880;
+            }
+            else
+            {
+                showConsole = true;
+                lblStatus.Visible = false;
+                textBoxDebugger.Visible = true;
+                ActiveForm.Width = 1183;
             }
         }
 
@@ -325,6 +366,7 @@ namespace TF2WeaponSpecificCrosshairs
         {
             Invoke(new MethodInvoker(delegate ()
             {
+                lblStatus.Text = text;
                 textBoxDebugger.Text += text + Environment.NewLine;
 
                 // Scroll to bottom
@@ -337,6 +379,7 @@ namespace TF2WeaponSpecificCrosshairs
         {
             Invoke(new MethodInvoker(delegate ()
             {
+                lblStatus.Text = text;
                 textBoxDebugger.Text += text;
 
                 // Scroll to bottom
@@ -546,9 +589,9 @@ namespace TF2WeaponSpecificCrosshairs
                     File.WriteAllText(
                         $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponFilename}",
                         File.ReadAllText($@"{PATH_TF2WSC_RESOURCES_SCRIPTS}\{weaponFilename}")
-                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(comboBoxExplosionEffect.Text))
-                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(comboBoxExplosionEffect.Text))
-                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(comboBoxExplosionEffect.Text))
+                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
+                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
+                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
                             .Replace("TF2WSC_PLACEHOLDER", crosshair)
                     );
                 }
@@ -907,7 +950,5 @@ namespace TF2WeaponSpecificCrosshairs
 
             return true;
         }
-
-
     }
 }

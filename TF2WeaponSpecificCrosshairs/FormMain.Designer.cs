@@ -47,9 +47,11 @@
             this.checkBoxAddMeleeWeapons = new System.Windows.Forms.CheckBox();
             this.checkBoxAddMiscWeapons = new System.Windows.Forms.CheckBox();
             this.lblAdditionalSettings = new System.Windows.Forms.Label();
-            this.comboBoxExplosionEffect = new System.Windows.Forms.ComboBox();
+            this.cbExplosionEffect = new System.Windows.Forms.ComboBox();
             this.lblNoExplosion = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.btnToggleConsole = new System.Windows.Forms.Button();
             this.pictureBoxLoading = new System.Windows.Forms.PictureBox();
             this.btnGitHub = new System.Windows.Forms.Button();
             this.btnSteam = new System.Windows.Forms.Button();
@@ -88,7 +90,7 @@
             this.textBoxDebugger.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBoxDebugger.Location = new System.Drawing.Point(858, 9);
+            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
             this.textBoxDebugger.Multiline = true;
             this.textBoxDebugger.Name = "textBoxDebugger";
             this.textBoxDebugger.ReadOnly = true;
@@ -250,20 +252,20 @@
             this.lblAdditionalSettings.TabIndex = 29;
             this.lblAdditionalSettings.Text = "Additional settings";
             // 
-            // comboBoxExplosionEffect
+            // cbExplosionEffect
             // 
-            this.comboBoxExplosionEffect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxExplosionEffect.FormattingEnabled = true;
-            this.comboBoxExplosionEffect.Items.AddRange(new object[] {
+            this.cbExplosionEffect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbExplosionEffect.FormattingEnabled = true;
+            this.cbExplosionEffect.Items.AddRange(new object[] {
             "Default",
             "Electric shock",
             "Muzzle flash",
             "Spy sapper",
             "Pyro pool"});
-            this.comboBoxExplosionEffect.Location = new System.Drawing.Point(96, 3);
-            this.comboBoxExplosionEffect.Name = "comboBoxExplosionEffect";
-            this.comboBoxExplosionEffect.Size = new System.Drawing.Size(95, 21);
-            this.comboBoxExplosionEffect.TabIndex = 31;
+            this.cbExplosionEffect.Location = new System.Drawing.Point(96, 3);
+            this.cbExplosionEffect.Name = "cbExplosionEffect";
+            this.cbExplosionEffect.Size = new System.Drawing.Size(95, 21);
+            this.cbExplosionEffect.TabIndex = 31;
             // 
             // lblNoExplosion
             // 
@@ -277,12 +279,31 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.comboBoxExplosionEffect);
+            this.panel1.Controls.Add(this.cbExplosionEffect);
             this.panel1.Controls.Add(this.lblNoExplosion);
             this.panel1.Location = new System.Drawing.Point(340, 69);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(206, 231);
             this.panel1.TabIndex = 33;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(657, 299);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(0, 13);
+            this.lblStatus.TabIndex = 35;
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnToggleConsole
+            // 
+            this.btnToggleConsole.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.terminal;
+            this.btnToggleConsole.Location = new System.Drawing.Point(820, 47);
+            this.btnToggleConsole.Name = "btnToggleConsole";
+            this.btnToggleConsole.Size = new System.Drawing.Size(32, 32);
+            this.btnToggleConsole.TabIndex = 36;
+            this.btnToggleConsole.UseVisualStyleBackColor = true;
+            this.btnToggleConsole.Click += new System.EventHandler(this.btnToggleConsole_Click);
             // 
             // pictureBoxLoading
             // 
@@ -419,7 +440,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1167, 551);
+            this.ClientSize = new System.Drawing.Size(1173, 551);
+            this.Controls.Add(this.btnToggleConsole);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pictureBoxLoading);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblAdditionalSettings);
@@ -494,10 +517,12 @@
         private System.Windows.Forms.CheckBox checkBoxAddMeleeWeapons;
         private System.Windows.Forms.CheckBox checkBoxAddMiscWeapons;
         private System.Windows.Forms.Label lblAdditionalSettings;
-        private System.Windows.Forms.ComboBox comboBoxExplosionEffect;
+        private System.Windows.Forms.ComboBox cbExplosionEffect;
         private System.Windows.Forms.Label lblNoExplosion;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBoxLoading;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Button btnToggleConsole;
     }
 }
 
