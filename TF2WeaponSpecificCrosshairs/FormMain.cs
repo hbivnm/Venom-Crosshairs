@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace TF2WeaponSpecificCrosshairs
 {
@@ -30,7 +29,7 @@ namespace TF2WeaponSpecificCrosshairs
         private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
 
         private bool hasInitialized = false;
-        private bool showConsole = false;
+        private bool showConsole = true;
 
         private readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
@@ -308,7 +307,7 @@ namespace TF2WeaponSpecificCrosshairs
                 listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
                 listViewChosenCrosshairs.Columns.Add("Weapon", 599);
 
-                // Read settings
+                // Hide console
                 if (showConsole)
                 {
                     showConsole = false;
@@ -324,6 +323,7 @@ namespace TF2WeaponSpecificCrosshairs
                     this.Width = 1183;
                 }
 
+                // Read settings
                 if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE)) // Explosion effect
                     try
                     {
@@ -551,8 +551,7 @@ namespace TF2WeaponSpecificCrosshairs
                     Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs", true);
                 writeLineToDebugger("Done!");
             }
-            else
-                if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs"))
+            else if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs"))
             {
                 writeLineToDebugger("Updating current TF2WSC config...");
                 isUpdate = true;
@@ -673,7 +672,6 @@ namespace TF2WeaponSpecificCrosshairs
             // Generate previews
             foreach (string vtfFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_MATERIALS, "*.vtf"))
             {
-                //writeLineToDebugger("vtf2tga.exe -i " + Path.GetFileName(vtfFile));
                 vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + vtfFile;
                 vtf2tgaProcess.Start();
             }
