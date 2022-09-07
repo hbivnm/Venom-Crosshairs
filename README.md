@@ -2,7 +2,7 @@
 TF2WSC (Team Fortress 2 Weapon Specific Crosshairs) is a client-side solution to automating the installation and customization of crosshairs in Team Fortress 2.
 
 Preview image of current beta version:
-![Preview image of TF2WSC.](https://i.imgur.com/qkcGEld.png)
+![Preview image of TF2WSC.](https://i.imgur.com/LlvjgXZ.png)
 
 ## What does TF2WSC specifically do?
 When installing a config through TF2WSC, a new folder in `tf\custom` called `TF2WeaponSpecificCrosshairs` will be created. This folder will contain crosshair materials and script files necessary for your chosen weapon specific crosshairs.
@@ -45,7 +45,7 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 - [ ] Add "Update TF2WSC" button for when update is available from repo.
 - [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Not to self: add class listviewentry)
 - [ ] Read current config button.
-- [ ] Show/Hide console (state saved inbetween session).
+- [x] Show/Hide console ~~(state saved inbetween session)~~.
 - [x] Easier to read/understand state of installation/update.
 - [x] Suggestion by Pijukazz: Add no explosion to scripts for explosive weapons. (this will also solve crosshair issues related to explosive weapons, big thanks to shinso)
 - [x] ~~Rename "Add to all" button.~~ Removed button instead.
