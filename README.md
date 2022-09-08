@@ -10,12 +10,12 @@ When installing a config through TF2WSC, a new folder in `tf\custom` called `TF2
 ## Download
 Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/releases).
 
-## Tutorial
+## Tutorial / Installation
 **NOTE:** If you already have an old custom crosshair folder in `tf\custom` rename it to `TF2WeaponSpecificCrosshairs`
 
 1. Download the latest release found [here](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/releases).
 2. Extract the folder named `TF2WeaponSpecificCrosshairs` to a directory of your liking.
-3. Run TF2WSC and customize your crosshair config.
+3. Run TF2WSC and customize your weapon specific crosshair config.
 4. Hit Install/Update.
 5. Set `cl_crosshair_file ""` in Team Fortress 2.
 
