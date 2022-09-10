@@ -40,6 +40,7 @@ Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSp
 ***
 
 ## Planned features (somewhat prioritized)
+- [ ] Add a button to sync crosshairs from public repo (eliminates having to wait for new update for newly added crosshairs)
 - [ ] Add a "Help" button.
 - [ ] Add current version label.
 - [ ] Add "Update TF2WSC" button for when update is available from repo.
