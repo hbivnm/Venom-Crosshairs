@@ -478,6 +478,7 @@
             this.MaximizeBox = false;
             this.Name = "FormMain";
             this.Text = "TF2 Weapon Specific Crosshairs";
+            this.Load += new System.EventHandler(this.onFormLoad);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).EndInit();

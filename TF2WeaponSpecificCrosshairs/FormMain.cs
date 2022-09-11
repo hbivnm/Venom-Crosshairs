@@ -7,12 +7,16 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace TF2WeaponSpecificCrosshairs
 {
@@ -27,6 +31,8 @@ namespace TF2WeaponSpecificCrosshairs
         private static readonly string PATH_TF2WSC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
 
         private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
+
+        private Dictionary<string, string> publicCrosshairs = new Dictionary<string, string>();
 
         private bool hasInitialized = false;
         private bool showConsole = true;
@@ -58,10 +64,10 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnReload_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("You are about to reload the crosshair list. This will clear the currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take a long time!", "Reload crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            DialogResult dialogResult = MessageBox.Show("You are about to download and reload the crosshair list. This will clear the currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Update crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
-                new Thread(generateCrosshairs).Start();
+                new Thread(downloadAndGenerateCrosshairs).Start();
         }
 
         private void btnGitHub_Click(object sender, EventArgs e)
@@ -71,7 +77,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnSteam_Click(object sender, EventArgs e)
         {
-            Process.Start(@"http://steamcommunity.com/profiles/76561197996468677");
+            Process.Start(@"https://steamcommunity.com/profiles/76561197996468677");
         }
 
         private void btnBrowseTF2Path_Click(object sender, EventArgs e)
@@ -276,6 +282,22 @@ namespace TF2WeaponSpecificCrosshairs
             File.WriteAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE, Convert.ToString(cbExplosionEffect.SelectedIndex));
         }
 
+        private void onFormLoad(object sender, EventArgs e)
+        {
+            // Fetch public crosshairs, if new crosshairs are available -> prompt user
+            writeToDebugger("Fetching public crosshair list... ");
+            _ = fetchCrosshairsFromPublicRepo();
+            
+            foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
+                if (!File.Exists($@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"))
+                {
+                    MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "TF2 Weapon Specific Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+                }
+
+            writeLineToDebugger("Done!");
+        }
+
         /// 
         /// Functions
         /// 
@@ -342,6 +364,35 @@ namespace TF2WeaponSpecificCrosshairs
 
                 pictureBoxLoading.Visible = false;
             }
+        }
+
+        private Task fetchCrosshairsFromPublicRepo()
+        {
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyApplication", "1"));
+            var contentsUrl = $"https://api.github.com/repos/hbivnm/TF2WSC-Crosshairs/contents";
+            var response = httpClient.GetStringAsync(contentsUrl).Result;
+
+            var contents = (JArray)JsonConvert.DeserializeObject(response);
+
+            foreach (var file in contents)
+                publicCrosshairs.Add((string)file["name"], (string)file["download_url"]);
+
+            return null;
+        }
+
+        private Task downloadMissingCrosshairs()
+        {
+            var tasks = new List<Task>();
+            writeToDebugger($"Downloading crosshairs... ");
+
+            foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
+                using (WebClient webClient = new WebClient())
+                    tasks.Add(webClient.DownloadFileTaskAsync(new Uri(crosshair.Value), $@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"));
+
+            Task.WaitAll(tasks.ToArray());
+            writeLineToDebugger("Done!");
+            return null;
         }
 
         private void toggleConsole()
@@ -630,7 +681,7 @@ namespace TF2WeaponSpecificCrosshairs
             }));
         }
 
-        private void generateCrosshairs()
+        private void downloadAndGenerateCrosshairs()
         {
             Invoke(new MethodInvoker(delegate ()
             {
@@ -656,6 +707,10 @@ namespace TF2WeaponSpecificCrosshairs
                 btnInstall.Enabled = false;
                 btnInstallClean.Enabled = false;
             }));
+
+            // Download publicly available crosshairs
+            // code
+            _ = downloadMissingCrosshairs();
 
             writeToDebugger("Deleting old previews... ");
             foreach (string previewFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS))
