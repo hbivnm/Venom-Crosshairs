@@ -387,8 +387,9 @@ namespace TF2WeaponSpecificCrosshairs
             writeToDebugger($"Downloading crosshairs... ");
 
             foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
-                using (WebClient webClient = new WebClient())
-                    tasks.Add(webClient.DownloadFileTaskAsync(new Uri(crosshair.Value), $@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"));
+                if (!File.Exists($@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"))
+                    using (WebClient webClient = new WebClient())
+                        tasks.Add(webClient.DownloadFileTaskAsync(new Uri(crosshair.Value), $@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"));
 
             Task.WaitAll(tasks.ToArray());
             writeLineToDebugger("Done!");
