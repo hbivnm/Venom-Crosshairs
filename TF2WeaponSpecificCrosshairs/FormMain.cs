@@ -728,7 +728,7 @@ namespace TF2WeaponSpecificCrosshairs
             // Generate previews
             foreach (string vtfFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_MATERIALS, "*.vtf"))
             {
-                vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + vtfFile;
+                vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
                 vtf2tgaProcess.Start();
             }
             vtf2tgaProcess.WaitForExit();
@@ -743,7 +743,7 @@ namespace TF2WeaponSpecificCrosshairs
                 foreach (string tgaFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.tga"))
                 {
                     string filename = Path.GetFileNameWithoutExtension(tgaFile);
-                    sw.WriteLine(PATH_TF2WSC_RESOURCES + "ffmpeg.exe -i " + tgaFile + " " + filename + ".png");
+                    sw.WriteLine("\"" + PATH_TF2WSC_RESOURCES + "ffmpeg.exe\" -y -i \"" + tgaFile + "\" " + filename + ".png");
                 }
                 sw.WriteLine("exit");
             }
@@ -766,7 +766,6 @@ namespace TF2WeaponSpecificCrosshairs
             foreach (string tgaFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.tga"))
                 File.Delete(tgaFile);
             writeLineToDebugger("Done!");
-
 
             // Add to ComboBox
             Invoke(new MethodInvoker(delegate ()

@@ -121,7 +121,7 @@
             // cbCrosshair
             // 
             this.cbCrosshair.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCrosshair.DropDownWidth = 140;
+            this.cbCrosshair.DropDownWidth = 190;
             this.cbCrosshair.Enabled = false;
             this.cbCrosshair.FormattingEnabled = true;
             this.cbCrosshair.Location = new System.Drawing.Point(71, 104);
