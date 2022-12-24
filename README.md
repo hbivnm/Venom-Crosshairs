@@ -28,6 +28,7 @@ See the [wiki](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki).
 ### Planned features
 - [ ] Add a "Help" button.
 - [ ] Add current version label.
+- [ ] Add checkbox to change "ALL" checkboxes into (ex.) "ALL primary weapons for _CLASS_".
 - [ ] Add "Update TF2WSC" notification when new release is available.
 - [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Not to self: add class listviewentry)
 - [ ] Read current TF2WSC config.
@@ -45,8 +46,6 @@ See the [wiki](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki).
 - [x] Suggestion by Pijukazz: Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
 - [x] Suggestion by Kanga: Buttons for "Add to all PRIMARY/SECONDARY/MELEE.
 - [x] Make console read-only (thanks depi LOL)
-
-
 
 # Original idea
 Credit where it's due, the original idea of weapon specific crosshairs in Team Fortress 2 (as far as I know) comes from a [teamfortress.tv thread](https://www.teamfortress.tv/30866/guide-weapon-specific-custom-crosshairs) by [joshuawn](https://www.teamfortress.tv/user/joshuawn).
