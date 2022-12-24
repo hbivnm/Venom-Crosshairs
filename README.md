@@ -26,7 +26,6 @@ See the [wiki](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki).
 
 ## The future of TF2WSC
 ### Planned features
-- [ ] Add a wiki to this repo.
 - [ ] Add a "Help" button.
 - [ ] Add current version label.
 - [ ] Add "Update TF2WSC" notification when new release is available.
@@ -36,6 +35,7 @@ See the [wiki](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki).
 - [ ] Suggestion by Kanga: Add hitsounds and killsounds.
 
 ### Implemented features
+- [x] Add a wiki to this repo.
 - [x] Add a button to sync crosshairs from public repo (eliminates having to wait for new update for newly added crosshairs)
 - [x] Show/Hide console ~~(state saved inbetween session)~~.
 - [x] Easier to read/understand state of installation/update.
