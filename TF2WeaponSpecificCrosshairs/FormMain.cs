@@ -33,6 +33,7 @@ namespace TF2WeaponSpecificCrosshairs
         private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
 
         private Dictionary<string, string> publicCrosshairs = new Dictionary<string, string>();
+        private Dictionary<string, string> weaponScriptPairs = new Dictionary<string, string>();
 
         private bool hasInitialized = false;
         private bool showConsole = true;
@@ -54,7 +55,6 @@ namespace TF2WeaponSpecificCrosshairs
         private static readonly string[] tf2SecondaryWeapons = { "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shotgun, Reserve Shooter, Panic Attack (Pyro)", "Flare Gun, Detonator, Scorch Shot", "Manmelter", "Thermal Thruster", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter", "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "SMG", "Cleaner's Carbine", "Sapper, Red-Tape Recorder" };
         private static readonly string[] tf2MeleeWeapons = { "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin", "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi", "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand", "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Ullapool Caber", "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch", "Wrench, Southern Hospitality, Jag, Eureka Effect", "Gunslinger", "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah", "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle" };
         private static readonly string[] tf2MiscWeapons = { "Construction PDA", "Destruction PDA", "Sapper, Red-Tape Recorder, While placing a building", "Disguise kit" };
-
 
         public FormMain()
         {
@@ -307,6 +307,7 @@ namespace TF2WeaponSpecificCrosshairs
             if (!hasInitialized)
             {
                 pictureBoxLoading.Visible = true;
+                initWeaponScriptDict();
 
                 // Classes
                 foreach (var tf2Class in tf2Classes)
@@ -345,8 +346,9 @@ namespace TF2WeaponSpecificCrosshairs
                     this.Width = 1183;
                 }
 
-                // Read settings
-                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE)) // Explosion effect
+                // Read user settings
+                // Explosion effect
+                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE))
                     try
                     {
                         cbExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE));
@@ -359,7 +361,8 @@ namespace TF2WeaponSpecificCrosshairs
                     cbExplosionEffect.SelectedIndex = 0;
                 cbExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
 
-                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE)) // User TF2 path
+                // User TF2 path
+                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE))
                     textBoxTF2Path.Text = File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE);
 
                 pictureBoxLoading.Visible = false;
@@ -600,7 +603,6 @@ namespace TF2WeaponSpecificCrosshairs
 
             }));
 
-            writeLineToDebugger("");
             bool isUpdate = false;
             if (removeOldConfig)
             {
@@ -637,16 +639,16 @@ namespace TF2WeaponSpecificCrosshairs
                 foreach (ListViewItem item in listViewChosenCrosshairs.Items)
                 {
                     string crosshair = item.SubItems[0].Text;
-                    string weapon = item.SubItems[1].Text;
-                    string weaponFilename = getWeaponFilenameFromWeaponName(weapon);
-                    string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponFilename}";
+                    string weaponName = item.SubItems[1].Text;
+                    string weaponScriptName = weaponScriptPairs[weaponName];
+                    string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponScriptName}";
 
                     if (File.Exists(fullScriptPath))
                         File.Delete(fullScriptPath);
 
                     File.WriteAllText(
-                        $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponFilename}",
-                        File.ReadAllText($@"{PATH_TF2WSC_RESOURCES_SCRIPTS}\{weaponFilename}")
+                        $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponScriptName}",
+                        File.ReadAllText($@"{PATH_TF2WSC_RESOURCES_SCRIPTS}\{weaponScriptName}")
                             .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
                             .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
                             .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
@@ -799,153 +801,93 @@ namespace TF2WeaponSpecificCrosshairs
             writeLineToDebugger("Finished reloading crosshair list!");
         }
 
-        private string getWeaponFilenameFromWeaponName(string weapon)
+        private void initWeaponScriptDict()
         {
-            switch (weapon)
-            {
-                // Scout
-                case "Scattergun, Back Scatter, Force-A-Nature":
-                    return "tf_weapon_scattergun.txt";
-                case "Baby Face's Blaster":
-                    return "tf_weapon_pep_brawler_blaster.txt";
-                case "Shortstop":
-                    return "tf_weapon_handgun_scout_primary.txt";
-                case "Soda Popper":
-                    return "tf_weapon_soda_popper.txt";
-                case "Pistol and all reskins (Scout)":
-                    return "tf_weapon_pistol_scout.txt";
-                case "Bonk! Atomic Punch, Crit-a-Cola":
-                    return "tf_weapon_lunchbox_drink.txt";
-                case "Flying Guillotine, Mad Milk, Gas Passer, Jarate": // Scout/Pyro/Sniper
-                    return "tf_weapon_jar.txt";
-                case "Pretty Boy's Pocket Pistol, Winger":
-                    return "tf_weapon_handgun_scout_secondary.txt";
-                case "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick":
-                    return "tf_weapon_bat.txt";
-                case "Holy Mackerel":
-                    return "tf_weapon_bat_fish.txt";
-                case "Sandman":
-                    return "tf_weapon_bat_wood.txt";
-                case "Wrap Assassin":
-                    return "tf_weapon_bat_giftwrap.txt";
-                // Soldier
-                case "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka":
-                    return "tf_weapon_rocketlauncher.txt";
-                case "Air Strike":
-                    return "tf_weapon_rocketlauncher_airstrike.txt";
-                case "Cow Mangler 5000":
-                    return "tf_weapon_particle_cannon.txt";
-                case "Direct Hit":
-                    return "tf_weapon_rocketlauncher_directhit.txt";
-                case "Shotgun, Reserve Shooter, Panic Attack (Soldier)":
-                    return "tf_weapon_shotgun_soldier.txt";
-                case "Buff Banner, Battalion's Backup, Concheror":
-                    return "tf_weapon_buff_item.txt";
-                case "Righteous Bison":
-                    return "tf_weapon_raygun.txt";
-                case "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan":
-                    return "tf_weapon_shovel.txt";
-                case "Half-Zatoichi": // Soldier/Demoman
-                    return "tf_weapon_katana.txt";
-                // Pyro
-                case "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator":
-                    return "tf_weapon_flamethrower.txt";
-                case "Dragon's Fury":
-                    return "tf_weapon_rocketlauncher_fireball.txt";
-                case "Shotgun, Reserve Shooter, Panic Attack (Pyro)":
-                    return "tf_weapon_shotgun_pyro.txt";
-                case "Flare Gun, Detonator, Scorch Shot":
-                    return "tf_weapon_flaregun.txt";
-                case "Manmelter":
-                    return "tf_weapon_flaregun_revenge.txt";
-                case "Thermal Thruster":
-                    return "tf_weapon_rocketpack.txt";
-                case "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator":
-                    return "tf_weapon_fireaxe.txt";
-                case "Hot Hand":
-                    return "tf_weapon_slap.txt";
-                // Demoman
-                case "Grenade Launcher, Loch-n-Load, Iron Bomber":
-                    return "tf_weapon_grenadelauncher.txt";
-                case "Loose Cannon":
-                    return "tf_weapon_cannon.txt";
-                case "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher":
-                    return "tf_weapon_pipebomblauncher.txt";
-                case "Bottle and all reskins":
-                    return "tf_weapon_bottle.txt";
-                case "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train":
-                    return "tf_weapon_sword.txt";
-                case "Ullapool Caber":
-                    return "tf_weapon_stickbomb.txt";
-                // Heavy
-                case "Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater":
-                    return "tf_weapon_minigun.txt";
-                case "Shotgun, Family Business, Panic Attack":
-                    return "tf_weapon_shotgun_hwg.txt";
-                case "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana":
-                    return "tf_weapon_lunchbox.txt";
-                case "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch":
-                    return "tf_weapon_fists.txt";
-                // Engineer
-                case "Shotgun, Widowmaker, Panic Attack":
-                    return "tf_weapon_shotgun_primary.txt";
-                case "Frontier Justice":
-                    return "tf_weapon_sentry_revenge.txt";
-                case "Pomson 6000":
-                    return "tf_weapon_drg_pomson.txt";
-                case "Rescue Ranger":
-                    return "tf_weapon_shotgun_building_rescue.txt";
-                case "Pistol and all reskins (Engineer)":
-                    return "tf_weapon_pistol.txt";
-                case "Short Circuit":
-                    return "tf_weapon_mechanical_arm.txt";
-                case "Wrangler, Giger Counter":
-                    return "tf_weapon_laser_pointer.txt";
-                case "Wrench, Southern Hospitality, Jag, Eureka Effect":
-                    return "tf_weapon_wrench.txt";
-                case "Gunslinger":
-                    return "tf_weapon_robot_arm.txt";
-                case "Construction PDA":
-                    return "tf_weapon_pda_engineer_build.txt";
-                case "Destruction PDA":
-                    return "tf_weapon_pda_engineer_destroy.txt";
-                case "Sapper, Red-Tape Recorder, While placing a building": // Engineer/Spy
-                    return "tf_weapon_builder.txt";
-                // Medic
-                case "Syringe Gun, Blutsauger, Overdose":
-                    return "tf_weapon_syringegun_medic.txt";
-                case "Crusader's Crossbow":
-                    return "tf_weapon_crossbow.txt";
-                case "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator":
-                    return "tf_weapon_medigun.txt";
-                case "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow":
-                    return "tf_weapon_bonesaw.txt";
-                // Sniper
-                case "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina":
-                    return "tf_weapon_sniperrifle.txt";
-                case "Classic":
-                    return "tf_weapon_sniperrifle_classic.txt";
-                case "Hitman's Heatmaker":
-                    return "tf_weapon_sniperrifle_decap.txt";
-                case "Huntsman, Fortified Compound":
-                    return "tf_weapon_compound_bow.txt";
-                case "SMG":
-                    return "tf_weapon_smg.txt";
-                case "Cleaner's Carbine":
-                    return "tf_weapon_charged_smg.txt";
-                case "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah":
-                    return "tf_weapon_club.txt";
-                // Spy
-                case "Revolver, Ambassador, L'Etranger, Enforcer, Diamondback":
-                    return "tf_weapon_revolver.txt";
-                case "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle":
-                    return "tf_weapon_knife.txt";
-                case "Disguise kit":
-                    return "tf_weapon_pda_spy.txt";
+            // Scout
+            weaponScriptPairs.Add("Scattergun, Back Scatter, Force-A-Nature", "tf_weapon_scattergun.txt");
+            weaponScriptPairs.Add("Baby Face's Blaster", "tf_weapon_pep_brawler_blaster.txt");
+            weaponScriptPairs.Add("Shortstop", "tf_weapon_handgun_scout_primary.txt");
+            weaponScriptPairs.Add("Soda Popper", "tf_weapon_soda_popper.txt");
+            weaponScriptPairs.Add("Pistol and all reskins (Scout)", "tf_weapon_pistol_scout.txt");
+            weaponScriptPairs.Add("Bonk! Atomic Punch, Crit-a-Cola", "tf_weapon_lunchbox_drink.txt");
+            weaponScriptPairs.Add("Pretty Boy's Pocket Pistol, Winger", "tf_weapon_handgun_scout_secondary.txt");
+            weaponScriptPairs.Add("Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "tf_weapon_bat.txt");
+            weaponScriptPairs.Add("Holy Mackerel", "tf_weapon_bat_fish.txt");
+            weaponScriptPairs.Add("Sandman", "tf_weapon_bat_wood.txt");
+            weaponScriptPairs.Add("Wrap Assassin", "tf_weapon_bat_giftwrap.txt");
 
-                default:
-                    throw new ArgumentException($"There is no script associated with '{weapon}'!");
-            }
+            // Soldier
+            weaponScriptPairs.Add("Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "tf_weapon_rocketlauncher.txt");
+            weaponScriptPairs.Add("Air Strike", "tf_weapon_rocketlauncher_airstrike.txt");
+            weaponScriptPairs.Add("Cow Mangler 5000", "tf_weapon_particle_cannon.txt");
+            weaponScriptPairs.Add("Direct Hit", "tf_weapon_rocketlauncher_directhit.txt");
+            weaponScriptPairs.Add("Shotgun, Reserve Shooter, Panic Attack (Soldier)", "tf_weapon_shotgun_soldier.txt");
+            weaponScriptPairs.Add("Buff Banner, Battalion's Backup, Concheror", "tf_weapon_buff_item.txt");
+            weaponScriptPairs.Add("Righteous Bison", "tf_weapon_raygun.txt");
+            weaponScriptPairs.Add("Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "tf_weapon_shovel.txt");
+
+            // Pyro
+            weaponScriptPairs.Add("Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "tf_weapon_flamethrower.txt");
+            weaponScriptPairs.Add("Dragon's Fury", "tf_weapon_rocketlauncher_fireball.txt");
+            weaponScriptPairs.Add("Shotgun, Reserve Shooter, Panic Attack (Pyro)", "tf_weapon_shotgun_pyro.txt");
+            weaponScriptPairs.Add("Flare Gun, Detonator, Scorch Shot", "tf_weapon_flaregun.txt");
+            weaponScriptPairs.Add("Manmelter", "tf_weapon_flaregun_revenge.txt");
+            weaponScriptPairs.Add("Thermal Thruster", "tf_weapon_rocketpack.txt");
+            weaponScriptPairs.Add("Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "tf_weapon_fireaxe.txt");
+            weaponScriptPairs.Add("Hot Hand", "tf_weapon_slap.txt");
+
+            // Demoman
+            weaponScriptPairs.Add("Grenade Launcher, Loch-n-Load, Iron Bomber", "tf_weapon_grenadelauncher.txt");
+            weaponScriptPairs.Add("Loose Cannon", "tf_weapon_cannon.txt");
+            weaponScriptPairs.Add("Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "tf_weapon_pipebomblauncher.txt");
+            weaponScriptPairs.Add("Bottle and all reskins", "tf_weapon_bottle.txt");
+            weaponScriptPairs.Add("Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "tf_weapon_sword.txt");
+            weaponScriptPairs.Add("Ullapool Caber", "tf_weapon_stickbomb.txt");
+
+
+            // Heavy
+            weaponScriptPairs.Add("Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater", "tf_weapon_minigun.txt");
+            weaponScriptPairs.Add("Shotgun, Family Business, Panic Attack", "tf_weapon_shotgun_hwg.txt");
+            weaponScriptPairs.Add("Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "tf_weapon_lunchbox.txt");
+            weaponScriptPairs.Add("Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch", "tf_weapon_fists.txt");
+
+            // Engineer
+            weaponScriptPairs.Add("Shotgun, Widowmaker, Panic Attack", "tf_weapon_shotgun_primary.txt");
+            weaponScriptPairs.Add("Frontier Justice", "tf_weapon_sentry_revenge.txt");
+            weaponScriptPairs.Add("Pomson 6000", "tf_weapon_drg_pomson.txt");
+            weaponScriptPairs.Add("Rescue Ranger", "tf_weapon_shotgun_building_rescue.txt");
+            weaponScriptPairs.Add("Pistol and all reskins (Engineer)", "tf_weapon_pistol.txt");
+            weaponScriptPairs.Add("Short Circuit", "tf_weapon_mechanical_arm.txt");
+            weaponScriptPairs.Add("Wrangler, Giger Counter", "tf_weapon_laser_pointer.txt");
+            weaponScriptPairs.Add("Wrench, Southern Hospitality, Jag, Eureka Effect", "tf_weapon_wrench.txt");
+            weaponScriptPairs.Add("Gunslinger", "tf_weapon_robot_arm.txt");
+            weaponScriptPairs.Add("Construction PDA", "tf_weapon_pda_engineer_build.txt");
+            weaponScriptPairs.Add("Destruction PDA", "tf_weapon_pda_engineer_destroy.txt");
+
+            // Medic
+            weaponScriptPairs.Add("Syringe Gun, Blutsauger, Overdose", "tf_weapon_syringegun_medic.txt");
+            weaponScriptPairs.Add("Crusader's Crossbow", "tf_weapon_crossbow.txt");
+            weaponScriptPairs.Add("Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "tf_weapon_medigun.txt");
+            weaponScriptPairs.Add("Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow", "tf_weapon_bonesaw.txt");
+
+            // Sniper
+            weaponScriptPairs.Add("Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "tf_weapon_sniperrifle.txt");
+            weaponScriptPairs.Add("Classic", "tf_weapon_sniperrifle_classic.txt");
+            weaponScriptPairs.Add("Hitman's Heatmaker", "tf_weapon_sniperrifle_decap.txt");
+            weaponScriptPairs.Add("Huntsman, Fortified Compound", "tf_weapon_compound_bow.txt");
+            weaponScriptPairs.Add("SMG", "tf_weapon_smg.txt");
+            weaponScriptPairs.Add("Cleaner's Carbine", "tf_weapon_charged_smg.txt");
+            weaponScriptPairs.Add("Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah", "tf_weapon_club.txt");
+
+            // Spy
+            weaponScriptPairs.Add("Revolver, Ambassador, L'Etranger, Enforcer, Diamondback", "tf_weapon_revolver.txt");
+            weaponScriptPairs.Add("Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle", "tf_weapon_knife.txt");
+            weaponScriptPairs.Add("Disguise kit", "tf_weapon_pda_spy.txt");
+
+            // Multi-class
+            weaponScriptPairs.Add("Flying Guillotine, Mad Milk, Gas Passer, Jarate", "tf_weapon_jar.txt"); // Scout/Pyro/Sniper
+            weaponScriptPairs.Add("Half-Zatoichi", "tf_weapon_katana.txt"); // Soldier/Demoman
+            weaponScriptPairs.Add("Sapper, Red-Tape Recorder, While placing a building", "tf_weapon_builder.txt"); // Spy/Engineer
         }
 
         private bool performSanityCheck(string path)
@@ -971,7 +913,7 @@ namespace TF2WeaponSpecificCrosshairs
             if (!File.Exists(path + @"\bin\vtf2tga.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity3");
-                MessageBox.Show("Could not find \"vta2tga.exe\".\nPlease verify game files.", "vta2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not find \"vtf2tga.exe\".\nPlease verify game files.", "vtf2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
