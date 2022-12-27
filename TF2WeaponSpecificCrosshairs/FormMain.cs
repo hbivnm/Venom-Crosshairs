@@ -22,15 +22,16 @@ namespace TF2WeaponSpecificCrosshairs
 {
     public partial class FormMain : Form
     {
+        private static readonly string TF2WSC_VERSION = "beta7.0";
+
         private static readonly string PATH_TF2WSC = Directory.GetCurrentDirectory();
         private static readonly string PATH_TF2WSC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
-        private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_expeff.cfg";
-        private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_userpath.cfg";
         private static readonly string PATH_TF2WSC_RESOURCES_MATERIALS = Directory.GetCurrentDirectory() + @"\resources\materials\";
         private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS = Directory.GetCurrentDirectory() + @"\resources\previews\";
-        private static readonly string PATH_TF2WSC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
-
         private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
+        private static readonly string PATH_TF2WSC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
+        private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_expeff.cfg";
+        private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_userpath.cfg";
 
         private Dictionary<string, string> publicCrosshairs = new Dictionary<string, string>();
         private Dictionary<string, string> weaponScriptPairs = new Dictionary<string, string>();
@@ -38,7 +39,7 @@ namespace TF2WeaponSpecificCrosshairs
         private bool hasInitialized = false;
         private bool showConsole = true;
 
-        private readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
+        private static readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
         private static readonly string[] tf2ScoutWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin" };
         private static readonly string[] tf2SoldierWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Cow Mangler 5000", "Direct Hit", "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi" };
@@ -52,7 +53,7 @@ namespace TF2WeaponSpecificCrosshairs
         private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).ToArray();
 
         private static readonly string[] tf2PrimaryWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Cow Mangler 5000", "Direct Hit", "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "Dragon's Fury", "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater", "Shotgun, Widowmaker, Panic Attack", "Frontier Justice", "Pomson 6000", "Rescue Ranger", "Syringe Gun, Blutsauger, Overdose", "Crusader's Crossbow", "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound", "Revolver, Ambassador, L'Etranger, Enforcer, Diamondback" };
-        private static readonly string[] tf2SecondaryWeapons = { "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shotgun, Reserve Shooter, Panic Attack (Pyro)", "Flare Gun, Detonator, Scorch Shot", "Manmelter", "Thermal Thruster", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter", "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "SMG", "Cleaner's Carbine", "Sapper, Red-Tape Recorder" };
+        private static readonly string[] tf2SecondaryWeapons = { "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shotgun, Reserve Shooter, Panic Attack (Pyro)", "Flare Gun, Detonator, Scorch Shot", "Manmelter", "Thermal Thruster", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter", "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "SMG", "Cleaner's Carbine" };
         private static readonly string[] tf2MeleeWeapons = { "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin", "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi", "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand", "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Ullapool Caber", "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch", "Wrench, Southern Hospitality, Jag, Eureka Effect", "Gunslinger", "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah", "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle" };
         private static readonly string[] tf2MiscWeapons = { "Construction PDA", "Destruction PDA", "Sapper, Red-Tape Recorder, While placing a building", "Disguise kit" };
 
@@ -78,6 +79,11 @@ namespace TF2WeaponSpecificCrosshairs
         private void btnSteam_Click(object sender, EventArgs e)
         {
             Process.Start(@"https://steamcommunity.com/profiles/76561197996468677");
+        }
+
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki");
         }
 
         private void btnBrowseTF2Path_Click(object sender, EventArgs e)
@@ -194,7 +200,6 @@ namespace TF2WeaponSpecificCrosshairs
 
             if (dialogResult == DialogResult.Yes && listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
                 Task.Run(() => performInstallation(true));
-
         }
 
         /// 
@@ -284,6 +289,8 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void onFormLoad(object sender, EventArgs e)
         {
+            writeLineToDebugger($"TF2WSC Version {TF2WSC_VERSION}");
+
             // Fetch public crosshairs, if new crosshairs are available -> prompt user
             writeToDebugger("Fetching public crosshair list... ");
             _ = fetchCrosshairsFromPublicRepo();
@@ -364,6 +371,22 @@ namespace TF2WeaponSpecificCrosshairs
                 // User TF2 path
                 if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE))
                     textBoxTF2Path.Text = File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE);
+
+                // Read current TF2WSC config
+                if (!String.IsNullOrEmpty(textBoxTF2Path.Text))
+                {
+                    string tf2wscScripDir = textBoxTF2Path.Text + @"/tf/custom/TF2WeaponSpecificCrosshairs/scripts";
+                    if (Directory.Exists(tf2wscScripDir))
+                    {
+                        foreach (string script in Directory.GetFiles(tf2wscScripDir, "*.txt"))
+                        {
+                            string crosshair = getCrosshairFromScript(script);
+                            string weapon = getWeaponFromScriptName(script);
+                            addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new String[] { crosshair, weapon }));
+                        }
+                        btnRemoveSelected.Enabled = true;
+                    }
+                }
 
                 pictureBoxLoading.Visible = false;
             }
@@ -888,6 +911,31 @@ namespace TF2WeaponSpecificCrosshairs
             weaponScriptPairs.Add("Flying Guillotine, Mad Milk, Gas Passer, Jarate", "tf_weapon_jar.txt"); // Scout/Pyro/Sniper
             weaponScriptPairs.Add("Half-Zatoichi", "tf_weapon_katana.txt"); // Soldier/Demoman
             weaponScriptPairs.Add("Sapper, Red-Tape Recorder, While placing a building", "tf_weapon_builder.txt"); // Spy/Engineer
+        }
+
+        private string getCrosshairFromScript(string script)
+        {
+            string[] scriptLines = File.ReadAllLines(script);
+            foreach (string scriptLine in scriptLines) // TODO: Fix this lazy implementation
+                if (scriptLine.Contains("vgui/replay/thumbnails/"))
+                {
+                    string[] crosshairLine = scriptLine.Split('/');
+                    string crosshair = crosshairLine[crosshairLine.Length - 1];
+                    return crosshair.Substring(0, crosshair.Length - 1);
+                }
+
+            throw new Exception($"Could not find crosshair in script {script}");
+        }
+
+        private string getWeaponFromScriptName(string script)
+        {
+            foreach (KeyValuePair<string, string> weaponScriptEntry in weaponScriptPairs)
+            {
+                if (weaponScriptEntry.Value == Path.GetFileName(script))
+                    return weaponScriptEntry.Key;
+            }
+
+            throw new Exception($"Could not find weapon from script {script}");
         }
 
         private bool performSanityCheck(string path)

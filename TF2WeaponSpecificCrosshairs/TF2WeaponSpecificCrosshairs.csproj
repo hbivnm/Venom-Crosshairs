@@ -141,6 +141,7 @@
     <None Include="bin\Debug\resources\Loading_icon.gif" />
     <None Include="Resources\loading.gif" />
     <None Include="Resources\terminal.gif" />
+    <None Include="Resources\question.png" />
     <Content Include="TF2WSC.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

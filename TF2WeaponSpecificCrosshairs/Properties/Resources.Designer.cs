@@ -183,6 +183,16 @@ namespace TF2WeaponSpecificCrosshairs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap question {
+            get {
+                object obj = ResourceManager.GetObject("question", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap steam_logo_black_transparent_24px {
             get {
                 object obj = ResourceManager.GetObject("steam-logo-black-transparent_24px", resourceCulture);

@@ -51,6 +51,7 @@
             this.lblNoExplosion = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.btnToggleConsole = new System.Windows.Forms.Button();
             this.pictureBoxLoading = new System.Windows.Forms.PictureBox();
             this.btnGitHub = new System.Windows.Forms.Button();
@@ -295,6 +296,16 @@
             this.lblStatus.TabIndex = 35;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnHelp
+            // 
+            this.btnHelp.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.question;
+            this.btnHelp.Location = new System.Drawing.Point(782, 47);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(32, 32);
+            this.btnHelp.TabIndex = 37;
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
             // btnToggleConsole
             // 
             this.btnToggleConsole.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.terminal;
@@ -441,6 +452,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1173, 551);
+            this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnToggleConsole);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pictureBoxLoading);
@@ -524,6 +536,7 @@
         private System.Windows.Forms.PictureBox pictureBoxLoading;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnToggleConsole;
+        private System.Windows.Forms.Button btnHelp;
     }
 }
 
