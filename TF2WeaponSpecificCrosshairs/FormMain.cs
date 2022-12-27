@@ -289,8 +289,6 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void onFormLoad(object sender, EventArgs e)
         {
-            writeLineToDebugger($"TF2WSC Version {TF2WSC_VERSION}");
-
             // Fetch public crosshairs, if new crosshairs are available -> prompt user
             writeToDebugger("Fetching public crosshair list... ");
             _ = fetchCrosshairsFromPublicRepo();
@@ -303,6 +301,8 @@ namespace TF2WeaponSpecificCrosshairs
                 }
 
             writeLineToDebugger("Done!");
+            
+            writeLineToDebugger($"TF2WSC Version {TF2WSC_VERSION}");
         }
 
         /// 
