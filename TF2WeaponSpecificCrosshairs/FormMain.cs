@@ -951,42 +951,42 @@ namespace TF2WeaponSpecificCrosshairs
         private bool performSanityCheck(string path)
         {
             writeLineToDebugger("Sanity check started!");
-            // Check if specified directory exist
+            // Check if specified directory exist (sanity1)
             if (!Directory.Exists(path))
             {
-                writeLineToDebugger("Sanity check failed!\nThe specified TF2 path does not seem to exist.");
+                writeLineToDebugger("Sanity check failed! Error: sanity1");
                 MessageBox.Show("The specified TF2 path does not seem to exist.\nDid you set the correct path?", "TF2 Path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if specified TF2 Path contains hl2.exe
+            // Check if specified TF2 Path contains hl2.exe (sanity2)
             if (!File.Exists(path + @"\hl2.exe"))
             {
-                writeLineToDebugger("Sanity check failed!\nThe specified TF2 path does not contain \"hl2.exe\".");
+                writeLineToDebugger("Sanity check failed! Error: sanity2");
                 MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?", "TF2 Path invalid", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if vtf2tga.exe exists
+            // Check if vtf2tga.exe exists (sanity3)
             if (!File.Exists(path + @"\bin\vtf2tga.exe"))
             {
-                writeLineToDebugger("Sanity check failed!\nCould not find \"vta2tga.exe\".");
+                writeLineToDebugger("Sanity check failed! Error: sanity3");
                 MessageBox.Show("Could not find \"vta2tga.exe\".\nPlease verify game files.", "vta2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if vtf2tga.exe exists
+            // Check if vtf2tga.exe exists (sanity4)
             if (!File.Exists(path + @"\bin\tier0.dll"))
             {
-                writeLineToDebugger("Sanity check failed!\nCould not find \"tier0.dll\".");
+                writeLineToDebugger("Sanity check failed! Error: sanity4");
                 MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if project contains ffmpeg.exe
+            // Check if project contains ffmpeg.exe (sanity5)
             if (!File.Exists(PATH_TF2WSC + @"\resources\ffmpeg.exe"))
             {
-                writeLineToDebugger("Sanity check failed!\nCould not find \"ffmpeg.exe\".");
+                writeLineToDebugger("Sanity check failed! Error: sanity5");
                 MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of TF2WSC.\n(If that doesn't work create GitHub issue.)", "ffmpeg.exe missing from project", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
