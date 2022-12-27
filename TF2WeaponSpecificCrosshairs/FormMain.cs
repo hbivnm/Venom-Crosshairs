@@ -384,15 +384,22 @@ namespace TF2WeaponSpecificCrosshairs
         private Task downloadMissingCrosshairs()
         {
             var tasks = new List<Task>();
+            int newCrosshairsFileCount = 0;
             writeToDebugger($"Downloading crosshairs... ");
 
             foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
                 if (!File.Exists($@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"))
+                {
                     using (WebClient webClient = new WebClient())
+                    {
                         tasks.Add(webClient.DownloadFileTaskAsync(new Uri(crosshair.Value), $@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"));
+                    }
+                    newCrosshairsFileCount++;
+                }
 
             Task.WaitAll(tasks.ToArray());
             writeLineToDebugger("Done!");
+            writeLineToDebugger($"Downloaded {newCrosshairsFileCount / 2} crosshairs!");
             return null;
         }
 
@@ -597,7 +604,7 @@ namespace TF2WeaponSpecificCrosshairs
             bool isUpdate = false;
             if (removeOldConfig)
             {
-                writeLineToDebugger("Clean installation of TF2WSC started...");
+                writeLineToDebugger("Clean installation of TF2WSC started!");
                 writeToDebugger("Removing old TF2WSC configs... ");
                 if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs"))
                     Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs", true);
@@ -605,11 +612,11 @@ namespace TF2WeaponSpecificCrosshairs
             }
             else if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs"))
             {
-                writeLineToDebugger("Updating current TF2WSC config...");
+                writeLineToDebugger("Updating current TF2WSC config!");
                 isUpdate = true;
             }
             else
-                writeLineToDebugger("Installation of TF2WSC started...");
+                writeLineToDebugger("Installation of TF2WSC started!");
 
             // Installation process
             if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\materials\vgui\replay\thumbnails"))
@@ -651,13 +658,11 @@ namespace TF2WeaponSpecificCrosshairs
 
             if (!isUpdate)
             {
-                writeLineToDebugger("==============================");
-                writeLineToDebugger("TF2WSC successfully installed!");
+                writeLineToDebugger("TF2WSC config successfully installed!");
             }
             else
             {
-                writeLineToDebugger("======================");
-                writeLineToDebugger("TF2WSC config updated!");
+                writeLineToDebugger("TF2WSC config successfully updated!");
             }
 
             Invoke(new MethodInvoker(delegate ()
@@ -791,7 +796,6 @@ namespace TF2WeaponSpecificCrosshairs
                 cbClass.Enabled = true;
             }));
 
-            writeLineToDebugger("==================================");
             writeLineToDebugger("Finished reloading crosshair list!");
         }
 
@@ -946,56 +950,46 @@ namespace TF2WeaponSpecificCrosshairs
 
         private bool performSanityCheck(string path)
         {
-            writeLineToDebugger("");
+            writeLineToDebugger("Sanity check started!");
             // Check if specified directory exist
-            writeToDebugger("Does given path exist? ");
             if (!Directory.Exists(path))
             {
-                writeLineToDebugger("No!");
+                writeLineToDebugger("Sanity check failed!\nThe specified TF2 path does not seem to exist.");
                 MessageBox.Show("The specified TF2 path does not seem to exist.\nDid you set the correct path?", "TF2 Path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            writeLineToDebugger("Yes.");
 
             // Check if specified TF2 Path contains hl2.exe
-            writeToDebugger("Does \"hl2.exe\" exist? ");
             if (!File.Exists(path + @"\hl2.exe"))
             {
-                writeLineToDebugger("No!");
+                writeLineToDebugger("Sanity check failed!\nThe specified TF2 path does not contain \"hl2.exe\".");
                 MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?", "TF2 Path invalid", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            writeLineToDebugger("Yes.");
 
             // Check if vtf2tga.exe exists
-            writeToDebugger("Does \"vtf2tga.exe\" exist? ");
             if (!File.Exists(path + @"\bin\vtf2tga.exe"))
             {
-                writeLineToDebugger("No!");
+                writeLineToDebugger("Sanity check failed!\nCould not find \"vta2tga.exe\".");
                 MessageBox.Show("Could not find \"vta2tga.exe\".\nPlease verify game files.", "vta2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            writeLineToDebugger("Yes.");
 
             // Check if vtf2tga.exe exists
-            writeToDebugger("Does \"tier0.dll\" exist? ");
             if (!File.Exists(path + @"\bin\tier0.dll"))
             {
-                writeLineToDebugger("No!");
+                writeLineToDebugger("Sanity check failed!\nCould not find \"tier0.dll\".");
                 MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            writeLineToDebugger("Yes.");
 
             // Check if project contains ffmpeg.exe
-            writeToDebugger("Does \"ffmpeg.exe\" exist? ");
             if (!File.Exists(PATH_TF2WSC + @"\resources\ffmpeg.exe"))
             {
-                writeLineToDebugger("No!");
+                writeLineToDebugger("Sanity check failed!\nCould not find \"ffmpeg.exe\".");
                 MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of TF2WSC.\n(If that doesn't work create GitHub issue.)", "ffmpeg.exe missing from project", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            writeLineToDebugger("Yes.");
 
             return true;
         }
