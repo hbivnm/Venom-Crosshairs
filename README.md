@@ -28,7 +28,7 @@ See the [wiki](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki).
 ### Planned features
 - [ ] Add checkbox to change "ALL" checkboxes into (ex.) "ALL primary weapons for _CLASS_".
 - [ ] Add "Update TF2WSC" notification when new release is available.
-- [ ] Suggestion by depi: Double-clicking a weapon in the ListView should select it as "current weapon". (Note to self: add class listviewentry)
+- [ ] Add double-clicking a weapon in the ListView should select it as "current weapon". (Note to self: add class listviewentry)
 - [ ] Detect if non-TF2WSC config is present and rename folder. (This will probably mark the official 1.0 release)
 
 ### Implemented features
@@ -39,11 +39,11 @@ See the [wiki](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki).
 - [x] Add a button to sync crosshairs from public repo (eliminates having to wait for new update for newly added crosshairs)
 - [x] Show/Hide console ~~(state saved inbetween session)~~.
 - [x] Easier to read/understand state of installation/update.
-- [x] Suggestion by Pijukazz: Add no explosion to scripts for explosive weapons. (this will also solve crosshair issues related to explosive weapons, big thanks to shinso)
+- [x] Add no explosion to scripts for explosive weapons. (this will also solve crosshair issues related to explosive weapons, big thanks to shinso)
 - [x] ~~Rename "Add to all" button.~~ Removed button instead.
 - [x] TF2 Path input field saved inbetween sessions.
-- [x] Suggestion by Pijukazz: Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
-- [x] Suggestion by Kanga: Buttons for "Add to all PRIMARY/SECONDARY/MELEE.
+- [x] Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
+- [x] Checkboxes to "Add to all PRIMARY/SECONDARY/MELEE.
 - [x] Make console read-only (thanks depi LOL)
 
 # Original idea
