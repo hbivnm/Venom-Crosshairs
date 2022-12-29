@@ -51,6 +51,7 @@
             this.lblNoExplosion = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.btnReadConfig = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnToggleConsole = new System.Windows.Forms.Button();
             this.pictureBoxLoading = new System.Windows.Forms.PictureBox();
@@ -290,11 +291,24 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(657, 299);
+            this.lblStatus.Location = new System.Drawing.Point(558, 299);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(0, 13);
             this.lblStatus.TabIndex = 35;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnReadConfig
+            // 
+            this.btnReadConfig.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.drive_upload;
+            this.btnReadConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnReadConfig.Location = new System.Drawing.Point(561, 315);
+            this.btnReadConfig.Name = "btnReadConfig";
+            this.btnReadConfig.Size = new System.Drawing.Size(88, 22);
+            this.btnReadConfig.TabIndex = 38;
+            this.btnReadConfig.Text = "Read config";
+            this.btnReadConfig.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnReadConfig.UseVisualStyleBackColor = true;
+            this.btnReadConfig.Click += new System.EventHandler(this.btnReadConfig_Click);
             // 
             // btnHelp
             // 
@@ -452,6 +466,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1173, 551);
+            this.Controls.Add(this.btnReadConfig);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnToggleConsole);
             this.Controls.Add(this.lblStatus);
@@ -537,6 +552,7 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnToggleConsole;
         private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.Button btnReadConfig;
     }
 }
 

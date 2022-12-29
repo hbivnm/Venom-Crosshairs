@@ -173,6 +173,7 @@ namespace TF2WeaponSpecificCrosshairs
                 btnRemoveSelected.Enabled = true;
                 btnInstall.Enabled = true;
                 btnInstallClean.Enabled = true;
+                btnReadConfig.Enabled = true;
             }
         }
 
@@ -186,6 +187,30 @@ namespace TF2WeaponSpecificCrosshairs
 
             if (listViewChosenCrosshairs.Items.Count < 1)
                 btnRemoveSelected.Enabled = false;
+        }
+
+        private void btnReadConfig_Click(object sender, EventArgs e)
+        {
+            writeToDebugger("Reading current config... ");
+            string tf2wscScripDir = textBoxTF2Path.Text + @"/tf/custom/TF2WeaponSpecificCrosshairs/scripts";
+            if (Directory.Exists(tf2wscScripDir))
+            {
+                foreach (string script in Directory.GetFiles(tf2wscScripDir, "*.txt"))
+                {
+                    string crosshair = getCrosshairFromScript(script);
+                    string weapon = getWeaponFromScriptName(script);
+                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new String[] { crosshair, weapon }));
+                }
+                btnInstall.Enabled = true;
+                btnInstallClean.Enabled = true;
+                btnRemoveSelected.Enabled = true;
+                writeLineToDebugger("Done!");
+            }
+            else
+            {
+                MessageBox.Show("No TF2WSC config folder found!\n\nMake sure your custom crosshair folder is named \"TF2WeaponSpecificCrosshairs\".", "Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                writeLineToDebugger("Failed!");
+            }
         }
 
         private void btnInstall_Click(object sender, EventArgs e)
@@ -301,7 +326,7 @@ namespace TF2WeaponSpecificCrosshairs
                 }
 
             writeLineToDebugger("Done!");
-            
+
             writeLineToDebugger($"TF2WSC Version {TF2WSC_VERSION}");
         }
 
@@ -372,21 +397,7 @@ namespace TF2WeaponSpecificCrosshairs
                 if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE))
                     textBoxTF2Path.Text = File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE);
 
-                // Read current TF2WSC config
-                if (!String.IsNullOrEmpty(textBoxTF2Path.Text))
-                {
-                    string tf2wscScripDir = textBoxTF2Path.Text + @"/tf/custom/TF2WeaponSpecificCrosshairs/scripts";
-                    if (Directory.Exists(tf2wscScripDir))
-                    {
-                        foreach (string script in Directory.GetFiles(tf2wscScripDir, "*.txt"))
-                        {
-                            string crosshair = getCrosshairFromScript(script);
-                            string weapon = getWeaponFromScriptName(script);
-                            addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new String[] { crosshair, weapon }));
-                        }
-                        btnRemoveSelected.Enabled = true;
-                    }
-                }
+                // TODO: Search for existing config with different name
 
                 pictureBoxLoading.Visible = false;
             }
@@ -623,7 +634,7 @@ namespace TF2WeaponSpecificCrosshairs
                 btnNextCrosshair.Enabled = false;
                 btnInstall.Enabled = false;
                 btnInstallClean.Enabled = false;
-
+                btnReadConfig.Enabled = false;
             }));
 
             bool isUpdate = false;
@@ -709,6 +720,7 @@ namespace TF2WeaponSpecificCrosshairs
                 btnNextCrosshair.Enabled = true;
                 btnInstall.Enabled = true;
                 btnInstallClean.Enabled = true;
+                btnReadConfig.Enabled = true;
             }));
         }
 
@@ -737,6 +749,7 @@ namespace TF2WeaponSpecificCrosshairs
                 btnNextCrosshair.Enabled = false;
                 btnInstall.Enabled = false;
                 btnInstallClean.Enabled = false;
+                btnReadConfig.Enabled = false;
             }));
 
             // Download publicly available crosshairs

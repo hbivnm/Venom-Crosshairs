@@ -142,6 +142,7 @@
     <None Include="Resources\loading.gif" />
     <None Include="Resources\terminal.gif" />
     <None Include="Resources\question.png" />
+    <None Include="Resources\drive-upload.png" />
     <Content Include="TF2WSC.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
