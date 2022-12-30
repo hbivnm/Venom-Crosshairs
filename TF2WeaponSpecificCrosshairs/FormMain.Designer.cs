@@ -40,8 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.listViewChosenCrosshairs = new System.Windows.Forms.ListView();
             this.btnBrowseTF2Path = new System.Windows.Forms.Button();
-            this.checkBoxAddClassWeapons = new System.Windows.Forms.CheckBox();
-            this.lblSettings = new System.Windows.Forms.Label();
+            this.checkBoxAddOnlyClass = new System.Windows.Forms.CheckBox();
             this.checkBoxAddPrimaryWeapons = new System.Windows.Forms.CheckBox();
             this.checkBoxAddSecondaryWeapons = new System.Windows.Forms.CheckBox();
             this.checkBoxAddMeleeWeapons = new System.Windows.Forms.CheckBox();
@@ -180,25 +179,16 @@
             this.btnBrowseTF2Path.UseVisualStyleBackColor = true;
             this.btnBrowseTF2Path.Click += new System.EventHandler(this.btnBrowseTF2Path_Click);
             // 
-            // checkBoxAddClassWeapons
+            // checkBoxAddOnlyClass
             // 
-            this.checkBoxAddClassWeapons.AutoSize = true;
-            this.checkBoxAddClassWeapons.Enabled = false;
-            this.checkBoxAddClassWeapons.Location = new System.Drawing.Point(71, 156);
-            this.checkBoxAddClassWeapons.Name = "checkBoxAddClassWeapons";
-            this.checkBoxAddClassWeapons.Size = new System.Drawing.Size(175, 17);
-            this.checkBoxAddClassWeapons.TabIndex = 23;
-            this.checkBoxAddClassWeapons.Text = "Add to EVERY class weapons?";
-            this.checkBoxAddClassWeapons.UseVisualStyleBackColor = true;
-            // 
-            // lblSettings
-            // 
-            this.lblSettings.AutoSize = true;
-            this.lblSettings.Location = new System.Drawing.Point(28, 157);
-            this.lblSettings.Name = "lblSettings";
-            this.lblSettings.Size = new System.Drawing.Size(35, 13);
-            this.lblSettings.TabIndex = 24;
-            this.lblSettings.Text = "And...";
+            this.checkBoxAddOnlyClass.AutoSize = true;
+            this.checkBoxAddOnlyClass.Enabled = false;
+            this.checkBoxAddOnlyClass.Location = new System.Drawing.Point(71, 156);
+            this.checkBoxAddOnlyClass.Name = "checkBoxAddOnlyClass";
+            this.checkBoxAddOnlyClass.Size = new System.Drawing.Size(134, 17);
+            this.checkBoxAddOnlyClass.TabIndex = 23;
+            this.checkBoxAddOnlyClass.Text = "Add to ONLY to class?";
+            this.checkBoxAddOnlyClass.UseVisualStyleBackColor = true;
             // 
             // checkBoxAddPrimaryWeapons
             // 
@@ -477,8 +467,7 @@
             this.Controls.Add(this.checkBoxAddMeleeWeapons);
             this.Controls.Add(this.checkBoxAddSecondaryWeapons);
             this.Controls.Add(this.checkBoxAddPrimaryWeapons);
-            this.Controls.Add(this.lblSettings);
-            this.Controls.Add(this.checkBoxAddClassWeapons);
+            this.Controls.Add(this.checkBoxAddOnlyClass);
             this.Controls.Add(this.btnBrowseTF2Path);
             this.Controls.Add(this.btnGitHub);
             this.Controls.Add(this.btnSteam);
@@ -538,8 +527,7 @@
         private System.Windows.Forms.Button btnSteam;
         private System.Windows.Forms.Button btnGitHub;
         private System.Windows.Forms.Button btnBrowseTF2Path;
-        private System.Windows.Forms.CheckBox checkBoxAddClassWeapons;
-        private System.Windows.Forms.Label lblSettings;
+        private System.Windows.Forms.CheckBox checkBoxAddOnlyClass;
         private System.Windows.Forms.CheckBox checkBoxAddPrimaryWeapons;
         private System.Windows.Forms.CheckBox checkBoxAddSecondaryWeapons;
         private System.Windows.Forms.CheckBox checkBoxAddMeleeWeapons;

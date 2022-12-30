@@ -22,7 +22,7 @@ namespace TF2WeaponSpecificCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string TF2WSC_VERSION = "beta7.0";
+        private static readonly string TF2WSC_VERSION = "beta8.0";
 
         private static readonly string PATH_TF2WSC = Directory.GetCurrentDirectory();
         private static readonly string PATH_TF2WSC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
@@ -33,6 +33,10 @@ namespace TF2WeaponSpecificCrosshairs
         private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_expeff.cfg";
         private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_userpath.cfg";
 
+        private Dictionary<string, string[]> classPrimaryMap = new Dictionary<string, string[]>();
+        private Dictionary<string, string[]> classSecondaryMap = new Dictionary<string, string[]>();
+        private Dictionary<string, string[]> classMeleeMap = new Dictionary<string, string[]>();
+        private Dictionary<string, string[]> classMiscMap = new Dictionary<string, string[]>();
         private Dictionary<string, string> publicCrosshairs = new Dictionary<string, string>();
         private Dictionary<string, string> weaponScriptPairs = new Dictionary<string, string>();
 
@@ -41,21 +45,66 @@ namespace TF2WeaponSpecificCrosshairs
 
         private static readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
+        // TODO: Re-write, make "TF2Class" class..
         private static readonly string[] tf2ScoutWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin" };
-        private static readonly string[] tf2SoldierWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Cow Mangler 5000", "Direct Hit", "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi" };
-        private static readonly string[] tf2PyroWeapons = { "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "Dragon's Fury", "Shotgun, Reserve Shooter, Panic Attack (Pyro)", "Flare Gun, Detonator, Scorch Shot", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Manmelter", "Thermal Thruster", "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand" };
-        private static readonly string[] tf2DemomanWeapons = { "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Half-Zatoichi", "Ullapool Caber" };
-        private static readonly string[] tf2HeavyWeapons = { "Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater", "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch" };
-        private static readonly string[] tf2EngineerWeapons = { "Shotgun, Widowmaker, Panic Attack", "Frontier Justice", "Pomson 6000", "Rescue Ranger", "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter", "Wrench, Southern Hospitality, Jag, Eureka Effect", "Gunslinger", "Construction PDA", "Destruction PDA", "Sapper, Red-Tape Recorder, While placing a building" };
-        private static readonly string[] tf2MedicWeapons = { "Syringe Gun, Blutsauger, Overdose", "Crusader's Crossbow", "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow" };
-        private static readonly string[] tf2SniperWeapons = { "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound", "SMG", "Cleaner's Carbine", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah" };
-        private static readonly string[] tf2SpyWeapons = { "Revolver, Ambassador, L'Etranger, Enforcer, Diamondback", "Sapper, Red-Tape Recorder, While placing a building", "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle", "Disguise kit" };
-        private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).ToArray();
+        private static readonly string[] tf2PrimaryScoutWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper" };
+        private static readonly string[] tf2SecondaryScoutWeapons = { "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger" };
+        private static readonly string[] tf2MeleeScoutWeapons = { "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin" };
+        private static readonly string[] tf2MiscScoutWeapons = { };
 
-        private static readonly string[] tf2PrimaryWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Cow Mangler 5000", "Direct Hit", "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "Dragon's Fury", "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater", "Shotgun, Widowmaker, Panic Attack", "Frontier Justice", "Pomson 6000", "Rescue Ranger", "Syringe Gun, Blutsauger, Overdose", "Crusader's Crossbow", "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound", "Revolver, Ambassador, L'Etranger, Enforcer, Diamondback" };
-        private static readonly string[] tf2SecondaryWeapons = { "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shotgun, Reserve Shooter, Panic Attack (Pyro)", "Flare Gun, Detonator, Scorch Shot", "Manmelter", "Thermal Thruster", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter", "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "SMG", "Cleaner's Carbine" };
-        private static readonly string[] tf2MeleeWeapons = { "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin", "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi", "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand", "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Ullapool Caber", "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch", "Wrench, Southern Hospitality, Jag, Eureka Effect", "Gunslinger", "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah", "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle" };
-        private static readonly string[] tf2MiscWeapons = { "Construction PDA", "Destruction PDA", "Sapper, Red-Tape Recorder, While placing a building", "Disguise kit" };
+        private static readonly string[] tf2SoldierWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Cow Mangler 5000", "Direct Hit", "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi" };
+        private static readonly string[] tf2PrimarySoldierWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Cow Mangler 5000", "Direct Hit" };
+        private static readonly string[] tf2SecondarySoldierWeapons = { "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison" };
+        private static readonly string[] tf2MeleeSoldierWeapons = { "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi" };
+        private static readonly string[] tf2MiscSoldierWeapons = { };
+
+        private static readonly string[] tf2PyroWeapons = { "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "Dragon's Fury", "Shotgun, Reserve Shooter, Panic Attack (Pyro)", "Flare Gun, Detonator, Scorch Shot", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Manmelter", "Thermal Thruster", "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand" };
+        private static readonly string[] tf2PrimaryPyroWeapons = { "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "Dragon's Fury" };
+        private static readonly string[] tf2SecondaryPyroWeapons = { "Shotgun, Reserve Shooter, Panic Attack (Pyro)", "Flare Gun, Detonator, Scorch Shot", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Manmelter", "Thermal Thruster" };
+        private static readonly string[] tf2MeleePyroWeapons = { "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand" };
+        private static readonly string[] tf2MiscPyroWeapons = { };
+
+        private static readonly string[] tf2DemomanWeapons = { "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Half-Zatoichi", "Ullapool Caber" };
+        private static readonly string[] tf2PrimaryDemomanWeapons = { "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Half-Zatoichi", "Ullapool Caber" };
+        private static readonly string[] tf2SecondaryDemomanWeapons = { "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher" };
+        private static readonly string[] tf2MeleeDemomanWeapons = { "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Half-Zatoichi", "Ullapool Caber" };
+        private static readonly string[] tf2MiscDemomanWeapons = { };
+
+        private static readonly string[] tf2HeavyWeapons = { "Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater", "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch" };
+        private static readonly string[] tf2PrimaryHeavyWeapons = { "Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater" };
+        private static readonly string[] tf2SecondaryHeavyWeapons = { "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana" };
+        private static readonly string[] tf2MeleeHeavyWeapons = { "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch" };
+        private static readonly string[] tf2MiscHeavyWeapons = { };
+
+        private static readonly string[] tf2EngineerWeapons = { "Shotgun, Widowmaker, Panic Attack", "Frontier Justice", "Pomson 6000", "Rescue Ranger", "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter", "Wrench, Southern Hospitality, Jag, Eureka Effect", "Gunslinger", "Construction PDA", "Destruction PDA", "Sapper, Red-Tape Recorder, While placing a building" };
+        private static readonly string[] tf2PrimaryEngineerWeapons = { "Shotgun, Widowmaker, Panic Attack", "Frontier Justice", "Pomson 6000", "Rescue Ranger" };
+        private static readonly string[] tf2SecondaryEngineerWeapons = { "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter" };
+        private static readonly string[] tf2MeleeEngineerWeapons = { "Wrench, Southern Hospitality, Jag, Eureka Effect", "Gunslinger" };
+        private static readonly string[] tf2MiscEngineerWeapons = { "Construction PDA", "Destruction PDA", "Sapper, Red-Tape Recorder, While placing a building" };
+
+        private static readonly string[] tf2MedicWeapons = { "Syringe Gun, Blutsauger, Overdose", "Crusader's Crossbow", "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow" };
+        private static readonly string[] tf2PrimaryMedicWeapons = { "Syringe Gun, Blutsauger, Overdose", "Crusader's Crossbow" };
+        private static readonly string[] tf2SecondaryMedicWeapons = { "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator" };
+        private static readonly string[] tf2MeleeMedicWeapons = { "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow" };
+        private static readonly string[] tf2MiscMedicWeapons = { };
+
+        private static readonly string[] tf2SniperWeapons = { "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound", "SMG", "Cleaner's Carbine", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah" };
+        private static readonly string[] tf2PrimarySniperWeapons = { "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound" };
+        private static readonly string[] tf2SecondarySniperWeapons = { "SMG", "Cleaner's Carbine", "Flying Guillotine, Mad Milk, Gas Passer, Jarate" };
+        private static readonly string[] tf2MeleeSniperWeapons = { "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah" };
+        private static readonly string[] tf2MiscSniperWeapons = { };
+
+        private static readonly string[] tf2SpyWeapons = { "Revolver, Ambassador, L'Etranger, Enforcer, Diamondback", "Sapper, Red-Tape Recorder, While placing a building", "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle", "Disguise kit" };
+        private static readonly string[] tf2PrimarySpyWeapons = { "Revolver, Ambassador, L'Etranger, Enforcer, Diamondback" };
+        private static readonly string[] tf2SecondarySpyWeapons = { "Sapper, Red-Tape Recorder, While placing a building" };
+        private static readonly string[] tf2MeleeSpyWeapons = { "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle" };
+        private static readonly string[] tf2MiscSpyWeapons = { "Sapper, Red-Tape Recorder, While placing a building", "Disguise kit" };
+
+        private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).ToArray();
+        private static readonly string[] tf2AllPrimaryWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Cow Mangler 5000", "Direct Hit", "Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "Dragon's Fury", "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater", "Shotgun, Widowmaker, Panic Attack", "Frontier Justice", "Pomson 6000", "Rescue Ranger", "Syringe Gun, Blutsauger, Overdose", "Crusader's Crossbow", "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound", "Revolver, Ambassador, L'Etranger, Enforcer, Diamondback" };
+        private static readonly string[] tf2AllSecondaryWeapons = { "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Shotgun, Reserve Shooter, Panic Attack (Soldier)", "Buff Banner, Battalion's Backup, Concheror", "Righteous Bison", "Shotgun, Reserve Shooter, Panic Attack (Pyro)", "Flare Gun, Detonator, Scorch Shot", "Manmelter", "Thermal Thruster", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "Shotgun, Family Business, Panic Attack", "Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "Pistol and all reskins (Engineer)", "Short Circuit", "Wrangler, Giger Counter", "Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "SMG", "Cleaner's Carbine" };
+        private static readonly string[] tf2AllMeleeWeapons = { "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin", "Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "Half-Zatoichi", "Fire Axe and all reskins, Lollichop, Axtinguisher, Homewrecker, Powerjack, Back Scratcher, Sharpened Volcano Fragment, Third Degree, Neon Annihilator", "Hot Hand", "Bottle and all reskins", "Eyelander, Scotsman's Skullcutter, Claidheamh Mòr, Persian Persuader, Pain Train", "Ullapool Caber", "Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch", "Wrench, Southern Hospitality, Jag, Eureka Effect", "Gunslinger", "Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah", "Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle" };
+        private static readonly string[] tf2AllMiscWeapons = { "Construction PDA", "Destruction PDA", "Sapper, Red-Tape Recorder, While placing a building", "Disguise kit" };
 
         public FormMain()
         {
@@ -127,46 +176,79 @@ namespace TF2WeaponSpecificCrosshairs
         {
             bool crosshairAdded = false;
 
-            if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
+            if (checkBoxAddOnlyClass.Checked)
             {
-                addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, cbWeapon.Text }));
-                crosshairAdded = true;
+                // foreach (var weapon in getWeaponsFromClassName(cbClass.Text))
+                //     addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                // crosshairAdded = true;
+
+                if (checkBoxAddPrimaryWeapons.Checked)
+                {
+                    foreach (var weapon in classPrimaryMap[cbClass.Text])
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                    crosshairAdded = true;
+                }
+
+                if (checkBoxAddSecondaryWeapons.Checked)
+                {
+                    foreach (var weapon in classSecondaryMap[cbClass.Text])
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                    crosshairAdded = true;
+                }
+
+                if (checkBoxAddMeleeWeapons.Checked)
+                {
+                    foreach (var weapon in classMeleeMap[cbClass.Text])
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                    crosshairAdded = true;
+                }
+
+                if (checkBoxAddMiscWeapons.Checked)
+                {
+                    foreach (var weapon in classMiscMap[cbClass.Text])
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                    crosshairAdded = true;
+                }
+            }
+            else if (!checkBoxAddOnlyClass.Checked)
+            {
+                if (checkBoxAddPrimaryWeapons.Checked)
+                {
+                    foreach (var weapon in tf2AllPrimaryWeapons)
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                    crosshairAdded = true;
+                }
+
+                if (checkBoxAddSecondaryWeapons.Checked)
+                {
+                    foreach (var weapon in tf2AllSecondaryWeapons)
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                    crosshairAdded = true;
+                }
+
+                if (checkBoxAddMeleeWeapons.Checked)
+                {
+                    foreach (var weapon in tf2AllMeleeWeapons)
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                    crosshairAdded = true;
+                }
+
+                if (checkBoxAddMiscWeapons.Checked)
+                {
+                    foreach (var weapon in tf2AllMiscWeapons)
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
+                    crosshairAdded = true;
+                }
+            }
+            else
+            {
+                if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
+                {
+                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, cbWeapon.Text }));
+                    crosshairAdded = true;
+                }
             }
 
-            if (checkBoxAddClassWeapons.Checked)
-            {
-                foreach (var weapon in getWeaponsFromClassName(cbClass.Text))
-                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                crosshairAdded = true;
-            }
-
-            if (checkBoxAddPrimaryWeapons.Checked)
-            {
-                foreach (var weapon in tf2PrimaryWeapons)
-                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                crosshairAdded = true;
-            }
-
-            if (checkBoxAddSecondaryWeapons.Checked)
-            {
-                foreach (var weapon in tf2SecondaryWeapons)
-                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                crosshairAdded = true;
-            }
-
-            if (checkBoxAddMeleeWeapons.Checked)
-            {
-                foreach (var weapon in tf2MeleeWeapons)
-                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                crosshairAdded = true;
-            }
-
-            if (checkBoxAddMiscWeapons.Checked)
-            {
-                foreach (var weapon in tf2MiscWeapons)
-                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                crosshairAdded = true;
-            }
 
             if (crosshairAdded) // This could be changed to an event that triggers when addCrosshairToListView is called
             {
@@ -205,7 +287,7 @@ namespace TF2WeaponSpecificCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"\"{Path.GetFileName(script)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nMessage for dev: Exception: {ex.Message}", "Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show($"\"{Path.GetFileName(script)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nFor developer: Exception: {ex.Message}", "Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
                 btnInstall.Enabled = true;
@@ -237,10 +319,11 @@ namespace TF2WeaponSpecificCrosshairs
         /// 
         /// Events
         /// 
+
         private void onCBClassChangeEvent(object sender, EventArgs e)
         {
             cbWeapon.Items.Clear();
-            checkBoxAddClassWeapons.Text = $@"Add to EVERY {cbClass.Text} weapon?";
+            checkBoxAddOnlyClass.Text = $@"Add to ONLY to {cbClass.Text}?";
             switch (cbClass.Text)
             {
                 case "Scout":
@@ -290,6 +373,7 @@ namespace TF2WeaponSpecificCrosshairs
                     break;
             }
             cbWeapon.Enabled = true;
+            cbCrosshair.Enabled = true;
         }
 
         private void onCBWeaponChangeEvent(object sender, EventArgs e)
@@ -307,11 +391,29 @@ namespace TF2WeaponSpecificCrosshairs
                 pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES + @"TF2WSC.png";
 
             btnAddCrosshair.Enabled = true;
-            checkBoxAddClassWeapons.Enabled = true;
+            checkBoxAddOnlyClass.Enabled = true;
             checkBoxAddPrimaryWeapons.Enabled = true;
             checkBoxAddSecondaryWeapons.Enabled = true;
             checkBoxAddMeleeWeapons.Enabled = true;
             checkBoxAddMiscWeapons.Enabled = true;
+        }
+
+        private void onCheckBoxAddClassWeaponsChangeEvent(object sender, EventArgs e)
+        {
+            if (checkBoxAddOnlyClass.Checked)
+            {
+                checkBoxAddPrimaryWeapons.Text = $"Add to ALL {cbClass.Text} primary weapons?";
+                checkBoxAddSecondaryWeapons.Text = $"Add to ALL {cbClass.Text} secondary weapons?";
+                checkBoxAddMeleeWeapons.Text = $"Add to ALL {cbClass.Text} melee weapons?";
+                checkBoxAddMiscWeapons.Text = $"Add to ALL {cbClass.Text} misc. weapons?";
+            }
+            else
+            {
+                checkBoxAddPrimaryWeapons.Text = "Add to ALL primary weapons?";
+                checkBoxAddSecondaryWeapons.Text = "Add to ALL secondary weapons?";
+                checkBoxAddMeleeWeapons.Text = "Add to ALL melee weapons?";
+                checkBoxAddMiscWeapons.Text = "Add to ALL misc. weapons?";
+            }
         }
 
         private void onCBExplosionEffectChangeEvent(object server, EventArgs e)
@@ -346,12 +448,13 @@ namespace TF2WeaponSpecificCrosshairs
             if (!hasInitialized)
             {
                 pictureBoxLoading.Visible = true;
-                initWeaponScriptDict();
+                initDicts();
 
                 // Classes
                 foreach (var tf2Class in tf2Classes)
                     cbClass.Items.Add(tf2Class);
                 cbClass.SelectedIndexChanged += new EventHandler(onCBClassChangeEvent);
+                cbClass.SelectedIndexChanged += new EventHandler(onCheckBoxAddClassWeaponsChangeEvent);
 
                 // Weapons
                 cbWeapon.SelectedIndexChanged += new EventHandler(onCBWeaponChangeEvent);
@@ -364,6 +467,9 @@ namespace TF2WeaponSpecificCrosshairs
                     cbCrosshair.Items.Add(crosshairName);
                 }
                 cbCrosshair.SelectedIndexChanged += new EventHandler(onCBCrosshairChangeEvent);
+
+                // Checkboxes
+                checkBoxAddOnlyClass.CheckStateChanged += new EventHandler(onCheckBoxAddClassWeaponsChangeEvent);
 
                 // ListView
                 listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
@@ -631,7 +737,7 @@ namespace TF2WeaponSpecificCrosshairs
                 cbCrosshair.Enabled = false;
                 cbWeapon.Enabled = false;
                 btnAddCrosshair.Enabled = false;
-                checkBoxAddClassWeapons.Enabled = false;
+                checkBoxAddOnlyClass.Enabled = false;
                 checkBoxAddPrimaryWeapons.Enabled = false;
                 checkBoxAddSecondaryWeapons.Enabled = false;
                 checkBoxAddMeleeWeapons.Enabled = false;
@@ -717,7 +823,7 @@ namespace TF2WeaponSpecificCrosshairs
                 cbCrosshair.Enabled = true;
                 cbWeapon.Enabled = true;
                 btnAddCrosshair.Enabled = true;
-                checkBoxAddClassWeapons.Enabled = true;
+                checkBoxAddOnlyClass.Enabled = true;
                 checkBoxAddPrimaryWeapons.Enabled = true;
                 checkBoxAddSecondaryWeapons.Enabled = true;
                 checkBoxAddMeleeWeapons.Enabled = true;
@@ -746,7 +852,7 @@ namespace TF2WeaponSpecificCrosshairs
                 cbCrosshair.Enabled = false;
                 cbWeapon.Enabled = false;
                 btnAddCrosshair.Enabled = false;
-                checkBoxAddClassWeapons.Enabled = false;
+                checkBoxAddOnlyClass.Enabled = false;
                 checkBoxAddPrimaryWeapons.Enabled = false;
                 checkBoxAddSecondaryWeapons.Enabled = false;
                 checkBoxAddMeleeWeapons.Enabled = false;
@@ -844,9 +950,13 @@ namespace TF2WeaponSpecificCrosshairs
             writeLineToDebugger("Finished reloading crosshair list!");
         }
 
-        private void initWeaponScriptDict()
+        private void initDicts()
         {
             // Scout
+            classPrimaryMap.Add("Scout", tf2PrimaryScoutWeapons);
+            classSecondaryMap.Add("Scout", tf2SecondaryScoutWeapons);
+            classMeleeMap.Add("Scout", tf2MeleeScoutWeapons);
+            classMiscMap.Add("Scout", tf2MiscScoutWeapons);
             weaponScriptPairs.Add("Scattergun, Back Scatter, Force-A-Nature", "tf_weapon_scattergun.txt");
             weaponScriptPairs.Add("Baby Face's Blaster", "tf_weapon_pep_brawler_blaster.txt");
             weaponScriptPairs.Add("Shortstop", "tf_weapon_handgun_scout_primary.txt");
@@ -860,6 +970,10 @@ namespace TF2WeaponSpecificCrosshairs
             weaponScriptPairs.Add("Wrap Assassin", "tf_weapon_bat_giftwrap.txt");
 
             // Soldier
+            classPrimaryMap.Add("Soldier", tf2PrimarySoldierWeapons);
+            classSecondaryMap.Add("Soldier", tf2SecondarySoldierWeapons);
+            classMeleeMap.Add("Soldier", tf2MeleeSoldierWeapons);
+            classMiscMap.Add("Soldier", tf2MiscSoldierWeapons);
             weaponScriptPairs.Add("Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "tf_weapon_rocketlauncher.txt");
             weaponScriptPairs.Add("Air Strike", "tf_weapon_rocketlauncher_airstrike.txt");
             weaponScriptPairs.Add("Cow Mangler 5000", "tf_weapon_particle_cannon.txt");
@@ -870,6 +984,10 @@ namespace TF2WeaponSpecificCrosshairs
             weaponScriptPairs.Add("Shovel and all reskins, Equalizer, Pain Train, Disciplinary Action, Market Gardener, Escape Plan", "tf_weapon_shovel.txt");
 
             // Pyro
+            classPrimaryMap.Add("Pyro", tf2PrimaryPyroWeapons);
+            classSecondaryMap.Add("Pyro", tf2SecondaryPyroWeapons);
+            classMeleeMap.Add("Pyro", tf2MeleePyroWeapons);
+            classMiscMap.Add("Pyro", tf2MiscPyroWeapons);
             weaponScriptPairs.Add("Flame Thrower and all reskins, Backburner, Degreaser, Phlogistinator", "tf_weapon_flamethrower.txt");
             weaponScriptPairs.Add("Dragon's Fury", "tf_weapon_rocketlauncher_fireball.txt");
             weaponScriptPairs.Add("Shotgun, Reserve Shooter, Panic Attack (Pyro)", "tf_weapon_shotgun_pyro.txt");
@@ -880,6 +998,10 @@ namespace TF2WeaponSpecificCrosshairs
             weaponScriptPairs.Add("Hot Hand", "tf_weapon_slap.txt");
 
             // Demoman
+            classPrimaryMap.Add("Demoman", tf2PrimaryDemomanWeapons);
+            classSecondaryMap.Add("Demoman", tf2SecondaryDemomanWeapons);
+            classMeleeMap.Add("Demoman", tf2MeleeDemomanWeapons);
+            classMiscMap.Add("Demoman", tf2MiscDemomanWeapons);
             weaponScriptPairs.Add("Grenade Launcher, Loch-n-Load, Iron Bomber", "tf_weapon_grenadelauncher.txt");
             weaponScriptPairs.Add("Loose Cannon", "tf_weapon_cannon.txt");
             weaponScriptPairs.Add("Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher", "tf_weapon_pipebomblauncher.txt");
@@ -889,12 +1011,20 @@ namespace TF2WeaponSpecificCrosshairs
 
 
             // Heavy
+            classPrimaryMap.Add("Heavy", tf2PrimaryHeavyWeapons);
+            classSecondaryMap.Add("Heavy", tf2SecondaryHeavyWeapons);
+            classMeleeMap.Add("Heavy", tf2MeleeHeavyWeapons);
+            classMiscMap.Add("Heavy", tf2MiscHeavyWeapons);
             weaponScriptPairs.Add("Minigun, Natascha, Brass Beast, Tomislav, Huo-Long Heater", "tf_weapon_minigun.txt");
             weaponScriptPairs.Add("Shotgun, Family Business, Panic Attack", "tf_weapon_shotgun_hwg.txt");
             weaponScriptPairs.Add("Sandvich, Dalokohs Bar, Fishcake, Buffalo Steak Sandvich, Second Banana", "tf_weapon_lunchbox.txt");
             weaponScriptPairs.Add("Fists and all reskins, Killing Gloves of Boxing, Gloves of Running Urgently, Warrior's Spirit, Fists of Steel, Eviction Notice, Holiday Punch", "tf_weapon_fists.txt");
 
             // Engineer
+            classPrimaryMap.Add("Engineer", tf2PrimaryEngineerWeapons);
+            classSecondaryMap.Add("Engineer", tf2SecondaryEngineerWeapons);
+            classMeleeMap.Add("Engineer", tf2MeleeEngineerWeapons);
+            classMiscMap.Add("Engineer", tf2MiscEngineerWeapons);
             weaponScriptPairs.Add("Shotgun, Widowmaker, Panic Attack", "tf_weapon_shotgun_primary.txt");
             weaponScriptPairs.Add("Frontier Justice", "tf_weapon_sentry_revenge.txt");
             weaponScriptPairs.Add("Pomson 6000", "tf_weapon_drg_pomson.txt");
@@ -908,12 +1038,20 @@ namespace TF2WeaponSpecificCrosshairs
             weaponScriptPairs.Add("Destruction PDA", "tf_weapon_pda_engineer_destroy.txt");
 
             // Medic
+            classPrimaryMap.Add("Medic", tf2PrimaryMedicWeapons);
+            classSecondaryMap.Add("Medic", tf2SecondaryMedicWeapons);
+            classMeleeMap.Add("Medic", tf2MeleeMedicWeapons);
+            classMiscMap.Add("Medic", tf2MiscMedicWeapons);
             weaponScriptPairs.Add("Syringe Gun, Blutsauger, Overdose", "tf_weapon_syringegun_medic.txt");
             weaponScriptPairs.Add("Crusader's Crossbow", "tf_weapon_crossbow.txt");
             weaponScriptPairs.Add("Medi Gun, Kritzkrieg, Quick-Fix, Vaccinator", "tf_weapon_medigun.txt");
             weaponScriptPairs.Add("Bonesaw and all reskins, Ubersaw, Vita-Saw, Amputator, Solemn Vow", "tf_weapon_bonesaw.txt");
 
             // Sniper
+            classPrimaryMap.Add("Sniper", tf2PrimarySniperWeapons);
+            classSecondaryMap.Add("Sniper", tf2SecondarySniperWeapons);
+            classMeleeMap.Add("Sniper", tf2MeleeSniperWeapons);
+            classMiscMap.Add("Sniper", tf2MiscSniperWeapons);
             weaponScriptPairs.Add("Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "tf_weapon_sniperrifle.txt");
             weaponScriptPairs.Add("Classic", "tf_weapon_sniperrifle_classic.txt");
             weaponScriptPairs.Add("Hitman's Heatmaker", "tf_weapon_sniperrifle_decap.txt");
@@ -923,6 +1061,10 @@ namespace TF2WeaponSpecificCrosshairs
             weaponScriptPairs.Add("Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah", "tf_weapon_club.txt");
 
             // Spy
+            classPrimaryMap.Add("Spy", tf2PrimarySpyWeapons);
+            classSecondaryMap.Add("Spy", tf2SecondarySpyWeapons);
+            classMeleeMap.Add("Spy", tf2MeleeSpyWeapons);
+            classMiscMap.Add("Spy", tf2MiscSpyWeapons);
             weaponScriptPairs.Add("Revolver, Ambassador, L'Etranger, Enforcer, Diamondback", "tf_weapon_revolver.txt");
             weaponScriptPairs.Add("Knife and all reskins, Your Eternal Reward, Conniver's Kunai, Big Earner, Spy-cicle", "tf_weapon_knife.txt");
             weaponScriptPairs.Add("Disguise kit", "tf_weapon_pda_spy.txt");
