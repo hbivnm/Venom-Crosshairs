@@ -192,14 +192,21 @@ namespace TF2WeaponSpecificCrosshairs
         private void btnReadConfig_Click(object sender, EventArgs e)
         {
             writeToDebugger("Reading current config... ");
-            string tf2wscScripDir = textBoxTF2Path.Text + @"/tf/custom/TF2WeaponSpecificCrosshairs/scripts";
+            string tf2wscScripDir = textBoxTF2Path.Text + @"\tf\custom\TF2WeaponSpecificCrosshairs\scripts";
             if (Directory.Exists(tf2wscScripDir))
             {
                 foreach (string script in Directory.GetFiles(tf2wscScripDir, "*.txt"))
                 {
-                    string crosshair = getCrosshairFromScript(script);
-                    string weapon = getWeaponFromScriptName(script);
-                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new String[] { crosshair, weapon }));
+                    try
+                    {
+                        string crosshair = getCrosshairFromScript(script);
+                        string weapon = getWeaponFromScriptName(script);
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new String[] { crosshair, weapon }));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"\"{Path.GetFileName(script)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nMessage for dev: Exception: {ex.Message}", "Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
                 btnInstall.Enabled = true;
                 btnInstallClean.Enabled = true;
