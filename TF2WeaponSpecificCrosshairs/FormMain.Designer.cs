@@ -323,7 +323,7 @@
             // pictureBoxLoading
             // 
             this.pictureBoxLoading.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.loading;
-            this.pictureBoxLoading.Location = new System.Drawing.Point(820, 9);
+            this.pictureBoxLoading.Location = new System.Drawing.Point(717, 69);
             this.pictureBoxLoading.Name = "pictureBoxLoading";
             this.pictureBoxLoading.Size = new System.Drawing.Size(32, 32);
             this.pictureBoxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;

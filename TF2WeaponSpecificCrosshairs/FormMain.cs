@@ -425,14 +425,8 @@ namespace TF2WeaponSpecificCrosshairs
         {
             // Fetch public crosshairs, if new crosshairs are available -> prompt user
             writeToDebugger("Fetching public crosshair list... ");
-            _ = fetchCrosshairsFromPublicRepo();
 
-            foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
-                if (!File.Exists($@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"))
-                {
-                    MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "TF2 Weapon Specific Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    break;
-                }
+            _ = isNewCrosshairsAvailable(false);
 
             writeLineToDebugger("Done!");
 
@@ -516,6 +510,21 @@ namespace TF2WeaponSpecificCrosshairs
             }
         }
 
+        private bool isNewCrosshairsAvailable(bool suppressNotification)
+        {
+            _ = fetchCrosshairsFromPublicRepo();
+
+            foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
+                if (!File.Exists($@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"))
+                {
+                    if (!suppressNotification)
+                        MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "TF2 Weapon Specific Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return true;
+                }
+
+            return false;
+        }
+
         private Task fetchCrosshairsFromPublicRepo()
         {
             var httpClient = new HttpClient();
@@ -525,6 +534,7 @@ namespace TF2WeaponSpecificCrosshairs
 
             var contents = (JArray)JsonConvert.DeserializeObject(response);
 
+            publicCrosshairs.Clear();
             foreach (var file in contents)
                 publicCrosshairs.Add((string)file["name"], (string)file["download_url"]);
 
@@ -934,6 +944,10 @@ namespace TF2WeaponSpecificCrosshairs
                 }
             }));
 
+            writeToDebugger("Fetching public crosshair list... ");
+            _ = isNewCrosshairsAvailable(true);
+            writeLineToDebugger("Done!");
+
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
@@ -946,7 +960,6 @@ namespace TF2WeaponSpecificCrosshairs
                 btnReload.Enabled = true;
                 cbClass.Enabled = true;
             }));
-
             writeLineToDebugger("Finished reloading crosshair list!");
         }
 
