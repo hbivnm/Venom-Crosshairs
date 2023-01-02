@@ -178,10 +178,6 @@ namespace TF2WeaponSpecificCrosshairs
 
             if (checkBoxAddOnlyClass.Checked)
             {
-                // foreach (var weapon in getWeaponsFromClassName(cbClass.Text))
-                //     addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                // crosshairAdded = true;
-
                 if (checkBoxAddPrimaryWeapons.Checked)
                 {
                     foreach (var weapon in classPrimaryMap[cbClass.Text])
@@ -249,8 +245,8 @@ namespace TF2WeaponSpecificCrosshairs
                 }
             }
 
-
-            if (crosshairAdded) // This could be changed to an event that triggers when addCrosshairToListView is called
+            // This could be changed to an event that triggers when addCrosshairToListView is called...
+            if (crosshairAdded)
             {
                 btnRemoveSelected.Enabled = true;
                 btnInstall.Enabled = true;
@@ -310,7 +306,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnInstallClean_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("This will reset any installed TF2WSC config.\nAre you sure you want to continue?", "Clean installation. Are you sure?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            DialogResult dialogResult = MessageBox.Show("This will REMOVE any installed TF2WSC config and create a new one.\nAre you sure you want to continue?", "Clean installation. Are you sure?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
             if (dialogResult == DialogResult.Yes && listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
                 Task.Run(() => performInstallation(true));
@@ -323,7 +319,7 @@ namespace TF2WeaponSpecificCrosshairs
         private void onCBClassChangeEvent(object sender, EventArgs e)
         {
             cbWeapon.Items.Clear();
-            checkBoxAddOnlyClass.Text = $@"Add to ONLY to {cbClass.Text}?";
+            checkBoxAddOnlyClass.Text = $@"Add to ONLY to {cbClass.Text}";
             switch (cbClass.Text)
             {
                 case "Scout":
@@ -402,17 +398,17 @@ namespace TF2WeaponSpecificCrosshairs
         {
             if (checkBoxAddOnlyClass.Checked)
             {
-                checkBoxAddPrimaryWeapons.Text = $"Add to ALL {cbClass.Text} primary weapons?";
-                checkBoxAddSecondaryWeapons.Text = $"Add to ALL {cbClass.Text} secondary weapons?";
-                checkBoxAddMeleeWeapons.Text = $"Add to ALL {cbClass.Text} melee weapons?";
-                checkBoxAddMiscWeapons.Text = $"Add to ALL {cbClass.Text} misc. weapons?";
+                checkBoxAddPrimaryWeapons.Text = $"Add to ALL {cbClass.Text} primary weapons";
+                checkBoxAddSecondaryWeapons.Text = $"Add to ALL {cbClass.Text} secondary weapons";
+                checkBoxAddMeleeWeapons.Text = $"Add to ALL {cbClass.Text} melee weapons";
+                checkBoxAddMiscWeapons.Text = $"Add to ALL {cbClass.Text} misc. weapons";
             }
             else
             {
-                checkBoxAddPrimaryWeapons.Text = "Add to ALL primary weapons?";
-                checkBoxAddSecondaryWeapons.Text = "Add to ALL secondary weapons?";
-                checkBoxAddMeleeWeapons.Text = "Add to ALL melee weapons?";
-                checkBoxAddMiscWeapons.Text = "Add to ALL misc. weapons?";
+                checkBoxAddPrimaryWeapons.Text = "Add to ALL primary weapons";
+                checkBoxAddSecondaryWeapons.Text = "Add to ALL secondary weapons";
+                checkBoxAddMeleeWeapons.Text = "Add to ALL melee weapons";
+                checkBoxAddMiscWeapons.Text = "Add to ALL misc. weapons";
             }
         }
 
@@ -426,9 +422,12 @@ namespace TF2WeaponSpecificCrosshairs
             // Fetch public crosshairs, if new crosshairs are available -> prompt user
             writeToDebugger("Fetching public crosshair list... ");
 
-            _ = isNewCrosshairsAvailable(false);
+            bool newCrosshairsAvailable = isNewCrosshairsAvailable(false);
 
             writeLineToDebugger("Done!");
+
+            if (newCrosshairsAvailable)
+                writeLineToDebugger("New crosshairs available!");
 
             writeLineToDebugger($"TF2WSC Version {TF2WSC_VERSION}");
         }
@@ -518,7 +517,9 @@ namespace TF2WeaponSpecificCrosshairs
                 if (!File.Exists($@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"))
                 {
                     if (!suppressNotification)
+                    {
                         MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "TF2 Weapon Specific Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                     return true;
                 }
 
@@ -559,7 +560,7 @@ namespace TF2WeaponSpecificCrosshairs
 
             Task.WaitAll(tasks.ToArray());
             writeLineToDebugger("Done!");
-            writeLineToDebugger($"Downloaded {newCrosshairsFileCount / 2} crosshairs!");
+            writeLineToDebugger($"Downloaded {newCrosshairsFileCount / 2} crosshair(s)!");
             return null;
         }
 
@@ -764,7 +765,7 @@ namespace TF2WeaponSpecificCrosshairs
             if (removeOldConfig)
             {
                 writeLineToDebugger("Clean installation of TF2WSC started!");
-                writeToDebugger("Removing old TF2WSC configs... ");
+                writeToDebugger("Removing old TF2WSC config... ");
                 if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs"))
                     Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs", true);
                 writeLineToDebugger("Done!");
@@ -951,11 +952,9 @@ namespace TF2WeaponSpecificCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
-
                 cbClass.SelectedIndex = -1;
                 cbWeapon.SelectedIndex = -1;
                 cbWeapon.Enabled = false;
-
                 textBoxTF2Path.Enabled = true;
                 btnReload.Enabled = true;
                 cbClass.Enabled = true;
@@ -1156,6 +1155,7 @@ namespace TF2WeaponSpecificCrosshairs
                 return false;
             }
 
+            writeLineToDebugger("Sanity check finished!");
             return true;
         }
     }

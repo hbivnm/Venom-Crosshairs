@@ -185,9 +185,9 @@
             this.checkBoxAddOnlyClass.Enabled = false;
             this.checkBoxAddOnlyClass.Location = new System.Drawing.Point(71, 156);
             this.checkBoxAddOnlyClass.Name = "checkBoxAddOnlyClass";
-            this.checkBoxAddOnlyClass.Size = new System.Drawing.Size(134, 17);
+            this.checkBoxAddOnlyClass.Size = new System.Drawing.Size(128, 17);
             this.checkBoxAddOnlyClass.TabIndex = 23;
-            this.checkBoxAddOnlyClass.Text = "Add to ONLY to class?";
+            this.checkBoxAddOnlyClass.Text = "Add to ONLY to class";
             this.checkBoxAddOnlyClass.UseVisualStyleBackColor = true;
             // 
             // checkBoxAddPrimaryWeapons
@@ -196,9 +196,9 @@
             this.checkBoxAddPrimaryWeapons.Enabled = false;
             this.checkBoxAddPrimaryWeapons.Location = new System.Drawing.Point(71, 183);
             this.checkBoxAddPrimaryWeapons.Name = "checkBoxAddPrimaryWeapons";
-            this.checkBoxAddPrimaryWeapons.Size = new System.Drawing.Size(167, 17);
+            this.checkBoxAddPrimaryWeapons.Size = new System.Drawing.Size(161, 17);
             this.checkBoxAddPrimaryWeapons.TabIndex = 25;
-            this.checkBoxAddPrimaryWeapons.Text = "Add to ALL primary weapons?";
+            this.checkBoxAddPrimaryWeapons.Text = "Add to ALL primary weapons";
             this.checkBoxAddPrimaryWeapons.UseVisualStyleBackColor = true;
             // 
             // checkBoxAddSecondaryWeapons
@@ -207,9 +207,9 @@
             this.checkBoxAddSecondaryWeapons.Enabled = false;
             this.checkBoxAddSecondaryWeapons.Location = new System.Drawing.Point(71, 202);
             this.checkBoxAddSecondaryWeapons.Name = "checkBoxAddSecondaryWeapons";
-            this.checkBoxAddSecondaryWeapons.Size = new System.Drawing.Size(183, 17);
+            this.checkBoxAddSecondaryWeapons.Size = new System.Drawing.Size(177, 17);
             this.checkBoxAddSecondaryWeapons.TabIndex = 26;
-            this.checkBoxAddSecondaryWeapons.Text = "Add to ALL secondary weapons?";
+            this.checkBoxAddSecondaryWeapons.Text = "Add to ALL secondary weapons";
             this.checkBoxAddSecondaryWeapons.UseVisualStyleBackColor = true;
             // 
             // checkBoxAddMeleeWeapons
@@ -218,9 +218,9 @@
             this.checkBoxAddMeleeWeapons.Enabled = false;
             this.checkBoxAddMeleeWeapons.Location = new System.Drawing.Point(71, 221);
             this.checkBoxAddMeleeWeapons.Name = "checkBoxAddMeleeWeapons";
-            this.checkBoxAddMeleeWeapons.Size = new System.Drawing.Size(162, 17);
+            this.checkBoxAddMeleeWeapons.Size = new System.Drawing.Size(156, 17);
             this.checkBoxAddMeleeWeapons.TabIndex = 27;
-            this.checkBoxAddMeleeWeapons.Text = "Add to ALL melee weapons?";
+            this.checkBoxAddMeleeWeapons.Text = "Add to ALL melee weapons";
             this.checkBoxAddMeleeWeapons.UseVisualStyleBackColor = true;
             // 
             // checkBoxAddMiscWeapons
@@ -229,9 +229,9 @@
             this.checkBoxAddMiscWeapons.Enabled = false;
             this.checkBoxAddMiscWeapons.Location = new System.Drawing.Point(71, 248);
             this.checkBoxAddMiscWeapons.Name = "checkBoxAddMiscWeapons";
-            this.checkBoxAddMiscWeapons.Size = new System.Drawing.Size(158, 17);
+            this.checkBoxAddMiscWeapons.Size = new System.Drawing.Size(152, 17);
             this.checkBoxAddMiscWeapons.TabIndex = 28;
-            this.checkBoxAddMiscWeapons.Text = "Add to ALL misc. weapons?";
+            this.checkBoxAddMiscWeapons.Text = "Add to ALL misc. weapons";
             this.checkBoxAddMiscWeapons.UseVisualStyleBackColor = true;
             // 
             // lblAdditionalSettings
@@ -323,7 +323,7 @@
             // pictureBoxLoading
             // 
             this.pictureBoxLoading.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.loading;
-            this.pictureBoxLoading.Location = new System.Drawing.Point(717, 69);
+            this.pictureBoxLoading.Location = new System.Drawing.Point(820, 9);
             this.pictureBoxLoading.Name = "pictureBoxLoading";
             this.pictureBoxLoading.Size = new System.Drawing.Size(32, 32);
             this.pictureBoxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
