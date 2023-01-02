@@ -24,13 +24,14 @@ See the [wiki](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki).
 
 # The future of TF2WSC
 ## Planned features
-- [ ] Change checkbox logic to toggle between adding to "ALL" or adding to "_CLASS_" (ex.) "ALL primary weapons for _CLASS_".
+- [ ] Add user-friendly prompts for currently (very rare) unhandled exceptions.
 - [ ] Add notification indicator to "Reload crosshair list" button when new crosshairs are available. (Replaces popup message)
 - [ ] Add double-clicking a weapon in the ListView should select it as "current weapon". (Note to self: add "class" listviewentry)
 - [ ] Add "Update TF2WSC" notification when new release is available.
 - [ ] Detect if non-TF2WSC config is present and ask user if TF2WSC should rename folder. (This will probably mark the official 1.0 release)
 
 ## Implemented features
+- [x] Change checkbox logic to toggle between adding to "ALL" or adding to "_CLASS_" (ex.) "ALL primary weapons for _CLASS_".
 - [x] Add current version label.
 - [x] Add a "Help" button.
 - [x] Add button to read current TF2WSC config.
