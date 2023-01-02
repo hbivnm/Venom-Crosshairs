@@ -176,6 +176,12 @@ namespace TF2WeaponSpecificCrosshairs
         {
             bool crosshairAdded = false;
 
+            if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
+            {
+                addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, cbWeapon.Text }));
+                crosshairAdded = true;
+            }
+
             if (checkBoxAddOnlyClass.Checked)
             {
                 if (checkBoxAddPrimaryWeapons.Checked)
@@ -233,14 +239,6 @@ namespace TF2WeaponSpecificCrosshairs
                 {
                     foreach (var weapon in tf2AllMiscWeapons)
                         addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon }));
-                    crosshairAdded = true;
-                }
-            }
-            else
-            {
-                if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
-                {
-                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, cbWeapon.Text }));
                     crosshairAdded = true;
                 }
             }
