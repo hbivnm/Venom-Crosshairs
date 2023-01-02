@@ -114,7 +114,7 @@ namespace VenomCrosshairs
 
         private void btnReload_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("You are about to download missing/new crosshairs and reload the crosshair list. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Update crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            DialogResult dialogResult = MessageBox.Show("You are about to download missing/new crosshairs and reload the crosshair list. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Update crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
                 new Thread(downloadAndGenerateCrosshairs).Start();
@@ -281,7 +281,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"\"{Path.GetFileName(script)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nFor developer: Exception: {ex.Message}", "Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show($"\"{Path.GetFileName(script)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
                 btnInstall.Enabled = true;
@@ -291,7 +291,7 @@ namespace VenomCrosshairs
             }
             else
             {
-                MessageBox.Show("No Venom Crosshairs config folder found!\n\nMake sure your custom crosshair folder is named \"VenomCrosshairConfig\".", "Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Venom Crosshairs config folder found!\n\nMake sure your custom crosshair folder is named \"VenomCrosshairConfig\".", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 writeLineToDebugger("Failed!");
             }
         }
@@ -304,7 +304,7 @@ namespace VenomCrosshairs
 
         private void btnInstallClean_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("This will REMOVE any installed config by Venom Crosshairs and create a new one.\nAre you sure you want to continue?", "Clean installation. Are you sure?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            DialogResult dialogResult = MessageBox.Show("This will REMOVE any installed config by Venom Crosshairs and create a new one.\nAre you sure you want to continue?", "Venom Crosshairs - Clean installation. Are you sure?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
             if (dialogResult == DialogResult.Yes && listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
                 Task.Run(() => performInstallation(true));
@@ -516,7 +516,7 @@ namespace VenomCrosshairs
                 {
                     if (!suppressNotification)
                     {
-                        MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "TF2 Weapon Specific Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "Venom Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     return true;
                 }
@@ -1117,7 +1117,7 @@ namespace VenomCrosshairs
             if (!Directory.Exists(path))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity1");
-                MessageBox.Show("The specified TF2 path does not seem to exist.\nDid you set the correct path?", "TF2 Path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The specified TF2 path does not seem to exist.\nDid you set the correct path?", "Venom Crosshairs - TF2 Path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1125,7 +1125,7 @@ namespace VenomCrosshairs
             if (!File.Exists(path + @"\hl2.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity2");
-                MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?", "TF2 Path invalid", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?", "Venom Crosshairs - Invalid TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1133,7 +1133,7 @@ namespace VenomCrosshairs
             if (!File.Exists(path + @"\bin\vtf2tga.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity3");
-                MessageBox.Show("Could not find \"vtf2tga.exe\".\nPlease verify game files.", "vtf2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not find \"vtf2tga.exe\".\nPlease verify game files.", "Venom Crosshairs - vtf2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1141,7 +1141,7 @@ namespace VenomCrosshairs
             if (!File.Exists(path + @"\bin\tier0.dll"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity4");
-                MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "Venom Crosshairs - tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1149,7 +1149,7 @@ namespace VenomCrosshairs
             if (!File.Exists(PATH_VC + @"\resources\ffmpeg.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity5");
-                MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue.)", "ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue.)", "Venom Crosshairs - ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
