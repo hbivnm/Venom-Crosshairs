@@ -3,7 +3,7 @@
 # TF2 Weapon Specific Crosshairs by HbiVnm
 TF2WSC (Team Fortress 2 Weapon Specific Crosshairs) is a client-side solution to automating the installation and make customization of weapon specific crosshairs easier for Team Fortress 2.
 
-![Preview image of TF2WSC.](https://i.imgur.com/VtGxozZ.png)
+![Preview image of TF2WSC.](https://i.imgur.com/MZErTK9.png)
 
 # Download
 Check out the releases and download [here](https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/releases).
