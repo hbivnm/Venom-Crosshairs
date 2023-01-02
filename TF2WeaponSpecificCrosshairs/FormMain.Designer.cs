@@ -1,4 +1,4 @@
-﻿namespace TF2WeaponSpecificCrosshairs
+﻿namespace VenomCrosshairs
 {
     partial class FormMain
     {
@@ -289,7 +289,7 @@
             // 
             // btnReadConfig
             // 
-            this.btnReadConfig.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.drive_upload;
+            this.btnReadConfig.Image = global::VenomCrosshairs.Properties.Resources.drive_upload;
             this.btnReadConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnReadConfig.Location = new System.Drawing.Point(561, 315);
             this.btnReadConfig.Name = "btnReadConfig";
@@ -302,7 +302,7 @@
             // 
             // btnHelp
             // 
-            this.btnHelp.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.question;
+            this.btnHelp.Image = global::VenomCrosshairs.Properties.Resources.question;
             this.btnHelp.Location = new System.Drawing.Point(782, 47);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(32, 32);
@@ -312,7 +312,7 @@
             // 
             // btnToggleConsole
             // 
-            this.btnToggleConsole.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.terminal;
+            this.btnToggleConsole.Image = global::VenomCrosshairs.Properties.Resources.terminal;
             this.btnToggleConsole.Location = new System.Drawing.Point(820, 47);
             this.btnToggleConsole.Name = "btnToggleConsole";
             this.btnToggleConsole.Size = new System.Drawing.Size(32, 32);
@@ -322,7 +322,7 @@
             // 
             // pictureBoxLoading
             // 
-            this.pictureBoxLoading.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.loading;
+            this.pictureBoxLoading.Image = global::VenomCrosshairs.Properties.Resources.loading;
             this.pictureBoxLoading.Location = new System.Drawing.Point(820, 9);
             this.pictureBoxLoading.Name = "pictureBoxLoading";
             this.pictureBoxLoading.Size = new System.Drawing.Size(32, 32);
@@ -333,7 +333,7 @@
             // 
             // btnGitHub
             // 
-            this.btnGitHub.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.github_logo_24px;
+            this.btnGitHub.Image = global::VenomCrosshairs.Properties.Resources.github_logo_24px;
             this.btnGitHub.Location = new System.Drawing.Point(782, 9);
             this.btnGitHub.Name = "btnGitHub";
             this.btnGitHub.Size = new System.Drawing.Size(32, 32);
@@ -343,7 +343,7 @@
             // 
             // btnSteam
             // 
-            this.btnSteam.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.steam_logo_black_transparent_24px;
+            this.btnSteam.Image = global::VenomCrosshairs.Properties.Resources.steam_logo_black_transparent_24px;
             this.btnSteam.Location = new System.Drawing.Point(744, 9);
             this.btnSteam.Name = "btnSteam";
             this.btnSteam.Size = new System.Drawing.Size(32, 32);
@@ -354,7 +354,7 @@
             // btnNextCrosshair
             // 
             this.btnNextCrosshair.Enabled = false;
-            this.btnNextCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.arrow;
+            this.btnNextCrosshair.Image = global::VenomCrosshairs.Properties.Resources.arrow;
             this.btnNextCrosshair.Location = new System.Drawing.Point(299, 127);
             this.btnNextCrosshair.Name = "btnNextCrosshair";
             this.btnNextCrosshair.Size = new System.Drawing.Size(36, 22);
@@ -365,7 +365,7 @@
             // btnPrevCrosshair
             // 
             this.btnPrevCrosshair.Enabled = false;
-            this.btnPrevCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.arrow_1801;
+            this.btnPrevCrosshair.Image = global::VenomCrosshairs.Properties.Resources.arrow_1801;
             this.btnPrevCrosshair.Location = new System.Drawing.Point(258, 127);
             this.btnPrevCrosshair.Name = "btnPrevCrosshair";
             this.btnPrevCrosshair.Size = new System.Drawing.Size(36, 22);
@@ -376,7 +376,7 @@
             // btnInstallClean
             // 
             this.btnInstallClean.Enabled = false;
-            this.btnInstallClean.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.compile_warning;
+            this.btnInstallClean.Image = global::VenomCrosshairs.Properties.Resources.compile_warning;
             this.btnInstallClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnInstallClean.Location = new System.Drawing.Point(655, 315);
             this.btnInstallClean.Name = "btnInstallClean";
@@ -390,7 +390,7 @@
             // btnInstall
             // 
             this.btnInstall.Enabled = false;
-            this.btnInstall.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.compile;
+            this.btnInstall.Image = global::VenomCrosshairs.Properties.Resources.compile;
             this.btnInstall.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnInstall.Location = new System.Drawing.Point(755, 315);
             this.btnInstall.Name = "btnInstall";
@@ -404,7 +404,7 @@
             // btnRemoveSelected
             // 
             this.btnRemoveSelected.Enabled = false;
-            this.btnRemoveSelected.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.cross;
+            this.btnRemoveSelected.Image = global::VenomCrosshairs.Properties.Resources.cross;
             this.btnRemoveSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRemoveSelected.Location = new System.Drawing.Point(11, 315);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
@@ -418,7 +418,7 @@
             // btnAddCrosshair
             // 
             this.btnAddCrosshair.Enabled = false;
-            this.btnAddCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.tick1;
+            this.btnAddCrosshair.Image = global::VenomCrosshairs.Properties.Resources.tick1;
             this.btnAddCrosshair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAddCrosshair.Location = new System.Drawing.Point(71, 271);
             this.btnAddCrosshair.Name = "btnAddCrosshair";
@@ -431,9 +431,9 @@
             // 
             // pictureBoxCrosshair
             // 
-            this.pictureBoxCrosshair.BackgroundImage = global::TF2WeaponSpecificCrosshairs.Properties.Resources.cp_badlands;
+            this.pictureBoxCrosshair.BackgroundImage = global::VenomCrosshairs.Properties.Resources.cp_badlands;
             this.pictureBoxCrosshair.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBoxCrosshair.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.TF2WSC;
+            this.pictureBoxCrosshair.Image = global::VenomCrosshairs.Properties.Resources.TF2WSC;
             this.pictureBoxCrosshair.Location = new System.Drawing.Point(259, 50);
             this.pictureBoxCrosshair.Name = "pictureBoxCrosshair";
             this.pictureBoxCrosshair.Size = new System.Drawing.Size(75, 75);
@@ -443,7 +443,7 @@
             // 
             // btnReload
             // 
-            this.btnReload.Image = global::TF2WeaponSpecificCrosshairs.Properties.Resources.arrow_circle_double_135;
+            this.btnReload.Image = global::VenomCrosshairs.Properties.Resources.arrow_circle_double_135;
             this.btnReload.Location = new System.Drawing.Point(820, 9);
             this.btnReload.Name = "btnReload";
             this.btnReload.Size = new System.Drawing.Size(32, 32);
@@ -493,7 +493,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormMain";
-            this.Text = "TF2 Weapon Specific Crosshairs";
+            this.Text = "Venom Crosshairs";
             this.Load += new System.EventHandler(this.onFormLoad);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

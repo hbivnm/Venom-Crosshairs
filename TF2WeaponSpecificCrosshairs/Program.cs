@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TF2WeaponSpecificCrosshairs
+namespace VenomCrosshairs
 {
     internal static class Program
     {

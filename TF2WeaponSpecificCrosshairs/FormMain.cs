@@ -18,20 +18,20 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
-namespace TF2WeaponSpecificCrosshairs
+namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string TF2WSC_VERSION = "beta8.0";
+        private static readonly string VC_VERSION = "beta8.0";
 
-        private static readonly string PATH_TF2WSC = Directory.GetCurrentDirectory();
-        private static readonly string PATH_TF2WSC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
-        private static readonly string PATH_TF2WSC_RESOURCES_MATERIALS = Directory.GetCurrentDirectory() + @"\resources\materials\";
-        private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS = Directory.GetCurrentDirectory() + @"\resources\previews\";
-        private static readonly string PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
-        private static readonly string PATH_TF2WSC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
-        private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_expeff.cfg";
-        private static readonly string PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE = PATH_TF2WSC_RESOURCES + @"\tf2wsc_userpath.cfg";
+        private static readonly string PATH_VC = Directory.GetCurrentDirectory();
+        private static readonly string PATH_VC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
+        private static readonly string PATH_VC_RESOURCES_MATERIALS = Directory.GetCurrentDirectory() + @"\resources\materials\";
+        private static readonly string PATH_VC_RESOURCES_PREVIEWS = Directory.GetCurrentDirectory() + @"\resources\previews\";
+        private static readonly string PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
+        private static readonly string PATH_VC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
+        private static readonly string PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE = PATH_VC_RESOURCES + @"\vc_expeff.cfg";
+        private static readonly string PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE = PATH_VC_RESOURCES + @"\vc_userpath.cfg";
 
         private Dictionary<string, string[]> classPrimaryMap = new Dictionary<string, string[]>();
         private Dictionary<string, string[]> classSecondaryMap = new Dictionary<string, string[]>();
@@ -109,7 +109,7 @@ namespace TF2WeaponSpecificCrosshairs
         public FormMain()
         {
             InitializeComponent();
-            initTF2WSC();
+            initVC();
         }
 
         private void btnReload_Click(object sender, EventArgs e)
@@ -122,7 +122,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnGitHub_Click(object sender, EventArgs e)
         {
-            Process.Start(@"https://github.com/hbivnm/TF2WeaponSpecificCrosshairs");
+            Process.Start(@"https://github.com/hbivnm/Venom-Crosshairs");
         }
 
         private void btnSteam_Click(object sender, EventArgs e)
@@ -132,7 +132,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            Process.Start(@"https://github.com/hbivnm/TF2WeaponSpecificCrosshairs/wiki");
+            Process.Start(@"https://github.com/hbivnm/Venom-Crosshairs/wiki");
         }
 
         private void btnBrowseTF2Path_Click(object sender, EventArgs e)
@@ -146,7 +146,7 @@ namespace TF2WeaponSpecificCrosshairs
                     Invoke(new MethodInvoker(delegate ()
                     {
                         textBoxTF2Path.Text = cofd.FileName;
-                        File.WriteAllText(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE, cofd.FileName);
+                        File.WriteAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE, cofd.FileName);
                     }));
             }
         }
@@ -268,10 +268,10 @@ namespace TF2WeaponSpecificCrosshairs
         private void btnReadConfig_Click(object sender, EventArgs e)
         {
             writeToDebugger("Reading current config... ");
-            string tf2wscScripDir = textBoxTF2Path.Text + @"\tf\custom\TF2WeaponSpecificCrosshairs\scripts";
-            if (Directory.Exists(tf2wscScripDir))
+            string vcScripDir = textBoxTF2Path.Text + @"\tf\custom\VenomCrosshairConfig\scripts";
+            if (Directory.Exists(vcScripDir))
             {
-                foreach (string script in Directory.GetFiles(tf2wscScripDir, "*.txt"))
+                foreach (string script in Directory.GetFiles(vcScripDir, "*.txt"))
                 {
                     try
                     {
@@ -291,7 +291,7 @@ namespace TF2WeaponSpecificCrosshairs
             }
             else
             {
-                MessageBox.Show("No TF2WSC config folder found!\n\nMake sure your custom crosshair folder is named \"TF2WeaponSpecificCrosshairs\".", "Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Venom Crosshairs config folder found!\n\nMake sure your custom crosshair folder is named \"VenomCrosshairConfig\".", "Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 writeLineToDebugger("Failed!");
             }
         }
@@ -304,7 +304,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void btnInstallClean_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("This will REMOVE any installed TF2WSC config and create a new one.\nAre you sure you want to continue?", "Clean installation. Are you sure?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            DialogResult dialogResult = MessageBox.Show("This will REMOVE any installed config by Venom Crosshairs and create a new one.\nAre you sure you want to continue?", "Clean installation. Are you sure?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
             if (dialogResult == DialogResult.Yes && listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
                 Task.Run(() => performInstallation(true));
@@ -380,9 +380,9 @@ namespace TF2WeaponSpecificCrosshairs
         private void onCBCrosshairChangeEvent(object sender, EventArgs e)
         {
             if (cbCrosshair.Text.Length > 0)
-                pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES_PREVIEWS + cbCrosshair.Text + ".png";
+                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES_PREVIEWS + cbCrosshair.Text + ".png";
             else
-                pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES + @"TF2WSC.png";
+                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VC.png";
 
             btnAddCrosshair.Enabled = true;
             checkBoxAddOnlyClass.Enabled = true;
@@ -412,7 +412,7 @@ namespace TF2WeaponSpecificCrosshairs
 
         private void onCBExplosionEffectChangeEvent(object server, EventArgs e)
         {
-            File.WriteAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE, Convert.ToString(cbExplosionEffect.SelectedIndex));
+            File.WriteAllText(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE, Convert.ToString(cbExplosionEffect.SelectedIndex));
         }
 
         private void onFormLoad(object sender, EventArgs e)
@@ -427,15 +427,15 @@ namespace TF2WeaponSpecificCrosshairs
             if (newCrosshairsAvailable)
                 writeLineToDebugger("New crosshairs available!");
 
-            writeLineToDebugger($"TF2WSC Version {TF2WSC_VERSION}");
+            writeLineToDebugger($"Venom Crosshairs version {VC_VERSION}");
         }
 
         /// 
         /// Functions
         /// 
-        private void initTF2WSC()
+        private void initVC()
         {
-            // Prevent initTF2WSC from running more than once
+            // Prevent initVC from running more than once
             if (!hasInitialized)
             {
                 pictureBoxLoading.Visible = true;
@@ -452,7 +452,7 @@ namespace TF2WeaponSpecificCrosshairs
 
                 // Crosshairs
                 cbCrosshair.Items.Clear();
-                foreach (var crosshair in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.png"))
+                foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
                 {
                     string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
                     cbCrosshair.Items.Add(crosshairName);
@@ -484,22 +484,22 @@ namespace TF2WeaponSpecificCrosshairs
 
                 // Read user settings
                 // Explosion effect
-                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE))
+                if (File.Exists(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE))
                     try
                     {
-                        cbExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE));
+                        cbExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE));
                     }
                     catch (Exception)
                     {
-                        throw new FormatException($@"The contents of {PATH_TF2WSC_RESOURCES_TF2WSC_EXPLOSION_EFFECT_CFG_FILE} could not be parsed to an Integer.");
+                        throw new FormatException($@"The contents of {PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE} could not be parsed to an Integer.");
                     }
                 else
                     cbExplosionEffect.SelectedIndex = 0;
                 cbExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
 
                 // User TF2 path
-                if (File.Exists(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE))
-                    textBoxTF2Path.Text = File.ReadAllText(PATH_TF2WSC_RESOURCES_TF2WSC_USERPATH_CFG_FILE);
+                if (File.Exists(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE))
+                    textBoxTF2Path.Text = File.ReadAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE);
 
                 // TODO: Search for existing config with different name
 
@@ -512,7 +512,7 @@ namespace TF2WeaponSpecificCrosshairs
             _ = fetchCrosshairsFromPublicRepo();
 
             foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
-                if (!File.Exists($@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"))
+                if (!File.Exists($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"))
                 {
                     if (!suppressNotification)
                     {
@@ -528,7 +528,7 @@ namespace TF2WeaponSpecificCrosshairs
         {
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyApplication", "1"));
-            var contentsUrl = $"https://api.github.com/repos/hbivnm/TF2WSC-Crosshairs/contents";
+            var contentsUrl = $"https://api.github.com/repos/hbivnm/Venom-Crosshairs-List/contents";
             var response = httpClient.GetStringAsync(contentsUrl).Result;
 
             var contents = (JArray)JsonConvert.DeserializeObject(response);
@@ -547,11 +547,11 @@ namespace TF2WeaponSpecificCrosshairs
             writeToDebugger($"Downloading crosshairs... ");
 
             foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
-                if (!File.Exists($@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"))
+                if (!File.Exists($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"))
                 {
                     using (WebClient webClient = new WebClient())
                     {
-                        tasks.Add(webClient.DownloadFileTaskAsync(new Uri(crosshair.Value), $@"{PATH_TF2WSC_RESOURCES_MATERIALS}\{crosshair.Key}"));
+                        tasks.Add(webClient.DownloadFileTaskAsync(new Uri(crosshair.Value), $@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"));
                     }
                     newCrosshairsFileCount++;
                 }
@@ -762,31 +762,31 @@ namespace TF2WeaponSpecificCrosshairs
             bool isUpdate = false;
             if (removeOldConfig)
             {
-                writeLineToDebugger("Clean installation of TF2WSC started!");
-                writeToDebugger("Removing old TF2WSC config... ");
-                if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs"))
-                    Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs", true);
+                writeLineToDebugger("Clean installation of Venom Crosshairs config started!");
+                writeToDebugger("Removing old Venom Crosshairs config... ");
+                if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig"))
+                    Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig", true);
                 writeLineToDebugger("Done!");
             }
-            else if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs"))
+            else if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig"))
             {
-                writeLineToDebugger("Updating current TF2WSC config!");
+                writeLineToDebugger("Updating current Venom Crosshairs config!");
                 isUpdate = true;
             }
             else
-                writeLineToDebugger("Installation of TF2WSC started!");
+                writeLineToDebugger("Installation of Venom Crosshairs config started!");
 
             // Installation process
-            if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\materials\vgui\replay\thumbnails"))
-                Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\materials\vgui\replay\thumbnails");
-            if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts"))
-                Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts");
+            if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\materials\vgui\replay\thumbnails"))
+                Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\materials\vgui\replay\thumbnails");
+            if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\scripts"))
+                Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\scripts");
 
             writeToDebugger("Copying materials... ");
-            foreach (var crosshairVMT in Directory.GetFiles(PATH_TF2WSC_RESOURCES_MATERIALS, "*.vmt"))
-                File.Copy(crosshairVMT, $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVMT)}", true);
-            foreach (var crosshairVTF in Directory.GetFiles(PATH_TF2WSC_RESOURCES_MATERIALS, "*.vtf"))
-                File.Copy(crosshairVTF, $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVTF)}", true);
+            foreach (var crosshairVMT in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vmt"))
+                File.Copy(crosshairVMT, $@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVMT)}", true);
+            foreach (var crosshairVTF in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
+                File.Copy(crosshairVTF, $@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVTF)}", true);
             writeLineToDebugger("Done!");
 
             writeToDebugger("Adding scripts... ");
@@ -797,18 +797,18 @@ namespace TF2WeaponSpecificCrosshairs
                     string crosshair = item.SubItems[0].Text;
                     string weaponName = item.SubItems[1].Text;
                     string weaponScriptName = weaponScriptPairs[weaponName];
-                    string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponScriptName}";
+                    string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\scripts\{weaponScriptName}";
 
                     if (File.Exists(fullScriptPath))
                         File.Delete(fullScriptPath);
 
                     File.WriteAllText(
-                        $@"{textBoxTF2Path.Text}\tf\custom\TF2WeaponSpecificCrosshairs\scripts\{weaponScriptName}",
-                        File.ReadAllText($@"{PATH_TF2WSC_RESOURCES_SCRIPTS}\{weaponScriptName}")
-                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
-                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
-                            .Replace("TF2WSC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
-                            .Replace("TF2WSC_PLACEHOLDER", crosshair)
+                        $@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\scripts\{weaponScriptName}",
+                        File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
+                            .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
+                            .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
+                            .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
+                            .Replace("VC_PLACEHOLDER", crosshair)
                     );
                 }
             }));
@@ -816,11 +816,11 @@ namespace TF2WeaponSpecificCrosshairs
 
             if (!isUpdate)
             {
-                writeLineToDebugger("TF2WSC config successfully installed!");
+                writeLineToDebugger("Venom Crosshairs config config successfully installed!");
             }
             else
             {
-                writeLineToDebugger("TF2WSC config successfully updated!");
+                writeLineToDebugger("Venom Crosshairs config successfully updated!");
             }
 
             Invoke(new MethodInvoker(delegate ()
@@ -851,7 +851,7 @@ namespace TF2WeaponSpecificCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = true;
-                pictureBoxCrosshair.ImageLocation = PATH_TF2WSC_RESOURCES + @"TF2WSC.png";
+                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VenomCrosshairs.png";
 
                 listViewChosenCrosshairs.Items.Clear();
 
@@ -879,7 +879,7 @@ namespace TF2WeaponSpecificCrosshairs
             _ = downloadMissingCrosshairs();
 
             writeToDebugger("Deleting old previews... ");
-            foreach (string previewFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS))
+            foreach (string previewFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS))
                 File.Delete(previewFile);
             writeLineToDebugger("Done!");
 
@@ -891,7 +891,7 @@ namespace TF2WeaponSpecificCrosshairs
 
             writeToDebugger("Running vtf2tga.exe... ");
             // Generate previews
-            foreach (string vtfFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_MATERIALS, "*.vtf"))
+            foreach (string vtfFile in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
             {
                 vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
                 vtf2tgaProcess.Start();
@@ -899,16 +899,16 @@ namespace TF2WeaponSpecificCrosshairs
             vtf2tgaProcess.WaitForExit();
             writeLineToDebugger("Done!");
 
-            moveFilesByExtensionOrDelete(PATH_TF2WSC_RESOURCES_MATERIALS, PATH_TF2WSC_RESOURCES_PREVIEWS, "tga");
+            moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
 
             writeToDebugger("Generating generatepreviews.bat... ");
-            File.Create(PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
-            using (StreamWriter sw = new StreamWriter(PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
+            File.Create(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
+            using (StreamWriter sw = new StreamWriter(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
             {
-                foreach (string tgaFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.tga"))
+                foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
                 {
                     string filename = Path.GetFileNameWithoutExtension(tgaFile);
-                    sw.WriteLine("\"" + PATH_TF2WSC_RESOURCES + "ffmpeg.exe\" -y -i \"" + tgaFile + "\" " + filename + ".png");
+                    sw.WriteLine("\"" + PATH_VC_RESOURCES + "ffmpeg.exe\" -y -i \"" + tgaFile + "\" " + filename + ".png");
                 }
                 sw.WriteLine("exit");
             }
@@ -917,7 +917,7 @@ namespace TF2WeaponSpecificCrosshairs
             writeToDebugger("Preparing generatepreviews process... ");
             Process generatepreviewsProcess = new Process();
             generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            generatepreviewsProcess.StartInfo.FileName = PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
+            generatepreviewsProcess.StartInfo.FileName = PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
             writeLineToDebugger("Done!");
 
             writeToDebugger("Running generatepreviews.bat... ");
@@ -926,9 +926,9 @@ namespace TF2WeaponSpecificCrosshairs
             writeLineToDebugger("Done!");
 
             writeToDebugger("Performing cleanup... ");
-            moveFilesByExtensionOrDelete(PATH_TF2WSC, PATH_TF2WSC_RESOURCES_PREVIEWS, "png"); // Function no longer needed due to cleanup steps, remove/refactor?
-            File.Delete(PATH_TF2WSC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
-            foreach (string tgaFile in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.tga"))
+            moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png"); // Function no longer needed due to cleanup steps, remove/refactor?
+            File.Delete(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
+            foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
                 File.Delete(tgaFile);
             writeLineToDebugger("Done!");
 
@@ -936,7 +936,7 @@ namespace TF2WeaponSpecificCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 cbCrosshair.Items.Clear();
-                foreach (var crosshair in Directory.GetFiles(PATH_TF2WSC_RESOURCES_PREVIEWS, "*.png"))
+                foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
                 {
                     string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
                     cbCrosshair.Items.Add(crosshairName);
@@ -1146,10 +1146,10 @@ namespace TF2WeaponSpecificCrosshairs
             }
 
             // Check if project contains ffmpeg.exe (sanity5)
-            if (!File.Exists(PATH_TF2WSC + @"\resources\ffmpeg.exe"))
+            if (!File.Exists(PATH_VC + @"\resources\ffmpeg.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity5");
-                MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of TF2WSC.\n(If that doesn't work create GitHub issue.)", "ffmpeg.exe missing from project", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue.)", "ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
