@@ -73,16 +73,6 @@ namespace TF2WeaponSpecificCrosshairs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap arrow_180 {
-            get {
-                object obj = ResourceManager.GetObject("arrow-180", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap arrow_1801 {
             get {
                 object obj = ResourceManager.GetObject("arrow-1801", resourceCulture);
@@ -193,16 +183,6 @@ namespace TF2WeaponSpecificCrosshairs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Loading_icon {
-            get {
-                object obj = ResourceManager.GetObject("Loading_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap question {
             get {
                 object obj = ResourceManager.GetObject("question", resourceCulture);
@@ -236,16 +216,6 @@ namespace TF2WeaponSpecificCrosshairs.Properties {
         internal static System.Drawing.Bitmap TF2WSC {
             get {
                 object obj = ResourceManager.GetObject("TF2WSC", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap tick {
-            get {
-                object obj = ResourceManager.GetObject("tick", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

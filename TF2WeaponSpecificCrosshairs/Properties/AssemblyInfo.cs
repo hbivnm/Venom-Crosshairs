@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TF2WeaponSpecificCrosshairs")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A client-side solution to TF2 weapon specific crosshairs by HbiVnm.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TF2WeaponSpecificCrosshairs")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCopyright("Copyright ©  2023  HbiVnm")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
