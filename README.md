@@ -3,7 +3,7 @@
 # Venom Crosshairs
 Venom Crosshairs is a client-side solution to automating the installation and make customization of weapon-specific crosshairs easier for Team Fortress 2.
 
-![Preview image of Venom Crosshairs.]()
+![Preview image of Venom Crosshairs.](https://i.imgur.com/meiHtPk.png)
 
 # Download
 Check out the releases and download [here](https://github.com/hbivnm/Venom-Crosshairs/releases).
