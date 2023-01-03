@@ -433,11 +433,11 @@
             // 
             this.pictureBoxCrosshair.BackgroundImage = global::VenomCrosshairs.Properties.Resources.cp_badlands;
             this.pictureBoxCrosshair.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBoxCrosshair.Image = global::VenomCrosshairs.Properties.Resources.TF2WSC;
+            this.pictureBoxCrosshair.Image = global::VenomCrosshairs.Properties.Resources.VC;
             this.pictureBoxCrosshair.Location = new System.Drawing.Point(259, 50);
             this.pictureBoxCrosshair.Name = "pictureBoxCrosshair";
             this.pictureBoxCrosshair.Size = new System.Drawing.Size(75, 75);
-            this.pictureBoxCrosshair.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBoxCrosshair.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxCrosshair.TabIndex = 11;
             this.pictureBoxCrosshair.TabStop = false;
             // 

@@ -213,9 +213,9 @@ namespace VenomCrosshairs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TF2WSC {
+        internal static System.Drawing.Bitmap tick1 {
             get {
-                object obj = ResourceManager.GetObject("TF2WSC", resourceCulture);
+                object obj = ResourceManager.GetObject("tick1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +223,9 @@ namespace VenomCrosshairs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap tick1 {
+        internal static System.Drawing.Bitmap VC {
             get {
-                object obj = ResourceManager.GetObject("tick1", resourceCulture);
+                object obj = ResourceManager.GetObject("VC", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

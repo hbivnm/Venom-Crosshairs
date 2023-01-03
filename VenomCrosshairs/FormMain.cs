@@ -851,7 +851,7 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = true;
-                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VenomCrosshairs.png";
+                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VC.png";
 
                 listViewChosenCrosshairs.Items.Clear();
 
