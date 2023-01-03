@@ -9,7 +9,7 @@ Venom Crosshairs is a client-side solution to automating the installation and ma
 Check out the releases and download [here](https://github.com/hbivnm/Venom-Crosshairs/releases).
 
 ## Tutorial / Installation
-**NOTE:** If you already have an old custom/weapon-specific crosshair folder in `tf\custom` delete it or rename it to `VenomCrosshairConfig`
+**NOTE:** If you already have an old custom/weapon-specific crosshair folder in `tf\custom` delete it or rename it to `VenomCrosshairsConfig`
 
 1. Download the latest release found [here](https://github.com/hbivnm/Venom-Crosshairs/releases).
 2. Extract the folder named `VenomCrosshairs` to a directory of your liking.
@@ -17,7 +17,7 @@ Check out the releases and download [here](https://github.com/hbivnm/Venom-Cross
 4. Hit Install/Update.
 5. Set `cl_crosshair_file ""` in Team Fortress 2.
 
-**NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.X%`, you will have to manually exclude the `VenomCrosshairConfig` folder to be able to use Venom Crosshairs alongside Malwarebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) and [also here](https://forums.malwarebytes.com/topic/238670-machinelearninganomalous-detections-and-explanation/), explained by a Staff member on Malwarebytes forum.
+**NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.X%`, you will have to manually exclude the `VenomCrosshairs` folder to be able to use Venom Crosshairs alongside Malwarebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) and [also here](https://forums.malwarebytes.com/topic/238670-machinelearninganomalous-detections-and-explanation/), explained by a Staff member on Malwarebytes forum.
 
 # Help / FAQ
 See the [wiki](https://github.com/hbivnm/Venom-Crosshairs/wiki).
@@ -31,10 +31,11 @@ See the [wiki](https://github.com/hbivnm/Venom-Crosshairs/wiki).
 - [ ] Detect if non-Venom Crosshair config is present and ask user if user wants to rename folder. (This will probably mark the official 1.0 release)
 
 ## Implemented features
+- [x] Automatically rename old config folders from previous Venom Crosshairs releases.
 - [x] Change checkbox logic to toggle between adding to "ALL" or adding to "_CLASS_" (ex.) "ALL primary weapons for _CLASS_".
 - [x] Add current version label.
 - [x] Add a "Help" button.
-- [x] Add button to read current Venom-Crosshairs config.
+- [x] Add button to read current Venom Crosshairs config.
 - [x] Add a wiki to this repo.
 - [x] Add a button to sync crosshairs from a public repo.
 - [x] Show/Hide console ~~(state saved inbetween session)~~.
