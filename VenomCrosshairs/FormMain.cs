@@ -151,6 +151,7 @@ namespace VenomCrosshairs
                     {
                         textBoxTF2Path.Text = cofd.FileName;
                         File.WriteAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE, cofd.FileName);
+                        renameOldConfig();
                     }));
             }
         }
@@ -513,6 +514,17 @@ namespace VenomCrosshairs
                     textBoxTF2Path.Text = File.ReadAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE);
 
                 // Look for old configs from previous versions
+                renameOldConfig();
+
+                // TODO: Search for existing config with different names
+
+                pictureBoxLoading.Visible = false;
+            }
+        }
+
+        private void renameOldConfig()
+        {
+            if (File.Exists(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE))
                 foreach (var prevConfigName in prevConfigNames)
                 {
                     string prevConfigPath = $@"{textBoxTF2Path.Text}\tf\custom\{prevConfigName}";
@@ -522,13 +534,7 @@ namespace VenomCrosshairs
                         MessageBox.Show($"An old config was found and has now been renamed!\n\n\"{prevConfigName}\" -> \"{VC_CONFIG_NAME}\"", "Venom Crosshairs - Old config folder renamed!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
                     }
-
                 }
-
-                // TODO: Search for existing config with different names
-
-                pictureBoxLoading.Visible = false;
-            }
         }
 
         private bool isNewCrosshairsAvailable(bool suppressNotification)
