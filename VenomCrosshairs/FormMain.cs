@@ -176,7 +176,13 @@ namespace VenomCrosshairs
         {
             bool crosshairAdded = false;
 
-            if (cbClass.Text.Length > 0 && cbWeapon.Text.Length > 0 && cbCrosshair.Text.Length > 0)
+            if (cbClass.Text.Length > 0
+                && cbWeapon.Text.Length > 0
+                && cbCrosshair.Text.Length > 0
+                && !checkBoxAddPrimaryWeapons.Checked
+                && !checkBoxAddSecondaryWeapons.Checked
+                && !checkBoxAddMeleeWeapons.Checked
+                && !checkBoxAddMiscWeapons.Checked)
             {
                 addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, cbWeapon.Text }));
                 crosshairAdded = true;
@@ -242,6 +248,7 @@ namespace VenomCrosshairs
                     crosshairAdded = true;
                 }
             }
+
 
             // This could be changed to an event that triggers when addCrosshairToListView is called...
             if (crosshairAdded)
