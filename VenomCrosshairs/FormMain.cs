@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta8.0";
+        private static readonly string VC_VERSION = "beta8.1";
 
         private static readonly string PATH_VC = Directory.GetCurrentDirectory();
         private static readonly string PATH_VC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
@@ -317,7 +317,7 @@ namespace VenomCrosshairs
         private void onCBClassChangeEvent(object sender, EventArgs e)
         {
             cbWeapon.Items.Clear();
-            checkBoxAddOnlyClass.Text = $@"Add to ONLY to {cbClass.Text}";
+            checkBoxAddOnlyClass.Text = $@"Add ONLY to {cbClass.Text}";
             switch (cbClass.Text)
             {
                 case "Scout":

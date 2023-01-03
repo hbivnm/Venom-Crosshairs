@@ -185,9 +185,9 @@
             this.checkBoxAddOnlyClass.Enabled = false;
             this.checkBoxAddOnlyClass.Location = new System.Drawing.Point(71, 156);
             this.checkBoxAddOnlyClass.Name = "checkBoxAddOnlyClass";
-            this.checkBoxAddOnlyClass.Size = new System.Drawing.Size(128, 17);
+            this.checkBoxAddOnlyClass.Size = new System.Drawing.Size(116, 17);
             this.checkBoxAddOnlyClass.TabIndex = 23;
-            this.checkBoxAddOnlyClass.Text = "Add to ONLY to class";
+            this.checkBoxAddOnlyClass.Text = "Add ONLY to class";
             this.checkBoxAddOnlyClass.UseVisualStyleBackColor = true;
             // 
             // checkBoxAddPrimaryWeapons
