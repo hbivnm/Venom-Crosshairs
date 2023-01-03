@@ -24,6 +24,8 @@ namespace VenomCrosshairs
     {
         private static readonly string VC_VERSION = "beta8.1";
 
+        private static readonly string VC_CONFIG_NAME = "VenomCrosshairsConfig";
+
         private static readonly string PATH_VC = Directory.GetCurrentDirectory();
         private static readonly string PATH_VC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
         private static readonly string PATH_VC_RESOURCES_MATERIALS = Directory.GetCurrentDirectory() + @"\resources\materials\";
@@ -43,9 +45,11 @@ namespace VenomCrosshairs
         private bool hasInitialized = false;
         private bool showConsole = true;
 
-        private static readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
+        private static readonly string[] prevConfigNames = { "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
 
         // TODO: Re-write, make "TF2Class" class..
+        private static readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
+
         private static readonly string[] tf2ScoutWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin" };
         private static readonly string[] tf2PrimaryScoutWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper" };
         private static readonly string[] tf2SecondaryScoutWeapons = { "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger" };
@@ -275,7 +279,7 @@ namespace VenomCrosshairs
         private void btnReadConfig_Click(object sender, EventArgs e)
         {
             writeToDebugger("Reading current config... ");
-            string vcScripDir = textBoxTF2Path.Text + @"\tf\custom\VenomCrosshairConfig\scripts";
+            string vcScripDir = textBoxTF2Path.Text + $@"\tf\custom\{VC_CONFIG_NAME}\scripts";
             if (Directory.Exists(vcScripDir))
             {
                 foreach (string script in Directory.GetFiles(vcScripDir, "*.txt"))
@@ -298,7 +302,7 @@ namespace VenomCrosshairs
             }
             else
             {
-                MessageBox.Show("No Venom Crosshairs config folder found!\n\nMake sure your custom crosshair folder is named \"VenomCrosshairConfig\".", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Venom Crosshairs config folder found!\n\nMake sure your custom crosshair folder is named \"" + VC_CONFIG_NAME + "\".", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 writeLineToDebugger("Failed!");
             }
         }
@@ -508,7 +512,20 @@ namespace VenomCrosshairs
                 if (File.Exists(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE))
                     textBoxTF2Path.Text = File.ReadAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE);
 
-                // TODO: Search for existing config with different name
+                // Look for old configs from previous versions
+                foreach (var prevConfigName in prevConfigNames)
+                {
+                    string prevConfigPath = $@"{textBoxTF2Path.Text}\tf\custom\{prevConfigName}";
+                    if (Directory.Exists(prevConfigPath))
+                    {
+                        Directory.Move(prevConfigPath, $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}");
+                        MessageBox.Show($"An old config was found and has now been renamed!\n\n\"{prevConfigName}\" -> \"{VC_CONFIG_NAME}\"", "Venom Crosshairs - Old config folder renamed!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    }
+
+                }
+
+                // TODO: Search for existing config with different names
 
                 pictureBoxLoading.Visible = false;
             }
@@ -771,11 +788,11 @@ namespace VenomCrosshairs
             {
                 writeLineToDebugger("Clean installation of Venom Crosshairs config started!");
                 writeToDebugger("Removing old Venom Crosshairs config... ");
-                if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig"))
-                    Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig", true);
+                if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}"))
+                    Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}", true);
                 writeLineToDebugger("Done!");
             }
-            else if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig"))
+            else if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}"))
             {
                 writeLineToDebugger("Updating current Venom Crosshairs config!");
                 isUpdate = true;
@@ -784,16 +801,16 @@ namespace VenomCrosshairs
                 writeLineToDebugger("Installation of Venom Crosshairs config started!");
 
             // Installation process
-            if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\materials\vgui\replay\thumbnails"))
-                Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\materials\vgui\replay\thumbnails");
-            if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\scripts"))
-                Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\scripts");
+            if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails"))
+                Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails");
+            if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts"))
+                Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts");
 
             writeToDebugger("Copying materials... ");
             foreach (var crosshairVMT in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vmt"))
-                File.Copy(crosshairVMT, $@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVMT)}", true);
+                File.Copy(crosshairVMT, $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVMT)}", true);
             foreach (var crosshairVTF in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
-                File.Copy(crosshairVTF, $@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVTF)}", true);
+                File.Copy(crosshairVTF, $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVTF)}", true);
             writeLineToDebugger("Done!");
 
             writeToDebugger("Adding scripts... ");
@@ -804,13 +821,13 @@ namespace VenomCrosshairs
                     string crosshair = item.SubItems[0].Text;
                     string weaponName = item.SubItems[1].Text;
                     string weaponScriptName = weaponScriptPairs[weaponName];
-                    string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\scripts\{weaponScriptName}";
+                    string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}";
 
                     if (File.Exists(fullScriptPath))
                         File.Delete(fullScriptPath);
 
                     File.WriteAllText(
-                        $@"{textBoxTF2Path.Text}\tf\custom\VenomCrosshairConfig\scripts\{weaponScriptName}",
+                        $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}",
                         File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
                             .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
                             .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
