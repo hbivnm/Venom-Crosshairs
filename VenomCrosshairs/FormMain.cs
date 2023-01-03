@@ -479,7 +479,7 @@ namespace VenomCrosshairs
                     showConsole = true;
                     textBoxDebugger.Visible = true;
                     lblStatus.Visible = false;
-                    this.Width = 1183;
+                    this.Width = 1246 + 5;
                 }
 
                 // Read user settings
@@ -576,7 +576,7 @@ namespace VenomCrosshairs
                 showConsole = true;
                 lblStatus.Visible = false;
                 textBoxDebugger.Visible = true;
-                ActiveForm.Width = 1183;
+                ActiveForm.Width = 1246 + 5;
             }
         }
 

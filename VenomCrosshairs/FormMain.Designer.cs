@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.textBoxTF2Path = new System.Windows.Forms.TextBox();
             this.lblTF2Path = new System.Windows.Forms.Label();
-            this.textBoxDebugger = new System.Windows.Forms.TextBox();
             this.cbClass = new System.Windows.Forms.ComboBox();
             this.cbWeapon = new System.Windows.Forms.ComboBox();
             this.cbCrosshair = new System.Windows.Forms.ComboBox();
@@ -64,6 +63,7 @@
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
             this.btnReload = new System.Windows.Forms.Button();
+            this.textBoxDebugger = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
@@ -84,20 +84,6 @@
             this.lblTF2Path.Size = new System.Drawing.Size(54, 13);
             this.lblTF2Path.TabIndex = 2;
             this.lblTF2Path.Text = "TF2 Path:";
-            // 
-            // textBoxDebugger
-            // 
-            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
-            this.textBoxDebugger.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
-            this.textBoxDebugger.Multiline = true;
-            this.textBoxDebugger.Name = "textBoxDebugger";
-            this.textBoxDebugger.ReadOnly = true;
-            this.textBoxDebugger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDebugger.Size = new System.Drawing.Size(297, 530);
-            this.textBoxDebugger.TabIndex = 4;
             // 
             // cbClass
             // 
@@ -451,11 +437,25 @@
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
+            // textBoxDebugger
+            // 
+            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
+            this.textBoxDebugger.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
+            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
+            this.textBoxDebugger.Multiline = true;
+            this.textBoxDebugger.Name = "textBoxDebugger";
+            this.textBoxDebugger.ReadOnly = true;
+            this.textBoxDebugger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
+            this.textBoxDebugger.TabIndex = 4;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1173, 551);
+            this.ClientSize = new System.Drawing.Size(1230, 551);
             this.Controls.Add(this.btnReadConfig);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnToggleConsole);
@@ -509,7 +509,6 @@
         private System.Windows.Forms.Button btnReload;
         private System.Windows.Forms.TextBox textBoxTF2Path;
         private System.Windows.Forms.Label lblTF2Path;
-        private System.Windows.Forms.TextBox textBoxDebugger;
         private System.Windows.Forms.ComboBox cbClass;
         private System.Windows.Forms.ComboBox cbWeapon;
         private System.Windows.Forms.ComboBox cbCrosshair;
@@ -541,6 +540,7 @@
         private System.Windows.Forms.Button btnToggleConsole;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Button btnReadConfig;
+        private System.Windows.Forms.TextBox textBoxDebugger;
     }
 }
 
