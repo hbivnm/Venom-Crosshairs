@@ -9,7 +9,7 @@ Venom Crosshairs is a client-side solution to automating the installation and ma
 Check out the releases and download [here](https://github.com/hbivnm/Venom-Crosshairs/releases).
 
 ## Tutorial / Installation
-**NOTE:** If you already have an old custom/weapon-specific crosshair folder in `tf\custom` delete it or rename it to `VenomCrosshairsConfig`
+**NOTE:** If you already have an old custom/weapon-specific crosshair folder in `\tf\custom` delete it or rename it to `VenomCrosshairsConfig`
 
 1. Download the latest release found [here](https://github.com/hbivnm/Venom-Crosshairs/releases).
 2. Extract the folder named `VenomCrosshairs` to a directory of your liking.

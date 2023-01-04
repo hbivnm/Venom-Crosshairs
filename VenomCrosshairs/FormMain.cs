@@ -121,7 +121,7 @@ namespace VenomCrosshairs
         /// 
         private void btnReload_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("You are about to download missing/new crosshairs and reload the crosshair list. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Update crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            DialogResult dialogResult = MessageBox.Show("You are about to download new/missing crosshairs and reload the crosshair list. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Update crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
                 new Thread(downloadAndGenerateCrosshairs).Start();
@@ -296,7 +296,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"\"{Path.GetFileName(script)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show($"\"{Path.GetFileName(script)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 btnInstall.Enabled = true;
@@ -438,7 +438,7 @@ namespace VenomCrosshairs
         private void onFormLoad(object sender, EventArgs e)
         {
             // Fetch public crosshairs, if new crosshairs are available -> prompt user
-            bool newCrosshairsAvailable = isNewCrosshairsAvailable(false);
+            isNewCrosshairsAvailable(false);
 
             writeLineToDebugger($"Venom Crosshairs version {VC_VERSION}");
         }
@@ -549,9 +549,7 @@ namespace VenomCrosshairs
                 {
                     writeLineToDebugger("New crosshairs available!");
                     if (!suppressNotification)
-                    {
                         MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "Venom Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
                     return true;
                 }
 
@@ -698,33 +696,6 @@ namespace VenomCrosshairs
                     }
         }
 
-        private string[] getWeaponsFromClassName(string className)
-        {
-            switch (className)
-            {
-                case "Scout":
-                    return tf2ScoutWeapons;
-                case "Soldier":
-                    return tf2SoldierWeapons;
-                case "Pyro":
-                    return tf2PyroWeapons;
-                case "Demoman":
-                    return tf2DemomanWeapons;
-                case "Heavy":
-                    return tf2HeavyWeapons;
-                case "Engineer":
-                    return tf2EngineerWeapons;
-                case "Medic":
-                    return tf2MedicWeapons;
-                case "Sniper":
-                    return tf2SniperWeapons;
-                case "Spy":
-                    return tf2SpyWeapons;
-                default:
-                    return null;
-            }
-        }
-
         private string getExplosionEffectParticleName(string name)
         {
             switch (name)
@@ -830,10 +801,12 @@ namespace VenomCrosshairs
                 writeLineToDebugger("Installation of Venom Crosshairs config started!");
 
             // Installation process
+            writeToDebugger("Creating config structure... ");
             if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails"))
                 Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails");
             if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts"))
                 Directory.CreateDirectory($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts");
+            writeLineToDebugger("Done!");
 
             writeToDebugger("Copying materials... ");
             foreach (var crosshairVMT in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vmt"))
@@ -868,13 +841,9 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             if (!isUpdate)
-            {
-                writeLineToDebugger("Venom Crosshairs config config successfully installed!");
-            }
+                writeLineToDebugger("Venom Crosshairs config successfully installed!");
             else
-            {
                 writeLineToDebugger("Venom Crosshairs config successfully updated!");
-            }
 
             Invoke(new MethodInvoker(delegate ()
             {
