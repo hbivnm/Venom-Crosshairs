@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta8.1";
+        private static readonly string VC_VERSION = "beta8.2";
 
         private static readonly string VC_CONFIG_NAME = "VenomCrosshairsConfig";
 
@@ -116,6 +116,9 @@ namespace VenomCrosshairs
             initVC();
         }
 
+        /// 
+        /// Controls
+        /// 
         private void btnReload_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show("You are about to download missing/new crosshairs and reload the crosshair list. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Update crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
@@ -254,8 +257,6 @@ namespace VenomCrosshairs
                 }
             }
 
-
-            // This could be changed to an event that triggers when addCrosshairToListView is called...
             if (crosshairAdded)
             {
                 btnRemoveSelected.Enabled = true;
@@ -325,7 +326,6 @@ namespace VenomCrosshairs
         /// 
         /// Events
         /// 
-
         private void onCBClassChangeEvent(object sender, EventArgs e)
         {
             cbWeapon.Items.Clear();
@@ -436,14 +436,7 @@ namespace VenomCrosshairs
         private void onFormLoad(object sender, EventArgs e)
         {
             // Fetch public crosshairs, if new crosshairs are available -> prompt user
-            writeToDebugger("Fetching public crosshair list... ");
-
             bool newCrosshairsAvailable = isNewCrosshairsAvailable(false);
-
-            writeLineToDebugger("Done!");
-
-            if (newCrosshairsAvailable)
-                writeLineToDebugger("New crosshairs available!");
 
             writeLineToDebugger($"Venom Crosshairs version {VC_VERSION}");
         }
@@ -545,11 +538,14 @@ namespace VenomCrosshairs
 
         private bool isNewCrosshairsAvailable(bool suppressNotification)
         {
+            writeToDebugger("Fetching public crosshair list... ");
             _ = fetchCrosshairsFromPublicRepo();
+            writeLineToDebugger("Done!");
 
             foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
                 if (!File.Exists($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"))
                 {
+                    writeLineToDebugger("New crosshairs available!");
                     if (!suppressNotification)
                     {
                         MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "Venom Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -912,7 +908,6 @@ namespace VenomCrosshairs
             }));
 
             // Download publicly available crosshairs
-            // code
             _ = downloadMissingCrosshairs();
 
             writeToDebugger("Deleting old previews... ");
@@ -926,8 +921,8 @@ namespace VenomCrosshairs
             vtf2tgaProcess.StartInfo.FileName = textBoxTF2Path.Text + @"\bin\vtf2tga.exe";
             writeLineToDebugger("Done!");
 
-            writeToDebugger("Running vtf2tga.exe... ");
             // Generate previews
+            writeToDebugger("Running vtf2tga.exe... ");
             foreach (string vtfFile in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
             {
                 vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
@@ -980,9 +975,7 @@ namespace VenomCrosshairs
                 }
             }));
 
-            writeToDebugger("Fetching public crosshair list... ");
             _ = isNewCrosshairsAvailable(true);
-            writeLineToDebugger("Done!");
 
             Invoke(new MethodInvoker(delegate ()
             {
