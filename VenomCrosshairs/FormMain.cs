@@ -392,9 +392,15 @@ namespace VenomCrosshairs
         private void onCBCrosshairChangeEvent(object sender, EventArgs e)
         {
             if (cbCrosshair.Text.Length > 0)
+            {
+                pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.CenterImage;
                 pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES_PREVIEWS + cbCrosshair.Text + ".png";
+            }
             else
+            {
+                pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VC.png";
+            }
 
             btnAddCrosshair.Enabled = true;
             checkBoxAddOnlyClass.Enabled = true;
@@ -881,6 +887,7 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = true;
+                pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VC.png";
 
                 listViewChosenCrosshairs.Items.Clear();
