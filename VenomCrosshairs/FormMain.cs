@@ -161,18 +161,20 @@ namespace VenomCrosshairs
 
         private void btnPrevCrosshair_Click(object sender, EventArgs e)
         {
-            if (cbCrosshair.SelectedIndex == 0 || cbCrosshair.SelectedIndex == -1)
-                cbCrosshair.SelectedIndex = cbCrosshair.Items.Count - 1;
-            else
-                cbCrosshair.SelectedIndex -= 1;
+            if (cbCrosshair.Items.Count > 0)
+                if (cbCrosshair.SelectedIndex == 0 || cbCrosshair.SelectedIndex == -1)
+                    cbCrosshair.SelectedIndex = cbCrosshair.Items.Count - 1;
+                else
+                    cbCrosshair.SelectedIndex -= 1;
         }
 
         private void btnNextCrosshair_Click(object sender, EventArgs e)
         {
-            if (cbCrosshair.SelectedIndex == cbCrosshair.Items.Count - 1 || cbCrosshair.SelectedIndex == -1)
-                cbCrosshair.SelectedIndex = 0;
-            else
-                cbCrosshair.SelectedIndex += 1;
+            if (cbCrosshair.Items.Count > 0)
+                if (cbCrosshair.SelectedIndex == cbCrosshair.Items.Count - 1 || cbCrosshair.SelectedIndex == -1)
+                    cbCrosshair.SelectedIndex = 0;
+                else
+                    cbCrosshair.SelectedIndex += 1;
         }
 
         private void btnToggleConsole_Click(object sender, EventArgs e)
@@ -576,7 +578,7 @@ namespace VenomCrosshairs
         {
             var tasks = new List<Task>();
             int newCrosshairsFileCount = 0;
-            writeToDebugger($"Downloading crosshairs... ");
+            writeLineToDebugger($"Downloading crosshairs... ({0f}%)");
 
             foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
                 if (!File.Exists($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"))
@@ -588,8 +590,27 @@ namespace VenomCrosshairs
                     newCrosshairsFileCount++;
                 }
 
-            Task.WaitAll(tasks.ToArray());
-            writeLineToDebugger("Done!");
+            bool tasksFinished = false;
+            if (tasks.Count > 0)
+                while (!tasksFinished)
+                {
+                    float completedTasks = 0;
+                    foreach (Task task in tasks)
+                        if (task.IsCompleted)
+                            completedTasks++;
+
+                    if (completedTasks == tasks.Count)
+                        tasksFinished = true;
+                    else
+                        writeLineToDebugger($"Downloading crosshairs... ({Math.Round(((float)completedTasks / (float)tasks.Count) * 100)}%)");
+
+                    Thread.Sleep(250);
+                }
+
+            writeLineToDebugger("Downloading crosshairs... (100%)");
+
+            Task.WaitAll(tasks.ToArray()); // Keeping this as a backup if something goes wrong
+
             writeLineToDebugger($"Downloaded {newCrosshairsFileCount / 2} crosshair(s)!");
             return null;
         }
@@ -980,12 +1001,14 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
-                cbClass.SelectedIndex = -1;
-                cbWeapon.SelectedIndex = -1;
-                cbWeapon.Enabled = false;
                 textBoxTF2Path.Enabled = true;
-                btnReload.Enabled = true;
                 cbClass.Enabled = true;
+                cbClass.SelectedIndex = -1;
+                cbWeapon.Enabled = false;
+                cbWeapon.SelectedIndex = -1;
+                cbCrosshair.Enabled = false;
+                cbCrosshair.SelectedIndex = -1;
+                btnReload.Enabled = true;
             }));
             writeLineToDebugger("Finished reloading crosshair list!");
         }
