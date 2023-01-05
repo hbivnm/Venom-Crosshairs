@@ -24,6 +24,7 @@ See the [wiki](https://github.com/hbivnm/Venom-Crosshairs/wiki).
 
 # The future of Venom Crosshairs
 ## Planned features
+- [ ] Add detection for "no explosion" .vpk files (see why [here](https://github.com/hbivnm/Venom-Crosshairs/wiki/FAQ))
 - [ ] Add user-friendly prompts for currently (very rare) unhandled exceptions.
 - [ ] Add notification indicator to "Reload crosshair list" button when new crosshairs are available. (Replaces popup message)
 - [ ] Add double-clicking a weapon in the ListView should select it as "current weapon". (Note to self: add "class" listviewentry)
