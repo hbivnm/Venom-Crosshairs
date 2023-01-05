@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta8.2";
+        private static readonly string VC_VERSION = "beta9.0";
 
         private static readonly string VC_CONFIG_NAME = "VenomCrosshairsConfig";
 
@@ -504,9 +504,10 @@ namespace VenomCrosshairs
                     {
                         cbExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE));
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        throw new FormatException($@"The contents of {PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE} could not be parsed to an Integer.");
+                        MessageBox.Show($"User setting file for \"Explosion effect\" could not be parsed to an Integer.\n\nExplosion effect restored to default.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not parse user setting: Explosion effect", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        File.Delete(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE);
                     }
                 else
                     cbExplosionEffect.SelectedIndex = 0;
@@ -514,7 +515,17 @@ namespace VenomCrosshairs
 
                 // User TF2 path
                 if (File.Exists(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE))
-                    textBoxTF2Path.Text = File.ReadAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE);
+                {
+                    try
+                    {
+                        textBoxTF2Path.Text = File.ReadAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE);
+                        performSanityCheck(textBoxTF2Path.Text);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"User setting file for \"TF2 path\" could not be parsed to a String.\n\nTF2 path has been reset.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not parse user setting: TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
 
                 // Look for old configs from previous versions
                 renameOldConfig();
@@ -865,6 +876,9 @@ namespace VenomCrosshairs
                     if (File.Exists(fullScriptPath))
                         File.Delete(fullScriptPath);
 
+                    try
+                    {
+
                     File.WriteAllText(
                         $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}",
                         File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
@@ -873,6 +887,11 @@ namespace VenomCrosshairs
                             .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
                             .Replace("VC_PLACEHOLDER", crosshair)
                     );
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Failed to get explosion particle name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }));
             writeLineToDebugger("Done!");
