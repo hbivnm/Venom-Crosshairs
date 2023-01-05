@@ -519,7 +519,6 @@ namespace VenomCrosshairs
                     try
                     {
                         textBoxTF2Path.Text = File.ReadAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE);
-                        performSanityCheck(textBoxTF2Path.Text);
                     }
                     catch (Exception ex)
                     {
