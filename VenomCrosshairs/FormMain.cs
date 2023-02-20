@@ -318,6 +318,9 @@ namespace VenomCrosshairs
                 MessageBox.Show("No Venom Crosshairs config folder found!\n\nMake sure your custom crosshair folder is named \"" + VC_CONFIG_NAME + "\".", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 writeLineToDebugger("Failed!");
             }
+            cbClass.Enabled = true;
+            cbWeapon.Enabled = true;
+            cbCrosshair.Enabled = true;
             pictureBoxLoading.Visible = false;
         }
 
@@ -440,10 +443,21 @@ namespace VenomCrosshairs
             }
         }
 
-        private void onCBExplosionEffectChangeEvent(object server, EventArgs e)
+        private void onCBExplosionEffectChangeEvent(object sender, EventArgs e)
         {
             File.WriteAllText(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE, Convert.ToString(cbExplosionEffect.SelectedIndex));
         }
+
+        //private void onListViewChosenCrosshairSelect(object sender, EventArgs e) // TODO: Select from ListView
+        //{
+        //    if (this.listViewChosenCrosshairs.SelectedItems.Count == 1)
+        //    {
+        //        writeLineToDebugger(this.listViewChosenCrosshairs.SelectedItems[0].SubItems[1].Text);
+        //        cbClass.Text = "";
+        //        cbWeapon.Text = this.listViewChosenCrosshairs.SelectedItems[0].SubItems[1].Text;
+        //        cbCrosshair.Text = this.listViewChosenCrosshairs.SelectedItems[0].SubItems[0].Text;
+        //    }
+        //}
 
         private void onFormLoad(object sender, EventArgs e)
         {
@@ -488,6 +502,7 @@ namespace VenomCrosshairs
                 // ListView
                 listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
                 listViewChosenCrosshairs.Columns.Add("Weapon", 599);
+                //listViewChosenCrosshairs.SelectedIndexChanged += new EventHandler(onListViewChosenCrosshairSelect); TODO: Select from ListView
 
                 // Hide console
                 if (showConsole)
@@ -508,6 +523,7 @@ namespace VenomCrosshairs
                 // Read user settings
                 // Explosion effect
                 if (File.Exists(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE))
+                {
                     try
                     {
                         cbExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE));
@@ -517,8 +533,11 @@ namespace VenomCrosshairs
                         MessageBox.Show($"User setting file for \"Explosion effect\" could not be parsed to an Integer.\n\nExplosion effect restored to default.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not parse user setting: Explosion effect", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         File.Delete(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE);
                     }
+                }
                 else
+                {
                     cbExplosionEffect.SelectedIndex = 0;
+                }
                 cbExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
 
                 // User TF2 path
@@ -897,11 +916,12 @@ namespace VenomCrosshairs
                     string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}";
 
                     if (File.Exists(fullScriptPath))
+                    {
                         File.Delete(fullScriptPath);
+                    }
 
                     try
                     {
-
                         File.WriteAllText(
                             $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}",
                             File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
@@ -922,9 +942,13 @@ namespace VenomCrosshairs
             doVPKCheck();
 
             if (!isUpdate)
+            {
                 writeLineToDebugger("Venom Crosshairs config successfully installed!");
+            }
             else
+            {
                 writeLineToDebugger("Venom Crosshairs config successfully updated!");
+            }
 
             Invoke(new MethodInvoker(delegate ()
             {
@@ -1336,7 +1360,6 @@ namespace VenomCrosshairs
                     }
                 }
             }
-
             File.WriteAllText(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE, darkMode.ToString());
         }
 
