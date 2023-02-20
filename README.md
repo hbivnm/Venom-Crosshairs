@@ -24,12 +24,13 @@ See the [wiki](https://github.com/hbivnm/Venom-Crosshairs/wiki).
 
 # The future of Venom Crosshairs
 ## Planned features
+- [ ] Add clicking a weapon in the ListView should select it as "current weapon" along with class and crosshair.
 - [ ] Add notification indicator to "Reload crosshair list" button when new crosshairs are available. (Replaces popup message)
-- [ ] Add double-clicking a weapon in the ListView should select it as "current weapon". (Note to self: add "class" listviewentry)
 - [ ] Add "Update Venom Crosshairs" notification when new release is available.
 - [ ] Detect if non-Venom Crosshair config is present and ask user if user wants to rename folder. (This will probably mark the official 1.0 release)
 
 ## Implemented features
+- [x] Dark mode.
 - [x] Add user-friendly prompts for currently (very rare) unhandled exceptions.
 - [x] Add detection for "no explosion" .vpk files (see why [here](https://github.com/hbivnm/Venom-Crosshairs/wiki/FAQ))
 - [x] Automatically rename old config folders from previous Venom Crosshairs releases.
@@ -45,7 +46,7 @@ See the [wiki](https://github.com/hbivnm/Venom-Crosshairs/wiki).
 - [x] ~~Rename "Add to all" button.~~ Removed button instead.
 - [x] TF2 Path input field saved inbetween sessions.
 - [x] Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
-- [x] Checkboxes to "Add to all PRIMARY/SECONDARY/MELEE.
+- [x] Checkboxes to "Add to all PRIMARY/SECONDARY/MELEE".
 - [x] Make console read-only.
 
 # Original idea
