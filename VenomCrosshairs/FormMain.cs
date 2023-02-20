@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta9.0";
+        private static readonly string VC_VERSION = "beta10.0";
 
         private static readonly string VC_CONFIG_NAME = "VenomCrosshairsConfig";
 
@@ -34,6 +34,7 @@ namespace VenomCrosshairs
         private static readonly string PATH_VC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
         private static readonly string PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE = PATH_VC_RESOURCES + @"\vc_expeff.cfg";
         private static readonly string PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE = PATH_VC_RESOURCES + @"\vc_userpath.cfg";
+        private static readonly string PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usertheme.cfg";
 
         private Dictionary<string, string[]> classPrimaryMap = new Dictionary<string, string[]>();
         private Dictionary<string, string[]> classSecondaryMap = new Dictionary<string, string[]>();
@@ -44,6 +45,7 @@ namespace VenomCrosshairs
 
         private bool hasInitialized = false;
         private bool showConsole = true;
+        private bool isDarkMode = false;
 
         private static readonly string[] prevConfigNames = { "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
 
@@ -140,6 +142,12 @@ namespace VenomCrosshairs
         private void btnHelp_Click(object sender, EventArgs e)
         {
             Process.Start(@"https://github.com/hbivnm/Venom-Crosshairs/wiki");
+        }
+
+        private void btnDarkMode_Click(object sender, EventArgs e)
+        {
+            isDarkMode = !isDarkMode;
+            setDarkModeTheme(isDarkMode);
         }
 
         private void btnBrowseTF2Path_Click(object sender, EventArgs e)
@@ -523,6 +531,22 @@ namespace VenomCrosshairs
                     catch (Exception ex)
                     {
                         MessageBox.Show($"User setting file for \"TF2 path\" could not be parsed to a String.\n\nTF2 path has been reset.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not parse user setting: TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        textBoxTF2Path.Text = "";
+                    }
+                }
+
+                // Read and set user selected theme
+                if (File.Exists(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE))
+                {
+                    try
+                    {
+                        isDarkMode = Convert.ToBoolean(File.ReadAllText(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE));
+                        setDarkModeTheme(isDarkMode);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"User setting file for \"Theme\" could not be parsed to a Boolean.\n\nThe theme has been defaulted to Light.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not parse user setting: TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        setDarkModeTheme(false);
                     }
                 }
 
@@ -878,14 +902,14 @@ namespace VenomCrosshairs
                     try
                     {
 
-                    File.WriteAllText(
-                        $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}",
-                        File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
-                            .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
-                            .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
-                            .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
-                            .Replace("VC_PLACEHOLDER", crosshair)
-                    );
+                        File.WriteAllText(
+                            $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}",
+                            File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
+                                .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
+                                .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
+                                .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
+                                .Replace("VC_PLACEHOLDER", crosshair)
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -1189,6 +1213,133 @@ namespace VenomCrosshairs
             throw new Exception($"Could not find weapon from script {script}");
         }
 
+        private void setDarkModeTheme(bool darkMode)
+        {
+            // Form
+            if (darkMode)
+            {
+                this.BackColor = Color.FromArgb(20, 20, 20);
+            }
+            else
+            {
+                this.BackColor = Color.FromArgb(240, 240, 240);
+            }
+
+            // Controllers
+            foreach (Control component in this.Controls)
+            {
+                if (component is Button)
+                {
+                    Button btnComponent = (Button)component;
+                    if (darkMode)
+                    {
+                        btnComponent.FlatStyle = FlatStyle.Popup;
+                        btnComponent.BackColor = Color.FromArgb(45, 45, 45);
+                        btnComponent.ForeColor = Color.FromArgb(225, 225, 225);
+                    }
+                    else
+                    {
+                        btnComponent.FlatStyle = FlatStyle.Standard;
+                        btnComponent.BackColor = SystemColors.ControlLight;
+                        btnComponent.ForeColor = SystemColors.ControlText;
+                    }
+                }
+                else if (component is CheckBox)
+                {
+                    if (darkMode)
+                    {
+                        component.ForeColor = Color.FromArgb(225, 225, 225);
+                    }
+                    else
+                    {
+                        component.ForeColor = SystemColors.ControlText;
+                    }
+                }
+                else if (component is ComboBox)
+                {
+                    ComboBox comboBoxComponent = (ComboBox)component;
+                    if (darkMode)
+                    {
+                        comboBoxComponent.BackColor = Color.FromArgb(45, 45, 45);
+                        comboBoxComponent.ForeColor = Color.FromArgb(225, 225, 225);
+                    }
+                    else
+                    {
+                        comboBoxComponent.BackColor = SystemColors.Window;
+                        comboBoxComponent.ForeColor = SystemColors.WindowText;
+                    }
+                }
+                else if (component is Label)
+                {
+                    if (darkMode)
+                    {
+                        component.ForeColor = Color.FromArgb(225, 225, 225);
+                    }
+                    else
+                    {
+                        component.ForeColor = SystemColors.ControlText;
+                    }
+                }
+                else if (component is ListView)
+                {
+                    ListView listViewComponent = (ListView)component;
+                    if (darkMode)
+                    {
+                        listViewComponent.BorderStyle = BorderStyle.FixedSingle;
+                        listViewComponent.GridLines = false;
+                        listViewComponent.BackColor = Color.FromArgb(45, 45, 45);
+                        listViewComponent.ForeColor = Color.FromArgb(225, 225, 225);
+                    }
+                    else
+                    {
+                        listViewComponent.BorderStyle = BorderStyle.Fixed3D;
+                        listViewComponent.GridLines = true;
+                        listViewComponent.BackColor = SystemColors.Window;
+                        listViewComponent.ForeColor = SystemColors.WindowText;
+                    }
+                }
+                else if (component is Panel)
+                {
+                    Panel panelComponent = (Panel)component;
+                    if (darkMode)
+                    {
+                        panelComponent.BorderStyle = BorderStyle.FixedSingle;
+                        panelComponent.BackColor = Color.FromArgb(20, 20, 20);
+                    }
+                    else
+                    {
+                        panelComponent.BorderStyle = BorderStyle.Fixed3D;
+                        panelComponent.BackColor = SystemColors.ControlLight;
+                    }
+                }
+                else if (component is PictureBox)
+                {
+                    // No changes between light/dark mode right now..
+                }
+                else if (component is TextBox)
+                {
+                    if (component.Name != "textBoxDebugger")
+                    {
+                        TextBox txtBoxComponent = (TextBox)component;
+                        if (darkMode)
+                        {
+                            txtBoxComponent.BorderStyle = BorderStyle.FixedSingle;
+                            txtBoxComponent.BackColor = Color.FromArgb(45, 45, 45);
+                            txtBoxComponent.ForeColor = Color.FromArgb(225, 225, 225);
+                        }
+                        else
+                        {
+                            txtBoxComponent.BorderStyle = BorderStyle.Fixed3D;
+                            txtBoxComponent.BackColor = SystemColors.Window;
+                            txtBoxComponent.ForeColor = SystemColors.ControlText;
+                        }
+                    }
+                }
+            }
+
+            File.WriteAllText(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE, darkMode.ToString());
+        }
+
         private bool performSanityCheck(string path)
         {
             writeLineToDebugger("Sanity check started!");
@@ -1204,7 +1355,7 @@ namespace VenomCrosshairs
             if (!File.Exists(path + @"\hl2.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity2");
-                MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?", "Venom Crosshairs - Invalid TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?\n\nHint: Select the \"Team Fortress 2\" directory.", "Venom Crosshairs - Invalid TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

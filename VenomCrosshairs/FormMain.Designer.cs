@@ -45,10 +45,11 @@
             this.checkBoxAddMeleeWeapons = new System.Windows.Forms.CheckBox();
             this.checkBoxAddMiscWeapons = new System.Windows.Forms.CheckBox();
             this.lblAdditionalSettings = new System.Windows.Forms.Label();
-            this.cbExplosionEffect = new System.Windows.Forms.ComboBox();
-            this.lblNoExplosion = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.textBoxDebugger = new System.Windows.Forms.TextBox();
+            this.lblNoExplosion = new System.Windows.Forms.Label();
+            this.cbExplosionEffect = new System.Windows.Forms.ComboBox();
+            this.btnDarkMode = new System.Windows.Forms.Button();
             this.btnReadConfig = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnToggleConsole = new System.Windows.Forms.Button();
@@ -63,8 +64,6 @@
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
             this.btnReload = new System.Windows.Forms.Button();
-            this.textBoxDebugger = new System.Windows.Forms.TextBox();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
             this.SuspendLayout();
@@ -145,6 +144,8 @@
             // 
             // listViewChosenCrosshairs
             // 
+            this.listViewChosenCrosshairs.BackColor = System.Drawing.SystemColors.Window;
+            this.listViewChosenCrosshairs.ForeColor = System.Drawing.SystemColors.WindowText;
             this.listViewChosenCrosshairs.FullRowSelect = true;
             this.listViewChosenCrosshairs.GridLines = true;
             this.listViewChosenCrosshairs.HideSelection = false;
@@ -230,6 +231,39 @@
             this.lblAdditionalSettings.TabIndex = 29;
             this.lblAdditionalSettings.Text = "Additional settings";
             // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(558, 299);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(0, 13);
+            this.lblStatus.TabIndex = 35;
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBoxDebugger
+            // 
+            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
+            this.textBoxDebugger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxDebugger.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
+            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
+            this.textBoxDebugger.Multiline = true;
+            this.textBoxDebugger.Name = "textBoxDebugger";
+            this.textBoxDebugger.ReadOnly = true;
+            this.textBoxDebugger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
+            this.textBoxDebugger.TabIndex = 4;
+            // 
+            // lblNoExplosion
+            // 
+            this.lblNoExplosion.AutoSize = true;
+            this.lblNoExplosion.Location = new System.Drawing.Point(352, 74);
+            this.lblNoExplosion.Name = "lblNoExplosion";
+            this.lblNoExplosion.Size = new System.Drawing.Size(85, 13);
+            this.lblNoExplosion.TabIndex = 32;
+            this.lblNoExplosion.Text = "Explosion effect:";
+            // 
             // cbExplosionEffect
             // 
             this.cbExplosionEffect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -240,38 +274,20 @@
             "Muzzle flash",
             "Spy sapper",
             "Pyro pool"});
-            this.cbExplosionEffect.Location = new System.Drawing.Point(96, 3);
+            this.cbExplosionEffect.Location = new System.Drawing.Point(443, 71);
             this.cbExplosionEffect.Name = "cbExplosionEffect";
             this.cbExplosionEffect.Size = new System.Drawing.Size(95, 21);
             this.cbExplosionEffect.TabIndex = 31;
             // 
-            // lblNoExplosion
+            // btnDarkMode
             // 
-            this.lblNoExplosion.AutoSize = true;
-            this.lblNoExplosion.Location = new System.Drawing.Point(5, 6);
-            this.lblNoExplosion.Name = "lblNoExplosion";
-            this.lblNoExplosion.Size = new System.Drawing.Size(85, 13);
-            this.lblNoExplosion.TabIndex = 32;
-            this.lblNoExplosion.Text = "Explosion effect:";
-            // 
-            // panel1
-            // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.cbExplosionEffect);
-            this.panel1.Controls.Add(this.lblNoExplosion);
-            this.panel1.Location = new System.Drawing.Point(340, 69);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(206, 231);
-            this.panel1.TabIndex = 33;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(558, 299);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(0, 13);
-            this.lblStatus.TabIndex = 35;
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnDarkMode.Image = global::VenomCrosshairs.Properties.Resources.yin_yang;
+            this.btnDarkMode.Location = new System.Drawing.Point(744, 47);
+            this.btnDarkMode.Name = "btnDarkMode";
+            this.btnDarkMode.Size = new System.Drawing.Size(32, 32);
+            this.btnDarkMode.TabIndex = 39;
+            this.btnDarkMode.UseVisualStyleBackColor = true;
+            this.btnDarkMode.Click += new System.EventHandler(this.btnDarkMode_Click);
             // 
             // btnReadConfig
             // 
@@ -437,31 +453,20 @@
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
-            // textBoxDebugger
-            // 
-            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
-            this.textBoxDebugger.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
-            this.textBoxDebugger.Multiline = true;
-            this.textBoxDebugger.Name = "textBoxDebugger";
-            this.textBoxDebugger.ReadOnly = true;
-            this.textBoxDebugger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
-            this.textBoxDebugger.TabIndex = 4;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1235, 551);
+            this.Controls.Add(this.btnDarkMode);
+            this.Controls.Add(this.cbExplosionEffect);
+            this.Controls.Add(this.lblNoExplosion);
             this.Controls.Add(this.btnReadConfig);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnToggleConsole);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pictureBoxLoading);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblAdditionalSettings);
             this.Controls.Add(this.checkBoxAddMiscWeapons);
             this.Controls.Add(this.checkBoxAddMeleeWeapons);
@@ -495,8 +500,6 @@
             this.Name = "FormMain";
             this.Text = "Venom Crosshairs";
             this.Load += new System.EventHandler(this.onFormLoad);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).EndInit();
             this.ResumeLayout(false);
@@ -532,15 +535,15 @@
         private System.Windows.Forms.CheckBox checkBoxAddMeleeWeapons;
         private System.Windows.Forms.CheckBox checkBoxAddMiscWeapons;
         private System.Windows.Forms.Label lblAdditionalSettings;
-        private System.Windows.Forms.ComboBox cbExplosionEffect;
-        private System.Windows.Forms.Label lblNoExplosion;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBoxLoading;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnToggleConsole;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Button btnReadConfig;
         private System.Windows.Forms.TextBox textBoxDebugger;
+        private System.Windows.Forms.Label lblNoExplosion;
+        private System.Windows.Forms.ComboBox cbExplosionEffect;
+        private System.Windows.Forms.Button btnDarkMode;
     }
 }
 
