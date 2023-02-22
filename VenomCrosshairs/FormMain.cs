@@ -406,6 +406,12 @@ namespace VenomCrosshairs
             }
         }
 
+        private void onListViewChosenCrosshairColumnSelect(object sender, ColumnClickEventArgs e)
+        {
+            this.listViewChosenCrosshairs.ListViewItemSorter = new ListViewItemComparer(e.Column);
+            this.listViewChosenCrosshairs.Sort();
+        }
+
         private void onFormLoad(object sender, EventArgs e)
         {
             // Fetch public crosshairs, if new crosshairs are available -> prompt user
@@ -452,6 +458,7 @@ namespace VenomCrosshairs
                 listViewChosenCrosshairs.Columns.Add("Weapon", 499);
                 listViewChosenCrosshairs.Columns.Add("Class", 100);
                 listViewChosenCrosshairs.SelectedIndexChanged += new EventHandler(onListViewChosenCrosshairSelect);
+                listViewChosenCrosshairs.ColumnClick += new ColumnClickEventHandler(onListViewChosenCrosshairColumnSelect);
 
                 // Hide console
                 if (showConsole)
