@@ -36,11 +36,11 @@ namespace VenomCrosshairs
         private static readonly string PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE = PATH_VC_RESOURCES + @"\vc_userpath.cfg";
         private static readonly string PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usertheme.cfg";
 
-        private Dictionary<string, string> publicCrosshairs = new Dictionary<string, string>();
-
         private bool hasInitialized = false;
         private bool showConsole = true;
         private bool isDarkMode = false;
+
+        private Dictionary<string, string> publicCrosshairs = new Dictionary<string, string>();
 
         private static readonly string[] prevConfigNames = { "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
 
@@ -140,7 +140,7 @@ namespace VenomCrosshairs
                 crosshairAdded = true;
             }
 
-            if (checkBoxAddOnlyClass.Checked)
+            if (checkBoxAddOnlyClass.Checked) // Add ONLY to _CLASS_
             {
                 if (checkBoxAddPrimaryWeapons.Checked)
                 {
@@ -170,7 +170,7 @@ namespace VenomCrosshairs
                     crosshairAdded = true;
                 }
             }
-            else if (!checkBoxAddOnlyClass.Checked)
+            else if (!checkBoxAddOnlyClass.Checked) // Add to _ALL_
             {
                 if (checkBoxAddPrimaryWeapons.Checked)
                 {
@@ -205,6 +205,7 @@ namespace VenomCrosshairs
                 }
             }
 
+            // Make sure newly added crosshair is visible in ListView
             this.listViewChosenCrosshairs.Items[listViewChosenCrosshairs.Items.Count - 1].EnsureVisible();
 
             if (crosshairAdded)
@@ -1095,11 +1096,11 @@ namespace VenomCrosshairs
             }
 
             // Controllers
-            foreach (Control component in this.Controls)
+            foreach (Control controlComponent in this.Controls)
             {
-                if (component is Button)
+                if (controlComponent is Button)
                 {
-                    Button btnComponent = (Button)component;
+                    Button btnComponent = (Button)controlComponent;
                     if (darkMode)
                     {
                         btnComponent.FlatStyle = FlatStyle.Popup;
@@ -1113,20 +1114,20 @@ namespace VenomCrosshairs
                         btnComponent.ForeColor = SystemColors.ControlText;
                     }
                 }
-                else if (component is CheckBox)
+                else if (controlComponent is CheckBox)
                 {
                     if (darkMode)
                     {
-                        component.ForeColor = Color.FromArgb(225, 225, 225);
+                        controlComponent.ForeColor = Color.FromArgb(225, 225, 225);
                     }
                     else
                     {
-                        component.ForeColor = SystemColors.ControlText;
+                        controlComponent.ForeColor = SystemColors.ControlText;
                     }
                 }
-                else if (component is ComboBox)
+                else if (controlComponent is ComboBox)
                 {
-                    ComboBox comboBoxComponent = (ComboBox)component;
+                    ComboBox comboBoxComponent = (ComboBox)controlComponent;
                     if (darkMode)
                     {
                         comboBoxComponent.BackColor = Color.FromArgb(45, 45, 45);
@@ -1138,20 +1139,20 @@ namespace VenomCrosshairs
                         comboBoxComponent.ForeColor = SystemColors.WindowText;
                     }
                 }
-                else if (component is Label)
+                else if (controlComponent is Label)
                 {
                     if (darkMode)
                     {
-                        component.ForeColor = Color.FromArgb(225, 225, 225);
+                        controlComponent.ForeColor = Color.FromArgb(225, 225, 225);
                     }
                     else
                     {
-                        component.ForeColor = SystemColors.ControlText;
+                        controlComponent.ForeColor = SystemColors.ControlText;
                     }
                 }
-                else if (component is ListView)
+                else if (controlComponent is ListView)
                 {
-                    ListView listViewComponent = (ListView)component;
+                    ListView listViewComponent = (ListView)controlComponent;
                     if (darkMode)
                     {
                         listViewComponent.BorderStyle = BorderStyle.FixedSingle;
@@ -1167,9 +1168,9 @@ namespace VenomCrosshairs
                         listViewComponent.ForeColor = SystemColors.WindowText;
                     }
                 }
-                else if (component is Panel)
+                else if (controlComponent is Panel)
                 {
-                    Panel panelComponent = (Panel)component;
+                    Panel panelComponent = (Panel)controlComponent;
                     if (darkMode)
                     {
                         panelComponent.BorderStyle = BorderStyle.FixedSingle;
@@ -1181,15 +1182,15 @@ namespace VenomCrosshairs
                         panelComponent.BackColor = SystemColors.ControlLight;
                     }
                 }
-                else if (component is PictureBox)
+                else if (controlComponent is PictureBox)
                 {
                     // No changes between light/dark mode right now..
                 }
-                else if (component is TextBox)
+                else if (controlComponent is TextBox)
                 {
-                    if (component.Name != "textBoxDebugger")
+                    if (controlComponent.Name != "textBoxDebugger")
                     {
-                        TextBox txtBoxComponent = (TextBox)component;
+                        TextBox txtBoxComponent = (TextBox)controlComponent;
                         if (darkMode)
                         {
                             txtBoxComponent.BorderStyle = BorderStyle.FixedSingle;
