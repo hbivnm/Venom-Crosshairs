@@ -391,12 +391,10 @@ namespace VenomCrosshairs
 
         private void onListViewChosenCrosshairSelect(object sender, EventArgs e)
         {
-
             if (this.listViewChosenCrosshairs.SelectedItems.Count == 1)
             {
                 string tf2Class = this.listViewChosenCrosshairs.SelectedItems[0].SubItems[2].Text;
                 string weapon = this.listViewChosenCrosshairs.SelectedItems[0].SubItems[1].Text;
-                string crosshair = this.listViewChosenCrosshairs.SelectedItems[0].SubItems[0].Text;
 
                 if (tf2Class == "Multi-class")
                     cbClass.Items.Add("Multi-class");
@@ -405,7 +403,6 @@ namespace VenomCrosshairs
 
                 cbClass.Text = tf2Class;
                 cbWeapon.Text = weapon;
-                cbCrosshair.Text = crosshair;
             }
         }
 
