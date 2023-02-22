@@ -389,7 +389,7 @@ namespace VenomCrosshairs
 
         private void onListViewChosenCrosshairSelect(object sender, EventArgs e)
         {
-            
+
             if (this.listViewChosenCrosshairs.SelectedItems.Count == 1)
             {
                 string tf2Class = this.listViewChosenCrosshairs.SelectedItems[0].SubItems[2].Text;
@@ -442,6 +442,7 @@ namespace VenomCrosshairs
                     string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
                     cbCrosshair.Items.Add(crosshairName);
                 }
+                setComboBoxDropDownWidthToStringPixelWidth(cbCrosshair);
                 cbCrosshair.SelectedIndexChanged += new EventHandler(onCBCrosshairChangeEvent);
 
                 // Checkboxes
@@ -1012,11 +1013,15 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 cbCrosshair.Items.Clear();
+                float longestCrosshairNamePixelLength = 0.0f;
                 foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
                 {
                     string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
                     cbCrosshair.Items.Add(crosshairName);
                 }
+
+                // Set Crosshair ComboBox width
+                setComboBoxDropDownWidthToStringPixelWidth(cbCrosshair);
             }));
 
             _ = isNewCrosshairsAvailable(true);
@@ -1034,6 +1039,23 @@ namespace VenomCrosshairs
                 btnReload.Enabled = true;
             }));
             writeLineToDebugger("Finished reloading crosshair list!");
+        }
+
+        private void setComboBoxDropDownWidthToStringPixelWidth(ComboBox cb)
+        {
+            int longestPixelWidth = 0;
+            foreach (var item in cb.Items)
+            {
+                SizeF xhairSize = new SizeF();
+
+                using (Bitmap bitmap = new Bitmap(1, 1))
+                    using (Graphics g = Graphics.FromImage(bitmap))
+                        xhairSize = g.MeasureString(item.ToString(), cb.Font);
+
+                if (xhairSize.Width > longestPixelWidth)
+                    longestPixelWidth = (int) xhairSize.Width;
+            }
+            cb.DropDownWidth = longestPixelWidth + 20;
         }
 
         private string getCrosshairFromScript(string script)
