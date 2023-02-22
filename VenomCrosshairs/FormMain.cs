@@ -205,9 +205,6 @@ namespace VenomCrosshairs
                 }
             }
 
-            // Make sure newly added crosshair is visible in ListView
-            this.listViewChosenCrosshairs.Items[listViewChosenCrosshairs.Items.Count - 1].EnsureVisible();
-
             if (crosshairAdded)
             {
                 btnRemoveSelected.Enabled = true;
@@ -732,12 +729,18 @@ namespace VenomCrosshairs
         private void addCrosshairToListView(ListView listView, ListViewItem crosshairListViewItem)
         {
             if (!listViewItemExists(listView, crosshairListViewItem))
+            {
                 listView.Items.Add(crosshairListViewItem);
+
+                // Make sure newly added crosshair is visible in ListView
+                crosshairListViewItem.EnsureVisible();
+            }
             else
                 foreach (ListViewItem item in listView.Items)
                     if (item.SubItems[0].Text != crosshairListViewItem.SubItems[0].Text && item.SubItems[1].Text == crosshairListViewItem.SubItems[1].Text)
                     {
                         item.SubItems[0].Text = cbCrosshair.Text;
+                        item.EnsureVisible();
                         break;
                     }
         }
