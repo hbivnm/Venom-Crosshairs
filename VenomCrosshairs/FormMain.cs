@@ -205,6 +205,8 @@ namespace VenomCrosshairs
                 }
             }
 
+            this.listViewChosenCrosshairs.Items[listViewChosenCrosshairs.Items.Count - 1].EnsureVisible();
+
             if (crosshairAdded)
             {
                 btnRemoveSelected.Enabled = true;
@@ -1042,6 +1044,7 @@ namespace VenomCrosshairs
                 cbCrosshair.Enabled = false;
                 cbCrosshair.SelectedIndex = -1;
                 btnReload.Enabled = true;
+                btnReadConfig.Enabled = true;
             }));
             writeLineToDebugger("Finished reloading crosshair list!");
         }
