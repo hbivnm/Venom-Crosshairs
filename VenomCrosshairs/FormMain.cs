@@ -601,15 +601,15 @@ namespace VenomCrosshairs
 
         private Task fetchCrosshairsFromPublicRepo()
         {
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("MyApplication", "1"));
-            var contentsUrl = $"https://api.github.com/repos/hbivnm/Venom-Crosshairs-List/contents";
-            var response = httpClient.GetStringAsync(contentsUrl).Result;
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("VenomCrosshairs", VC_VERSION));
+            string contentsUrl = $"https://api.github.com/repos/hbivnm/Venom-Crosshairs-List/contents";
+            string response = httpClient.GetStringAsync(contentsUrl).Result;
 
-            var contents = (JArray)JsonConvert.DeserializeObject(response);
+            JArray contents = (JArray)JsonConvert.DeserializeObject(response);
 
             publicCrosshairs.Clear();
-            foreach (var file in contents)
+            foreach (JToken file in contents)
                 publicCrosshairs.Add((string)file["name"], (string)file["download_url"]);
 
             return null;
