@@ -248,7 +248,6 @@ namespace VenomCrosshairs
                         MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                cbClass.Items.Add("Multi-class");
                 btnInstall.Enabled = true;
                 btnInstallClean.Enabled = true;
                 btnRemoveSelected.Enabled = true;
@@ -1013,7 +1012,6 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 cbCrosshair.Items.Clear();
-                float longestCrosshairNamePixelLength = 0.0f;
                 foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
                 {
                     string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
@@ -1049,11 +1047,11 @@ namespace VenomCrosshairs
                 SizeF xhairSize = new SizeF();
 
                 using (Bitmap bitmap = new Bitmap(1, 1))
-                    using (Graphics g = Graphics.FromImage(bitmap))
-                        xhairSize = g.MeasureString(item.ToString(), cb.Font);
+                using (Graphics g = Graphics.FromImage(bitmap))
+                    xhairSize = g.MeasureString(item.ToString(), cb.Font);
 
                 if (xhairSize.Width > longestPixelWidth)
-                    longestPixelWidth = (int) xhairSize.Width;
+                    longestPixelWidth = (int)xhairSize.Width;
             }
             cb.DropDownWidth = longestPixelWidth + 20;
         }

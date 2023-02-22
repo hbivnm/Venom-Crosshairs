@@ -77,6 +77,10 @@ namespace VenomCrosshairs
 
         // Multi-class
         private static readonly string[] tf2MultiClassWeapons = { "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Half-Zatoichi", "Sapper, Red-Tape Recorder, While placing a building" };
+        private static readonly string[] tf2PrimaryMultiClassWeapons = { };
+        private static readonly string[] tf2SecondaryMultiClassWeapons = { "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Sapper, Red-Tape Recorder, While placing a building" };
+        private static readonly string[] tf2MeleeMultiClassWeapons = { "Half-Zatoichi" };
+        private static readonly string[] tf2MiscMultiClassWeapons = { "Sapper, Red-Tape Recorder, While placing a building" };
 
         // All
         private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).ToArray();
@@ -122,11 +126,6 @@ namespace VenomCrosshairs
             }
         }
 
-        public static string[] getAllMultiClassWeapons()
-        {
-            return tf2MultiClassWeapons;
-        }
-
         public static string[] getPrimaryWeapons()
         {
             return tf2AllPrimaryWeapons;
@@ -154,6 +153,8 @@ namespace VenomCrosshairs
                     return tf2PrimarySniperWeapons;
                 case "Spy":
                     return tf2PrimarySpyWeapons;
+                case "Multi-class":
+                    return tf2PrimaryMultiClassWeapons;
             }
             throw new ArgumentException($"'{tf2Class}' is not a Team Fortress 2 class!");
         }
@@ -185,6 +186,8 @@ namespace VenomCrosshairs
                     return tf2SecondarySniperWeapons;
                 case "Spy":
                     return tf2SecondarySpyWeapons;
+                case "Multi-class":
+                    return tf2SecondaryMultiClassWeapons;
             }
             throw new ArgumentException($"'{tf2Class}' is not a Team Fortress 2 class!");
         }
@@ -216,6 +219,8 @@ namespace VenomCrosshairs
                     return tf2MeleeSniperWeapons;
                 case "Spy":
                     return tf2MeleeSpyWeapons;
+                case "Multi-class":
+                    return tf2MeleeMultiClassWeapons;
             }
             throw new ArgumentException($"'{tf2Class}' is not a Team Fortress 2 class!");
         }
@@ -247,6 +252,8 @@ namespace VenomCrosshairs
                     return tf2MiscSniperWeapons;
                 case "Spy":
                     return tf2MiscSpyWeapons;
+                case "Multi-class":
+                    return tf2MiscMultiClassWeapons;
             }
             throw new ArgumentException($"'{tf2Class}' is not a Team Fortress 2 class!");
         }
