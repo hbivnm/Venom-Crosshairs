@@ -583,9 +583,8 @@ namespace VenomCrosshairs
 
         private bool isNewCrosshairsAvailable(bool suppressNotification)
         {
-            writeToDebugger("Fetching public crosshair list... ");
+            writeLineToDebugger("Attempting to fetch public crosshair list... ");
             _ = fetchCrosshairsFromPublicRepo();
-            writeLineToDebugger("Done!");
 
             foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
                 if (!File.Exists($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"))
@@ -604,13 +603,20 @@ namespace VenomCrosshairs
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("VenomCrosshairs", VC_VERSION));
             string contentsUrl = $"https://api.github.com/repos/hbivnm/Venom-Crosshairs-List/contents";
-            string response = httpClient.GetStringAsync(contentsUrl).Result;
+            try
+            {
+                string response = httpClient.GetStringAsync(contentsUrl).Result;
 
-            JArray contents = (JArray)JsonConvert.DeserializeObject(response);
-
-            publicCrosshairs.Clear();
-            foreach (JToken file in contents)
-                publicCrosshairs.Add((string)file["name"], (string)file["download_url"]);
+                JArray contents = (JArray)JsonConvert.DeserializeObject(response);
+                publicCrosshairs.Clear();
+                foreach (JToken file in contents)
+                    publicCrosshairs.Add((string)file["name"], (string)file["download_url"]);
+            }
+            catch (Exception ex)
+            {
+                writeLineToDebugger("\nFailed to fetch crosshairs from public repo!");
+                writeLineToDebugger(ex.ToString());
+            }
 
             return null;
         }
