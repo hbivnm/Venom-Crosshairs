@@ -864,10 +864,15 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             writeToDebugger("Copying materials... ");
-            foreach (var crosshairVMT in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vmt"))
-                File.Copy(crosshairVMT, $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVMT)}", true);
-            foreach (var crosshairVTF in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
-                File.Copy(crosshairVTF, $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{Path.GetFileName(crosshairVTF)}", true);
+            Invoke(new MethodInvoker(delegate ()
+            {
+                foreach (ListViewItem item in listViewChosenCrosshairs.Items)
+                {
+                    string crosshair = item.SubItems[0].Text;
+                    File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vmt", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vmt", true);
+                    File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vtf", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", true);
+                }
+            }));
             writeLineToDebugger("Done!");
 
             writeToDebugger("Adding scripts... ");
