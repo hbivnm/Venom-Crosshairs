@@ -36,15 +36,14 @@ namespace VenomCrosshairs
         private static readonly string PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE = PATH_VC_RESOURCES + @"\vc_userpath.cfg";
         private static readonly string PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usertheme.cfg";
 
-        private bool hasInitialized = false;
-        private bool showConsole = true;
-        private bool isDarkMode = false;
+        private static readonly string[] PREVIOUS_CONFIG_NAMES = { "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
 
-        private Dictionary<string, string> publicCrosshairs = new Dictionary<string, string>();
+        private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
-        private static readonly string[] prevConfigNames = { "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
-
-        private static readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
+        private Dictionary<string, string> gPublicCrosshairs = new Dictionary<string, string>();
+        private bool gHasInitialized = false;
+        private bool gShowConsole = true;
+        private bool gIsDarkMode = false;
 
         public FormMain()
         {
@@ -54,13 +53,10 @@ namespace VenomCrosshairs
 
         /// 
         /// Controls
-        /// 
-        private void btnReload_Click(object sender, EventArgs e)
+        ///
+        private void btnSteam_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("You are about to download new/missing crosshairs and reload the crosshair list. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Update crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-
-            if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
-                new Thread(downloadAndGenerateCrosshairs).Start();
+            Process.Start(@"https://steamcommunity.com/profiles/76561197996468677");
         }
 
         private void btnGitHub_Click(object sender, EventArgs e)
@@ -68,20 +64,44 @@ namespace VenomCrosshairs
             Process.Start(@"https://github.com/hbivnm/Venom-Crosshairs");
         }
 
-        private void btnSteam_Click(object sender, EventArgs e)
+        private void btnToggleConsole_Click(object sender, EventArgs e)
         {
-            Process.Start(@"https://steamcommunity.com/profiles/76561197996468677");
+            toggleConsole();
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            if (this.panelSettings.Visible)
+                this.panelSettings.Visible = false;
+            else
+                this.panelSettings.Visible = true;
+        }
+
+        private void btnReload_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("You are about to reload the crosshair list. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Reload crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+            if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
+                new Thread(reloadCrosshairList).Start();
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("You are about to download missing crosshairs. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Download new/missing crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+            if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
+                new Thread(downloadAndGenerateNewCrosshairs).Start();
+        }
+
+        private void btnDarkMode_Click(object sender, EventArgs e)
+        {
+            gIsDarkMode = !gIsDarkMode;
+            setDarkModeTheme(gIsDarkMode);
         }
 
         private void btnHelp_Click(object sender, EventArgs e)
         {
             Process.Start(@"https://github.com/hbivnm/Venom-Crosshairs/wiki");
-        }
-
-        private void btnDarkMode_Click(object sender, EventArgs e)
-        {
-            isDarkMode = !isDarkMode;
-            setDarkModeTheme(isDarkMode);
         }
 
         private void btnBrowseTF2Path_Click(object sender, EventArgs e)
@@ -117,11 +137,6 @@ namespace VenomCrosshairs
                     cbCrosshair.SelectedIndex = 0;
                 else
                     cbCrosshair.SelectedIndex += 1;
-        }
-
-        private void btnToggleConsole_Click(object sender, EventArgs e)
-        {
-            toggleConsole();
         }
 
         private void btnAddCrosshair_Click(object sender, EventArgs e)
@@ -174,7 +189,7 @@ namespace VenomCrosshairs
             {
                 if (checkBoxAddPrimaryWeapons.Checked)
                 {
-                    foreach (var tf2Class in tf2Classes)
+                    foreach (var tf2Class in TF2_CLASSES)
                         foreach (var weapon in TF2Weapons.getPrimaryWeapons(tf2Class))
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon, tf2Class }));
                     crosshairAdded = true;
@@ -182,7 +197,7 @@ namespace VenomCrosshairs
 
                 if (checkBoxAddSecondaryWeapons.Checked)
                 {
-                    foreach (var tf2Class in tf2Classes)
+                    foreach (var tf2Class in TF2_CLASSES)
                         foreach (var weapon in TF2Weapons.getSecondaryWeapons(tf2Class))
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon, tf2Class }));
                     crosshairAdded = true;
@@ -190,7 +205,7 @@ namespace VenomCrosshairs
 
                 if (checkBoxAddMeleeWeapons.Checked)
                 {
-                    foreach (var tf2Class in tf2Classes)
+                    foreach (var tf2Class in TF2_CLASSES)
                         foreach (var weapon in TF2Weapons.getMeleeWeapons(tf2Class))
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon, tf2Class }));
                     crosshairAdded = true;
@@ -198,7 +213,7 @@ namespace VenomCrosshairs
 
                 if (checkBoxAddMiscWeapons.Checked)
                 {
-                    foreach (var tf2Class in tf2Classes)
+                    foreach (var tf2Class in TF2_CLASSES)
                         foreach (var weapon in TF2Weapons.getMiscWeapons(tf2Class))
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon, tf2Class }));
                     crosshairAdded = true;
@@ -423,12 +438,12 @@ namespace VenomCrosshairs
         private void initVC()
         {
             // Prevent initVC from running more than once
-            if (!hasInitialized)
+            if (!gHasInitialized)
             {
                 pictureBoxLoading.Visible = true;
 
                 // Classes
-                foreach (var tf2Class in tf2Classes)
+                foreach (var tf2Class in TF2_CLASSES)
                     cbClass.Items.Add(tf2Class);
 
                 cbClass.SelectedIndexChanged += new EventHandler(onCBClassChangeEvent);
@@ -444,7 +459,7 @@ namespace VenomCrosshairs
                     string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
                     cbCrosshair.Items.Add(crosshairName);
                 }
-                setComboBoxDropDownWidthToStringPixelWidth(cbCrosshair);
+                setComboBoxDropDownWidthToLongestStringPixelWidth(cbCrosshair);
                 cbCrosshair.SelectedIndexChanged += new EventHandler(onCBCrosshairChangeEvent);
 
                 // Checkboxes
@@ -458,16 +473,16 @@ namespace VenomCrosshairs
                 listViewChosenCrosshairs.ColumnClick += new ColumnClickEventHandler(onListViewChosenCrosshairColumnSelect);
 
                 // Hide console
-                if (showConsole)
+                if (gShowConsole)
                 {
-                    showConsole = false;
+                    gShowConsole = false;
                     textBoxDebugger.Visible = false;
                     lblStatus.Visible = true;
                     this.Width = 876;
                 }
                 else
                 {
-                    showConsole = true;
+                    gShowConsole = true;
                     textBoxDebugger.Visible = true;
                     lblStatus.Visible = false;
                     this.Width = 1246 + 5;
@@ -512,8 +527,8 @@ namespace VenomCrosshairs
                 {
                     try
                     {
-                        isDarkMode = Convert.ToBoolean(File.ReadAllText(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE));
-                        setDarkModeTheme(isDarkMode);
+                        gIsDarkMode = Convert.ToBoolean(File.ReadAllText(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE));
+                        setDarkModeTheme(gIsDarkMode);
                     }
                     catch (Exception ex)
                     {
@@ -532,7 +547,7 @@ namespace VenomCrosshairs
         private void renameOldConfig()
         {
             if (File.Exists(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE))
-                foreach (var prevConfigName in prevConfigNames)
+                foreach (var prevConfigName in PREVIOUS_CONFIG_NAMES)
                 {
                     string prevConfigPath = $@"{textBoxTF2Path.Text}\tf\custom\{prevConfigName}";
                     if (Directory.Exists(prevConfigPath))
@@ -586,7 +601,7 @@ namespace VenomCrosshairs
             writeLineToDebugger("Attempting to fetch public crosshair list... ");
             _ = fetchCrosshairsFromPublicRepo();
 
-            foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
+            foreach (KeyValuePair<string, string> crosshair in gPublicCrosshairs)
                 if (!File.Exists($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"))
                 {
                     writeLineToDebugger("New crosshairs available!");
@@ -608,9 +623,9 @@ namespace VenomCrosshairs
                 string response = httpClient.GetStringAsync(contentsUrl).Result;
 
                 JArray contents = (JArray)JsonConvert.DeserializeObject(response);
-                publicCrosshairs.Clear();
+                gPublicCrosshairs.Clear();
                 foreach (JToken file in contents)
-                    publicCrosshairs.Add((string)file["name"], (string)file["download_url"]);
+                    gPublicCrosshairs.Add((string)file["name"], (string)file["download_url"]);
             }
             catch (Exception ex)
             {
@@ -621,59 +636,61 @@ namespace VenomCrosshairs
             return null;
         }
 
-        private Task downloadMissingCrosshairs()
+        private List<string> downloadMissingCrosshairs()
         {
-            var tasks = new List<Task>();
+            var downloadedCrosshairsList = new List<string>();
+            var taskList = new List<Task>();
             int newCrosshairsFileCount = 0;
             writeLineToDebugger($"Downloading crosshairs... ({0f}%)");
 
-            foreach (KeyValuePair<string, string> crosshair in publicCrosshairs)
+            foreach (KeyValuePair<string, string> crosshair in gPublicCrosshairs)
                 if (!File.Exists($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"))
                 {
                     using (WebClient webClient = new WebClient())
                     {
-                        tasks.Add(webClient.DownloadFileTaskAsync(new Uri(crosshair.Value), $@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"));
+                        taskList.Add(webClient.DownloadFileTaskAsync(new Uri(crosshair.Value), $@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"));
                     }
+                    downloadedCrosshairsList.Add(crosshair.Key);
                     newCrosshairsFileCount++;
                 }
 
             bool tasksFinished = false;
-            if (tasks.Count > 0)
+            if (taskList.Count > 0)
                 while (!tasksFinished)
                 {
                     float completedTasks = 0;
-                    foreach (Task task in tasks)
+                    foreach (Task task in taskList)
                         if (task.IsCompleted)
                             completedTasks++;
 
-                    if (completedTasks == tasks.Count)
+                    if (completedTasks == taskList.Count)
                         tasksFinished = true;
                     else
-                        writeLineToDebugger($"Downloading crosshairs... ({Math.Round(((float)completedTasks / (float)tasks.Count) * 100)}%)");
+                        writeLineToDebugger($"Downloading crosshairs... ({Math.Round(((float)completedTasks / (float)taskList.Count) * 100)}%)");
 
                     Thread.Sleep(250);
                 }
 
             writeLineToDebugger("Downloading crosshairs... (100%)");
 
-            Task.WaitAll(tasks.ToArray()); // Keeping this as a backup if something goes wrong
+            Task.WaitAll(taskList.ToArray()); // Keeping this as a backup if something goes wrong
 
             writeLineToDebugger($"Downloaded {newCrosshairsFileCount / 2} crosshair(s)!");
-            return null;
+            return downloadedCrosshairsList;
         }
 
         private void toggleConsole()
         {
-            if (showConsole)
+            if (gShowConsole)
             {
-                showConsole = false;
+                gShowConsole = false;
                 lblStatus.Visible = true;
                 textBoxDebugger.Visible = false;
                 ActiveForm.Width = 880;
             }
             else
             {
-                showConsole = true;
+                gShowConsole = true;
                 lblStatus.Visible = false;
                 textBoxDebugger.Visible = true;
                 ActiveForm.Width = 1246 + 5;
@@ -821,6 +838,7 @@ namespace VenomCrosshairs
                 pictureBoxLoading.Visible = true;
                 textBoxTF2Path.Enabled = false;
                 btnReload.Enabled = false;
+                btnDownload.Enabled = false;
                 cbClass.Enabled = false;
                 cbCrosshair.Enabled = false;
                 cbWeapon.Enabled = false;
@@ -925,6 +943,7 @@ namespace VenomCrosshairs
                 pictureBoxLoading.Visible = false;
                 textBoxTF2Path.Enabled = true;
                 btnReload.Enabled = true;
+                btnDownload.Enabled = true;
                 cbClass.Enabled = true;
                 cbCrosshair.Enabled = true;
                 cbWeapon.Enabled = true;
@@ -943,7 +962,7 @@ namespace VenomCrosshairs
             }));
         }
 
-        private void downloadAndGenerateCrosshairs()
+        private void reloadCrosshairList()
         {
             Invoke(new MethodInvoker(delegate ()
             {
@@ -955,6 +974,7 @@ namespace VenomCrosshairs
 
                 textBoxTF2Path.Enabled = false;
                 btnReload.Enabled = false;
+                btnDownload.Enabled = false;
                 cbClass.Enabled = false;
                 cbCrosshair.Enabled = false;
                 cbWeapon.Enabled = false;
@@ -971,9 +991,6 @@ namespace VenomCrosshairs
                 btnInstallClean.Enabled = false;
                 btnReadConfig.Enabled = false;
             }));
-
-            // Download publicly available crosshairs
-            _ = downloadMissingCrosshairs();
 
             writeToDebugger("Deleting old previews... ");
             foreach (string previewFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS))
@@ -993,7 +1010,11 @@ namespace VenomCrosshairs
                 vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
                 vtf2tgaProcess.Start();
             }
-            vtf2tgaProcess.WaitForExit();
+            try
+            {
+                vtf2tgaProcess.WaitForExit();
+            }
+            catch (Exception e) { }
             writeLineToDebugger("Done!");
 
             moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
@@ -1040,10 +1061,8 @@ namespace VenomCrosshairs
                 }
 
                 // Set Crosshair ComboBox width
-                setComboBoxDropDownWidthToStringPixelWidth(cbCrosshair);
+                setComboBoxDropDownWidthToLongestStringPixelWidth(cbCrosshair);
             }));
-
-            _ = isNewCrosshairsAvailable(true);
 
             Invoke(new MethodInvoker(delegate ()
             {
@@ -1056,12 +1075,145 @@ namespace VenomCrosshairs
                 cbCrosshair.Enabled = false;
                 cbCrosshair.SelectedIndex = -1;
                 btnReload.Enabled = true;
+                btnDownload.Enabled = true;
                 btnReadConfig.Enabled = true;
             }));
             writeLineToDebugger("Finished reloading crosshair list!");
         }
 
-        private void setComboBoxDropDownWidthToStringPixelWidth(ComboBox cb)
+        private void downloadAndGenerateNewCrosshairs()
+        {
+            Invoke(new MethodInvoker(delegate ()
+            {
+                pictureBoxLoading.Visible = true;
+                pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VC.png";
+
+                listViewChosenCrosshairs.Items.Clear();
+
+                textBoxTF2Path.Enabled = false;
+                btnReload.Enabled = false;
+                btnDownload.Enabled = false;
+                cbClass.Enabled = false;
+                cbCrosshair.Enabled = false;
+                cbWeapon.Enabled = false;
+                btnAddCrosshair.Enabled = false;
+                checkBoxAddOnlyClass.Enabled = false;
+                checkBoxAddPrimaryWeapons.Enabled = false;
+                checkBoxAddSecondaryWeapons.Enabled = false;
+                checkBoxAddMeleeWeapons.Enabled = false;
+                checkBoxAddMiscWeapons.Enabled = false;
+                btnRemoveSelected.Enabled = false;
+                btnPrevCrosshair.Enabled = false;
+                btnNextCrosshair.Enabled = false;
+                btnInstall.Enabled = false;
+                btnInstallClean.Enabled = false;
+                btnReadConfig.Enabled = false;
+            }));
+
+            // Download publicly available crosshairs
+            List<string> downloadedCrosshairsList = downloadMissingCrosshairs();
+
+            if (downloadedCrosshairsList.Count > 0)
+            {
+                // Generate previews
+                writeToDebugger("Preparing vtf2tga process... ");
+                Process vtf2tgaProcess = new Process();
+                vtf2tgaProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                vtf2tgaProcess.StartInfo.FileName = textBoxTF2Path.Text + @"\bin\vtf2tga.exe";
+                writeLineToDebugger("Done!");
+
+                writeToDebugger("Running vtf2tga.exe... ");
+                foreach (string vtfFile in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
+                {
+                    string filename = Path.GetFileNameWithoutExtension(vtfFile) + ".vtf";
+                    if (downloadedCrosshairsList.Contains(filename))
+                    {
+                        vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
+                        vtf2tgaProcess.Start();
+                    }
+                }
+                try
+                {
+                    vtf2tgaProcess.WaitForExit();
+                }
+                catch (Exception e) { }
+                writeLineToDebugger("Done!");
+
+                moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
+
+                writeToDebugger("Generating generatepreviews.bat... ");
+                File.Create(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
+                using (StreamWriter sw = new StreamWriter(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
+                {
+                    foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+                    {
+                        string filename = Path.GetFileNameWithoutExtension(tgaFile);
+                        {
+                            sw.WriteLine("\"" + PATH_VC_RESOURCES + "ffmpeg.exe\" -y -i \"" + tgaFile + "\" " + filename + ".png");
+                        }
+                    }
+                    sw.WriteLine("exit");
+                }
+                writeLineToDebugger("Done!");
+
+                writeToDebugger("Preparing generatepreviews process... ");
+                Process generatepreviewsProcess = new Process();
+                generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                generatepreviewsProcess.StartInfo.FileName = PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
+                writeLineToDebugger("Done!");
+
+                writeToDebugger("Running generatepreviews.bat... ");
+                generatepreviewsProcess.Start();
+                generatepreviewsProcess.WaitForExit();
+                writeLineToDebugger("Done!");
+
+                writeToDebugger("Performing cleanup... ");
+                moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png"); // Function no longer needed due to cleanup steps, remove/refactor?
+                File.Delete(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
+                foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+                    File.Delete(tgaFile);
+                writeLineToDebugger("Done!");
+
+                // Add to ComboBox
+                Invoke(new MethodInvoker(delegate ()
+                {
+                    cbCrosshair.Items.Clear();
+                    foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
+                    {
+                        string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
+                        cbCrosshair.Items.Add(crosshairName);
+                    }
+
+                    // Set Crosshair ComboBox width
+                    setComboBoxDropDownWidthToLongestStringPixelWidth(cbCrosshair);
+                }));
+
+                _ = isNewCrosshairsAvailable(true);
+                writeLineToDebugger("Finished reloading crosshair list!");
+            }
+            else
+            {
+                writeLineToDebugger("No new crosshairs available!");
+            }
+
+            Invoke(new MethodInvoker(delegate ()
+            {
+                pictureBoxLoading.Visible = false;
+                textBoxTF2Path.Enabled = true;
+                cbClass.Enabled = true;
+                cbClass.SelectedIndex = -1;
+                cbWeapon.Enabled = false;
+                cbWeapon.SelectedIndex = -1;
+                cbCrosshair.Enabled = false;
+                cbCrosshair.SelectedIndex = -1;
+                btnReload.Enabled = true;
+                btnDownload.Enabled = true;
+                btnReadConfig.Enabled = true;
+            }));
+        }
+
+        private void setComboBoxDropDownWidthToLongestStringPixelWidth(ComboBox cb)
         {
             int longestPixelWidth = 0;
             foreach (var item in cb.Items)
