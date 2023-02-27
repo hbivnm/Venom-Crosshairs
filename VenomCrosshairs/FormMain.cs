@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta11.1";
+        private static readonly string VC_VERSION = "beta12.0";
 
         private static readonly string VC_CONFIG_NAME = "VenomCrosshairsConfig";
 
@@ -606,7 +606,7 @@ namespace VenomCrosshairs
                 {
                     writeLineToDebugger("New crosshairs available!");
                     if (!suppressNotification)
-                        MessageBox.Show("There are new crosshairs available for download!\n\nDownload them by hitting the double arrow button in the top right.", "Venom Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("There are new crosshairs available for download!\n\nYou can download them opening the settings panel located in the top right.", "Venom Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return true;
                 }
 
@@ -1190,7 +1190,7 @@ namespace VenomCrosshairs
                 }));
 
                 _ = isNewCrosshairsAvailable(true);
-                writeLineToDebugger("Finished reloading crosshair list!");
+                writeLineToDebugger("Updated crosshair list with new crosshairs!");
             }
             else
             {
