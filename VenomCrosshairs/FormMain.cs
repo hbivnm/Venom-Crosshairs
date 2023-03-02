@@ -87,7 +87,7 @@ namespace VenomCrosshairs
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("You are about to download missing crosshairs. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Download new/missing crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            DialogResult dialogResult = MessageBox.Show("You are about to download new/missing crosshairs. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Download new/missing crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
                 new Thread(downloadAndGenerateNewCrosshairs).Start();
