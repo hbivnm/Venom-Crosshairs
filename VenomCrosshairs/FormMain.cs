@@ -514,6 +514,19 @@ namespace VenomCrosshairs
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Something went wrong reading the user setting file.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Failed to read user settings!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        File.Delete(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE);
+                        gUserSettings = new VCUserSettings
+                        {
+                            IsDarkMode = false,
+                            UserExplosionEffectIndex = 0,
+                            UserTF2Path = ""
+                        };
+                        File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
+                        
+                        cbExplosionEffect.SelectedIndex = 0;
+                        textBoxTF2Path.Text = "";
+                        gIsDarkMode = false;
+                        setDarkModeTheme(gIsDarkMode);
                     }
                 }
                 else
@@ -525,6 +538,10 @@ namespace VenomCrosshairs
                         UserTF2Path = ""
                     };
                     File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
+                    cbExplosionEffect.SelectedIndex = 0;
+                    textBoxTF2Path.Text = "";
+                    gIsDarkMode = false;
+                    setDarkModeTheme(gIsDarkMode);
                 }
 
                 // Look for old configs from previous versions
