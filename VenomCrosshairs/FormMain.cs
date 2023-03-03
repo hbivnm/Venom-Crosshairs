@@ -32,15 +32,14 @@ namespace VenomCrosshairs
         private static readonly string PATH_VC_RESOURCES_PREVIEWS = Directory.GetCurrentDirectory() + @"\resources\previews\";
         private static readonly string PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
         private static readonly string PATH_VC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
-        private static readonly string PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE = PATH_VC_RESOURCES + @"\vc_expeff.cfg";
-        private static readonly string PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE = PATH_VC_RESOURCES + @"\vc_userpath.cfg";
-        private static readonly string PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usertheme.cfg";
+        private static readonly string PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usersettings.cfg";
 
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
 
         private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
         private Dictionary<string, string> gPublicCrosshairs = new Dictionary<string, string>();
+        private VCUserSettings gUserSettings = null;
         private bool gHasInitialized = false;
         private bool gShowConsole = true;
         private bool gIsDarkMode = false;
@@ -114,8 +113,9 @@ namespace VenomCrosshairs
                 if (cofd.ShowDialog() == CommonFileDialogResult.Ok && performSanityCheck(cofd.FileName))
                     Invoke(new MethodInvoker(delegate ()
                     {
-                        textBoxTF2Path.Text = cofd.FileName;
-                        File.WriteAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE, cofd.FileName);
+                        gUserSettings.UserTF2Path = cofd.FileName;
+                        File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
+                        textBoxTF2Path.Text = gUserSettings.UserTF2Path;
                         renameOldConfig();
                     }));
             }
@@ -155,7 +155,8 @@ namespace VenomCrosshairs
                 crosshairAdded = true;
             }
 
-            if (checkBoxAddOnlyClass.Checked) // Add ONLY to _CLASS_
+            // Add ONLY to _CLASS_
+            if (checkBoxAddOnlyClass.Checked)
             {
                 if (checkBoxAddPrimaryWeapons.Checked)
                 {
@@ -185,7 +186,8 @@ namespace VenomCrosshairs
                     crosshairAdded = true;
                 }
             }
-            else if (!checkBoxAddOnlyClass.Checked) // Add to _ALL_
+            // Add to _ALL_
+            else if (!checkBoxAddOnlyClass.Checked)
             {
                 if (checkBoxAddPrimaryWeapons.Checked)
                 {
@@ -398,7 +400,8 @@ namespace VenomCrosshairs
 
         private void onCBExplosionEffectChangeEvent(object sender, EventArgs e)
         {
-            File.WriteAllText(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE, Convert.ToString(cbExplosionEffect.SelectedIndex));
+            gUserSettings.UserExplosionEffectIndex = cbExplosionEffect.SelectedIndex;
+            File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
         }
 
         private void onListViewChosenCrosshairSelect(object sender, EventArgs e)
@@ -465,6 +468,9 @@ namespace VenomCrosshairs
                 // Checkboxes
                 checkBoxAddOnlyClass.CheckStateChanged += new EventHandler(onCheckBoxAddClassWeaponsChangeEvent);
 
+                // Explosion effect
+                cbExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
+
                 // ListView
                 listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
                 listViewChosenCrosshairs.Columns.Add("Weapon", 499);
@@ -489,52 +495,36 @@ namespace VenomCrosshairs
                 }
 
                 // Read user settings
-                // Explosion effect
-                if (File.Exists(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE))
+                if (File.Exists(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE))
                 {
                     try
                     {
-                        cbExplosionEffect.SelectedIndex = Convert.ToInt32(File.ReadAllText(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE));
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"User setting file for \"Explosion effect\" could not be parsed to an Integer.\n\nExplosion effect restored to default.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not parse user setting: Explosion effect", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        File.Delete(PATH_VC_RESOURCES_VC_EXPLOSION_EFFECT_CFG_FILE);
-                    }
-                }
-                else
-                {
-                    cbExplosionEffect.SelectedIndex = 0;
-                }
-                cbExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
+                        gUserSettings = JsonConvert.DeserializeObject<VCUserSettings>(File.ReadAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE));
 
-                // User TF2 path
-                if (File.Exists(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE))
-                {
-                    try
-                    {
-                        textBoxTF2Path.Text = File.ReadAllText(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"User setting file for \"TF2 path\" could not be parsed to a String.\n\nTF2 path has been reset.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not parse user setting: TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        textBoxTF2Path.Text = "";
-                    }
-                }
+                        // Explosion effect
+                        cbExplosionEffect.SelectedIndex = gUserSettings.UserExplosionEffectIndex;
 
-                // Read and set user selected theme
-                if (File.Exists(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE))
-                {
-                    try
-                    {
-                        gIsDarkMode = Convert.ToBoolean(File.ReadAllText(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE));
+                        // User path
+                        textBoxTF2Path.Text = gUserSettings.UserTF2Path;
+
+                        // Check last used theme
+                        gIsDarkMode = gUserSettings.IsDarkMode;
                         setDarkModeTheme(gIsDarkMode);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"User setting file for \"Theme\" could not be parsed to a Boolean.\n\nThe theme has been defaulted to Light.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not parse user setting: TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        setDarkModeTheme(false);
+                        MessageBox.Show($"Something went wrong reading the user setting file.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Failed to read user settings!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                }
+                else
+                {
+                    gUserSettings = new VCUserSettings
+                    {
+                        IsDarkMode = false,
+                        UserExplosionEffectIndex = 0,
+                        UserTF2Path = ""
+                    };
+                    File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
                 }
 
                 // Look for old configs from previous versions
@@ -546,7 +536,7 @@ namespace VenomCrosshairs
 
         private void renameOldConfig()
         {
-            if (File.Exists(PATH_VC_RESOURCES_VC_USERPATH_CFG_FILE))
+            if (gUserSettings.UserTF2Path != "")
                 foreach (var prevConfigName in PREVIOUS_CONFIG_NAMES)
                 {
                     string prevConfigPath = $@"{textBoxTF2Path.Text}\tf\custom\{prevConfigName}";
@@ -673,7 +663,8 @@ namespace VenomCrosshairs
 
             writeLineToDebugger("Downloading crosshairs... (100%)");
 
-            Task.WaitAll(taskList.ToArray()); // Keeping this as a backup if something goes wrong
+            // Keeping this as a backup if something goes wrong
+            Task.WaitAll(taskList.ToArray());
 
             writeLineToDebugger($"Downloaded {newCrosshairsFileCount / 2} crosshair(s)!");
             return downloadedCrosshairsList;
@@ -822,7 +813,8 @@ namespace VenomCrosshairs
             throw new ArgumentException($"Could not find ExplosionWaterEffect particle name for '{name}'!");
         }
 
-        private void moveFilesByExtensionOrDelete(string sourceDirectory, string targetDirectory, string extension) // Should probably re-write so it overwrites, not sure of the thoughtprocess of moving or deleting (same filename =/= same file content)
+        // Should probably re-write so it overwrites, not sure of the thoughtprocess of moving or deleting (same filename =/= same file content)
+        private void moveFilesByExtensionOrDelete(string sourceDirectory, string targetDirectory, string extension)
         {
             foreach (string file in Directory.GetFiles(sourceDirectory, "*." + extension))
                 if (!File.Exists(targetDirectory + Path.GetFileName(file)))
@@ -1044,7 +1036,8 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             writeToDebugger("Performing cleanup... ");
-            moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png"); // Function no longer needed due to cleanup steps, remove/refactor?
+            // Function no longer needed due to cleanup steps, remove/refactor?
+            moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
             File.Delete(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
             foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
                 File.Delete(tgaFile);
@@ -1169,7 +1162,8 @@ namespace VenomCrosshairs
                 writeLineToDebugger("Done!");
 
                 writeToDebugger("Performing cleanup... ");
-                moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png"); // Function no longer needed due to cleanup steps, remove/refactor?
+                // Function no longer needed due to cleanup steps, remove/refactor?
+                moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
                 File.Delete(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
                 foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
                     File.Delete(tgaFile);
@@ -1369,7 +1363,8 @@ namespace VenomCrosshairs
                     }
                 }
             }
-            File.WriteAllText(PATH_VC_RESOURCES_VC_USERTHEME_CFG_FILE, darkMode.ToString());
+            gUserSettings.IsDarkMode = darkMode;
+            File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
         }
 
         private bool performSanityCheck(string path)
