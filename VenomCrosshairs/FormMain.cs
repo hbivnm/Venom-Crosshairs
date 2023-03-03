@@ -1337,7 +1337,7 @@ namespace VenomCrosshairs
                     if (darkMode)
                     {
                         panelComponent.BorderStyle = BorderStyle.FixedSingle;
-                        panelComponent.BackColor = Color.FromArgb(20, 20, 20);
+                        panelComponent.BackColor = Color.FromArgb(80, 80, 80);
                     }
                     else
                     {
