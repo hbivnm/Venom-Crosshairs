@@ -3,7 +3,7 @@
 # Venom Crosshairs / Venomxhairs
 Venom Crosshairs (or "Venomxhairs") is a client-side solution to automating the installation and make customization of weapon-specific crosshairs easier for Team Fortress 2.
 
-![Preview image of Venom Crosshairs.](https://i.imgur.com/b0DOdxB.png)
+![Preview image of Venom Crosshairs.](https://i.imgur.com/XSbuae5.png)
 
 # Download
 Check out the releases and download [here](https://github.com/hbivnm/Venom-Crosshairs/releases).
@@ -26,7 +26,7 @@ See the [wiki](https://github.com/hbivnm/Venom-Crosshairs/wiki).
 ## Planned features
 - [ ] Add notification indicator to "Reload crosshair list" button when new crosshairs are available. (Replaces popup message)
 - [ ] Add "Update Venom Crosshairs" notification when new release is available.
-- [ ] Detect if non-Venom Crosshair config is present and ask user if user wants to rename folder. (This will probably mark the official 1.0 release)
+- [ ] Detect if non-Venom Crosshair config is present and ask user if user wants to rename folder.
 
 ## Implemented features
 - [x] Add clicking a weapon in the ListView should select it as "current weapon" and class.
