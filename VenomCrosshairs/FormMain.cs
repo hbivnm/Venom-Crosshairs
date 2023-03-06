@@ -613,7 +613,7 @@ namespace VenomCrosshairs
                 {
                     writeLineToDebugger("New crosshairs available!");
                     if (!suppressNotification)
-                        MessageBox.Show("There are new crosshairs available for download!\n\nYou can download them opening the settings panel located in the top right.", "Venom Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("There are new crosshairs available for download!\n\nYou can download them from the settings panel.", "Venom Crosshairs - New crosshairs available!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return true;
                 }
 
