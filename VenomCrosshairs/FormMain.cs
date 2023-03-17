@@ -790,6 +790,8 @@ namespace VenomCrosshairs
                     return "ExplosionCore_sapperdestroyed";
                 case "Pyro pool":
                     return "eotl_pyro_pool_explosion_flash";
+                case "Rescue Ranger":
+                    return "repair_claw_heal_red1";
             }
             throw new ArgumentException($"Could not find ExplosionEffect particle name for '{name}'!");
         }
@@ -808,6 +810,8 @@ namespace VenomCrosshairs
                     return "ExplosionCore_sapperdestroyed";
                 case "Pyro pool":
                     return "eotl_pyro_pool_explosion_flash";
+                case "Rescue Ranger":
+                    return "repair_claw_heal_blue1";
             }
             throw new ArgumentException($"Could not find ExplosionPlayerEffect particle name for '{name}'!");
         }
@@ -826,6 +830,8 @@ namespace VenomCrosshairs
                     return "ExplosionCore_sapperdestroyed";
                 case "Pyro pool":
                     return "eotl_pyro_pool_explosion_flash";
+                case "Rescue Ranger":
+                    return "repair_claw_heal_red1";
             }
             throw new ArgumentException($"Could not find ExplosionWaterEffect particle name for '{name}'!");
         }

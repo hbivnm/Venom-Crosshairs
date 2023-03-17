@@ -266,10 +266,11 @@
             "Electric shock",
             "Muzzle flash",
             "Spy sapper",
-            "Pyro pool"});
+            "Pyro pool",
+            "Rescue Ranger"});
             this.cbExplosionEffect.Location = new System.Drawing.Point(443, 71);
             this.cbExplosionEffect.Name = "cbExplosionEffect";
-            this.cbExplosionEffect.Size = new System.Drawing.Size(95, 21);
+            this.cbExplosionEffect.Size = new System.Drawing.Size(105, 21);
             this.cbExplosionEffect.TabIndex = 31;
             // 
             // panelSettings
