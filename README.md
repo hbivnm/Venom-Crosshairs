@@ -17,16 +17,15 @@ Check out the releases and download [here](https://github.com/hbivnm/Venom-Cross
 4. Hit Install/Update.
 5. Set `cl_crosshair_file ""` in Team Fortress 2.
 
-**NOTE:** Malwarebytes will report the executable as `MachineLearning/Anomalous.X%`, you will have to manually exclude the `VenomCrosshairs` folder to be able to use Venom Crosshairs alongside Malwarebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) and [also here](https://forums.malwarebytes.com/topic/238670-machinelearninganomalous-detections-and-explanation/), explained by a Staff member on Malwarebytes forum.
+**NOTE:** Malwarebytes may report the executable as `MachineLearning/Anomalous.X%`, you will have to manually exclude the `VenomCrosshairs` folder to be able to use Venom Crosshairs alongside Malwarebytes. A more detailed explanation to this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) and [also here](https://forums.malwarebytes.com/topic/238670-machinelearninganomalous-detections-and-explanation/), explained by a Staff member on Malwarebytes forum.
 
 # Help / FAQ
 See the [wiki](https://github.com/hbivnm/Venom-Crosshairs/wiki).
 
 # The future of Venom Crosshairs
 ## Planned features
-- [ ] Add notification indicator to "Reload crosshair list" button when new crosshairs are available. (Replaces popup message)
+- [ ] Add notification indicator to "Reload crosshair list" button when new crosshairs are available.
 - [ ] Add "Update Venom Crosshairs" notification when new release is available.
-- [ ] Detect if non-Venom Crosshair config is present and ask user if user wants to rename folder.
 
 ## Implemented features
 - [x] Add clicking a weapon in the ListView should select it as "current weapon" and class.

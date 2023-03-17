@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta12.0";
+        private static readonly string VC_VERSION = "beta12.1";
 
         private static readonly string VC_CONFIG_NAME = "VenomCrosshairsConfig";
 

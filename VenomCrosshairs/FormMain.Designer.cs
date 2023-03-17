@@ -46,7 +46,6 @@
             this.checkBoxAddMiscWeapons = new System.Windows.Forms.CheckBox();
             this.lblAdditionalSettings = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.textBoxDebugger = new System.Windows.Forms.TextBox();
             this.lblNoExplosion = new System.Windows.Forms.Label();
             this.cbExplosionEffect = new System.Windows.Forms.ComboBox();
             this.panelSettings = new System.Windows.Forms.Panel();
@@ -71,6 +70,7 @@
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
+            this.textBoxDebugger = new System.Windows.Forms.RichTextBox();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
@@ -247,21 +247,6 @@
             this.lblStatus.Size = new System.Drawing.Size(0, 13);
             this.lblStatus.TabIndex = 35;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // textBoxDebugger
-            // 
-            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
-            this.textBoxDebugger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxDebugger.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
-            this.textBoxDebugger.Multiline = true;
-            this.textBoxDebugger.Name = "textBoxDebugger";
-            this.textBoxDebugger.ReadOnly = true;
-            this.textBoxDebugger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
-            this.textBoxDebugger.TabIndex = 4;
             // 
             // lblNoExplosion
             // 
@@ -534,12 +519,27 @@
             this.pictureBoxCrosshair.TabIndex = 11;
             this.pictureBoxCrosshair.TabStop = false;
             // 
+            // textBoxDebugger
+            // 
+            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
+            this.textBoxDebugger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
+            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
+            this.textBoxDebugger.Name = "textBoxDebugger";
+            this.textBoxDebugger.ReadOnly = true;
+            this.textBoxDebugger.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
+            this.textBoxDebugger.TabIndex = 42;
+            this.textBoxDebugger.Text = "";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1235, 551);
+            this.Controls.Add(this.textBoxDebugger);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.panelSettings);
             this.Controls.Add(this.cbExplosionEffect);
@@ -571,7 +571,6 @@
             this.Controls.Add(this.cbCrosshair);
             this.Controls.Add(this.cbWeapon);
             this.Controls.Add(this.cbClass);
-            this.Controls.Add(this.textBoxDebugger);
             this.Controls.Add(this.textBoxTF2Path);
             this.Controls.Add(this.lblTF2Path);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -622,7 +621,6 @@
         private System.Windows.Forms.Button btnToggleConsole;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Button btnReadConfig;
-        private System.Windows.Forms.TextBox textBoxDebugger;
         private System.Windows.Forms.Label lblNoExplosion;
         private System.Windows.Forms.ComboBox cbExplosionEffect;
         private System.Windows.Forms.Button btnDarkMode;
@@ -633,6 +631,7 @@
         private System.Windows.Forms.Label lblHelp;
         private System.Windows.Forms.Label lblDarkMode;
         private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.RichTextBox textBoxDebugger;
     }
 }
 
