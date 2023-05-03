@@ -247,8 +247,9 @@ namespace VenomCrosshairs
         {
             pictureBoxLoading.Visible = true;
             listViewChosenCrosshairs.Items.Clear();
-            writeToDebugger("Reading current config... ");
+            writeLineToDebugger("Reading current config...");
             string vcScripDir = textBoxTF2Path.Text + $@"\tf\custom\{VC_CONFIG_NAME}\scripts";
+
             if (Directory.Exists(vcScripDir))
             {
                 foreach (string fullWeaponScriptPath in Directory.GetFiles(vcScripDir, "*.txt"))
@@ -262,7 +263,8 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     }
                 }
                 btnInstall.Enabled = true;
@@ -513,7 +515,8 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Something went wrong reading the user setting file.\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Failed to read user settings!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Something went wrong reading the user setting file.", "Venom Crosshairs - Failed to read user settings!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         File.Delete(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE);
                         gUserSettings = new VCUserSettings
                         {
@@ -930,7 +933,8 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!\n\nFor developer: Exception: {ex.Message}", "Venom Crosshairs - Failed to get explosion particle name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to get explosion particle name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     }
                 }
             }));
@@ -1391,7 +1395,7 @@ namespace VenomCrosshairs
             if (!Directory.Exists(path))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity1");
-                MessageBox.Show("The specified TF2 path does not seem to exist.\nDid you set the correct path?", "Venom Crosshairs - TF2 Path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The specified path does not seem to exist.\nDid you set the correct path?", "Venom Crosshairs - TF2 Path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
