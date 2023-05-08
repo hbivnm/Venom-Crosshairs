@@ -41,8 +41,8 @@ namespace VenomCrosshairs
         private Dictionary<string, string> gPublicCrosshairs = new Dictionary<string, string>();
         private VCUserSettings gUserSettings = null;
         private bool gHasInitialized = false;
-        private bool gShowConsole = true;
         private bool gIsDarkMode = false;
+        private bool gShowConsole = true;
 
         public FormMain()
         {
@@ -248,7 +248,9 @@ namespace VenomCrosshairs
             pictureBoxLoading.Visible = true;
             listViewChosenCrosshairs.Items.Clear();
             writeLineToDebugger("Reading current config...");
+
             string vcScripDir = textBoxTF2Path.Text + $@"\tf\custom\{VC_CONFIG_NAME}\scripts";
+            List<string> missingCrosshairsList = new List<string>();
 
             if (Directory.Exists(vcScripDir))
             {
@@ -259,23 +261,30 @@ namespace VenomCrosshairs
                         string crosshair = getCrosshairFromScript(fullWeaponScriptPath);
                         string weapon = TF2Weapons.getWeaponNameFromWeaponScript(Path.GetFileName(fullWeaponScriptPath));
                         string tf2Class = TF2Weapons.getClassFromWeaponName(weapon);
-                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new String[] { crosshair, weapon, tf2Class }));
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { crosshair, weapon, tf2Class }));
+
+                        if (!missingCrosshairsList.Contains(crosshair) && !File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf"))
+                            missingCrosshairsList.Add(crosshair);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is no longer used.\nYou can safely remove this script file or do \"Install (clean)\" once the config has been read.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file manually or do \"Install (clean)\" once the config has been read.\n\nIf removing this script file causes futher errors, please contact HbiVnm.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     }
                 }
+
+                if (missingCrosshairsList.Count > 0)
+                    generateMissingCrosshairs(missingCrosshairsList);
+
                 btnInstall.Enabled = true;
                 btnInstallClean.Enabled = true;
                 btnRemoveSelected.Enabled = true;
-                writeLineToDebugger("Done!");
+                writeLineToDebugger("Read current config!");
             }
             else
             {
-                MessageBox.Show("No Venom Crosshairs config folder found!\n\nMake sure your custom crosshair folder is named \"" + VC_CONFIG_NAME + "\".", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                writeLineToDebugger("Failed!");
+                MessageBox.Show("No Venom Crosshairs config found!\n\nYou have not previously installed a crosshair config through Venom Crosshairs before.\nIf you have an existing crosshair config in \\tf\\custom, make sure to rename the folder to \"" + VC_CONFIG_NAME + "\".", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                writeLineToDebugger("Failed reading current config!");
             }
             cbClass.Enabled = true;
             cbWeapon.Enabled = true;
@@ -366,12 +375,12 @@ namespace VenomCrosshairs
             if (cbCrosshair.Text.Length > 0)
             {
                 pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.CenterImage;
-                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES_PREVIEWS + cbCrosshair.Text + ".png";
+                pictureBoxCrosshair.ImageLocation = $@"{PATH_VC_RESOURCES_PREVIEWS}\{cbCrosshair.Text}.png";
             }
             else
             {
                 pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VC.png";
+                pictureBoxCrosshair.ImageLocation = $@"{PATH_VC_RESOURCES}\VC.png";
             }
 
             btnAddCrosshair.Enabled = true;
@@ -525,7 +534,7 @@ namespace VenomCrosshairs
                             UserTF2Path = ""
                         };
                         File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
-                        
+
                         cbExplosionEffect.SelectedIndex = 0;
                         textBoxTF2Path.Text = "";
                         gIsDarkMode = false;
@@ -571,7 +580,7 @@ namespace VenomCrosshairs
 
         private void doVPKCheck()
         {
-            string susVPKFiles = "";
+            string susFiles = "";
 
             writeToDebugger("Preparing vpk check... ");
             Process vpkProcess = new Process();
@@ -583,7 +592,8 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             writeToDebugger($"Running vpk check... ");
-            foreach (string vpkFile in Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.vpk"))
+            // Check VPK
+            foreach (string vpkFile in Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.vpk", SearchOption.AllDirectories))
             {
                 StreamReader sw;
                 string vpkOutput;
@@ -596,14 +606,24 @@ namespace VenomCrosshairs
                 foreach (string weaponFile in TF2Weapons.getWeaponScripts())
                     if (vpkOutput.IndexOf(weaponFile) > -1)
                     {
-                        susVPKFiles += $"\n- \"{Path.GetFileName(vpkFile)}\"";
+                        susFiles += $"\n- \"{Path.GetFileName(vpkFile)}\"";
                         break;
                     }
             }
+
+            // Check scripts
+            List<string> scriptFilesTF2 = new List<string>(TF2Weapons.getWeaponScripts());
+            List<string> scriptFilesCustom = new List<string>(Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.txt", SearchOption.AllDirectories));
+            foreach (string customScript in scriptFilesCustom)
+            {
+                if (customScript.IndexOf(VC_CONFIG_NAME) == -1)
+                    if (scriptFilesTF2.Contains(Path.GetFileName(customScript)))
+                        susFiles += $"\n- \"{Path.GetFileName(customScript)}\"";
+            }
             writeLineToDebugger("Done!");
 
-            if (susVPKFiles != "")
-                MessageBox.Show($"WARNING: VPK file(s) were found containing weapon scripts and will not work in combination with Venom Crosshairs configs. It is recommended to remove the VPK(s) if you wish configs generated by Venom Crosshairs to work without issues. Fore more info see FAQ on repository wiki.\n\nVPK file(s) potentially causing issues: {susVPKFiles}", "Venom Crosshairs - Weapon script altering VPK file!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (susFiles != "")
+                MessageBox.Show($"WARNING: VPK/script file(s) were found altering weapon scripts and will not work in combination with Venom Crosshairs configs!\n\nIt is recommended to remove these files if you wish configs generated by Venom Crosshairs to work without issues. For more info see the FAQ on the repository wiki.\n\nVPK/script file(s) potentially causing issues: {susFiles}", "Venom Crosshairs - Weapon script altering VPK file!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private bool isNewCrosshairsAvailable(bool suppressNotification)
@@ -981,7 +1001,7 @@ namespace VenomCrosshairs
             {
                 pictureBoxLoading.Visible = true;
                 pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBoxCrosshair.ImageLocation = PATH_VC_RESOURCES + @"VC.png";
+                pictureBoxCrosshair.ImageLocation = $@"{PATH_VC_RESOURCES}\VC.png";
 
                 listViewChosenCrosshairs.Items.Clear();
 
@@ -1027,7 +1047,7 @@ namespace VenomCrosshairs
             {
                 vtf2tgaProcess.WaitForExit();
             }
-            catch (Exception e) { }
+            catch { }
             writeLineToDebugger("Done!");
 
             moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
@@ -1151,7 +1171,7 @@ namespace VenomCrosshairs
                 {
                     vtf2tgaProcess.WaitForExit();
                 }
-                catch (Exception e) { }
+                catch { }
                 writeLineToDebugger("Done!");
 
                 moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
@@ -1228,6 +1248,107 @@ namespace VenomCrosshairs
             }));
         }
 
+        private void generateMissingCrosshairs(List<string> missingCrosshairNames) // TODO
+        {
+            // Copy from config to VC
+            writeToDebugger("Copying missing crosshairs... ");
+            foreach (var crosshair in missingCrosshairNames)
+            {
+                File.Copy($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf", true);
+                File.Copy($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vmt", PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vmt", true);
+            }
+            writeLineToDebugger("Done!");
+
+            // Generate missing
+            writeToDebugger("Preparing vtf2tga process... ");
+            Process vtf2tgaProcess = new Process();
+            vtf2tgaProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            vtf2tgaProcess.StartInfo.FileName = textBoxTF2Path.Text + @"\bin\vtf2tga.exe";
+            writeLineToDebugger("Done!");
+
+            writeToDebugger("Running vtf2tga.exe... ");
+            foreach (string vtfFile in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
+            {
+                if (missingCrosshairNames.Contains(Path.GetFileNameWithoutExtension(vtfFile)))
+                {
+                    writeLineToDebugger(vtfFile + " will be turned into tga");
+                    vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
+                    vtf2tgaProcess.Start();
+                }
+            }
+            try
+            {
+                vtf2tgaProcess.WaitForExit();
+            }
+            catch { }
+            writeLineToDebugger("Done!");
+
+            moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
+
+            writeToDebugger("Generating generatepreviews.bat... ");
+            File.Create(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
+            using (StreamWriter sw = new StreamWriter(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
+            {
+                foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+                {
+                    string filename = Path.GetFileNameWithoutExtension(tgaFile);
+                    sw.WriteLine("\"" + PATH_VC_RESOURCES + "ffmpeg.exe\" -y -i \"" + tgaFile + "\" " + filename + ".png");
+                }
+                sw.WriteLine("exit");
+            }
+            writeLineToDebugger("Done!");
+
+            writeToDebugger("Preparing generatepreviews process... ");
+            Process generatepreviewsProcess = new Process();
+            generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            generatepreviewsProcess.StartInfo.FileName = PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
+            writeLineToDebugger("Done!");
+
+            writeToDebugger("Running generatepreviews.bat... ");
+            generatepreviewsProcess.Start();
+            generatepreviewsProcess.WaitForExit();
+            writeLineToDebugger("Done!");
+
+            writeToDebugger("Performing cleanup... ");
+            // Function no longer needed due to cleanup steps, remove/refactor?
+            moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
+            File.Delete(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
+            foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+                File.Delete(tgaFile);
+            writeLineToDebugger("Done!");
+
+            writeLineToDebugger($"Read and generated {missingCrosshairNames.Count} new crosshairs!");
+
+            // Add to ComboBox
+            Invoke(new MethodInvoker(delegate ()
+            {
+                cbCrosshair.Items.Clear();
+                foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
+                {
+                    string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
+                    cbCrosshair.Items.Add(crosshairName);
+                }
+
+                // Set Crosshair ComboBox width
+                setComboBoxDropDownWidthToLongestStringPixelWidth(cbCrosshair);
+            }));
+        }
+
+        private List<string> getCurrentCrosshairNames()
+        {
+            List<string> missingCrosshairs = new List<string>();
+
+            string[] currentCrosshairs = Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS);
+
+            foreach (string crosshair in currentCrosshairs)
+            {
+                string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
+                missingCrosshairs.Add(crosshairName);
+            }
+
+            return missingCrosshairs;
+        }
+
         private void setComboBoxDropDownWidthToLongestStringPixelWidth(ComboBox cb)
         {
             int longestPixelWidth = 0;
@@ -1245,9 +1366,9 @@ namespace VenomCrosshairs
             cb.DropDownWidth = longestPixelWidth + 20;
         }
 
-        private string getCrosshairFromScript(string script)
+        private string getCrosshairFromScript(string pathToScript)
         {
-            string[] scriptLines = File.ReadAllLines(script);
+            string[] scriptLines = File.ReadAllLines(pathToScript);
             foreach (string scriptLine in scriptLines)
             {
                 if (scriptLine.Contains("vgui/replay/thumbnails/"))
@@ -1258,7 +1379,7 @@ namespace VenomCrosshairs
                 }
             }
 
-            throw new Exception($"Could not find crosshair in script '{script}'");
+            throw new Exception($"Could not find crosshair in script '{pathToScript}'");
         }
 
         private void setDarkModeTheme(bool darkMode)
@@ -1400,7 +1521,7 @@ namespace VenomCrosshairs
             }
 
             // Check if specified TF2 Path contains hl2.exe (sanity2)
-            if (!File.Exists(path + @"\hl2.exe"))
+            if (!File.Exists($@"{path}\hl2.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity2");
                 MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?\n\nHint: Select the \"Team Fortress 2\" directory.", "Venom Crosshairs - Invalid TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1408,7 +1529,7 @@ namespace VenomCrosshairs
             }
 
             // Check if vtf2tga.exe exists (sanity3)
-            if (!File.Exists(path + @"\bin\vtf2tga.exe"))
+            if (!File.Exists($@"{path}\bin\vtf2tga.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity3");
                 MessageBox.Show("Could not find \"vtf2tga.exe\".\nPlease verify game files.", "Venom Crosshairs - vtf2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1416,7 +1537,7 @@ namespace VenomCrosshairs
             }
 
             // Check if vtf2tga.exe exists (sanity4)
-            if (!File.Exists(path + @"\bin\tier0.dll"))
+            if (!File.Exists($@"{path}\bin\tier0.dll"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity4");
                 MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "Venom Crosshairs - tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1424,7 +1545,7 @@ namespace VenomCrosshairs
             }
 
             // Check if project contains ffmpeg.exe (sanity5)
-            if (!File.Exists(PATH_VC + @"\resources\ffmpeg.exe"))
+            if (!File.Exists($@"{PATH_VC}\resources\ffmpeg.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity5");
                 MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue.)", "Venom Crosshairs - ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1432,7 +1553,7 @@ namespace VenomCrosshairs
             }
 
             // Check if vpk.exe exists (sanity6)
-            if (!File.Exists(path + @"\bin\vpk.exe"))
+            if (!File.Exists($@"{path}\bin\vpk.exe"))
             {
                 writeLineToDebugger("Sanity check failed! Error: sanity6");
                 MessageBox.Show("Could not find \"vpk.exe\".\nPlease verify game files.", "Venom Crosshairs - vpk.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
