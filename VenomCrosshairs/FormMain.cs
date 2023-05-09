@@ -578,7 +578,7 @@ namespace VenomCrosshairs
                 }
         }
 
-        private void doVPKCheck()
+        private void doVPKScriptCheck()
         {
             string susFiles = "";
 
@@ -591,8 +591,8 @@ namespace VenomCrosshairs
             vpkProcess.StartInfo.FileName = textBoxTF2Path.Text + @"\bin\vpk.exe";
             writeLineToDebugger("Done!");
 
-            writeToDebugger($"Running vpk check... ");
             // Check VPK
+            writeToDebugger($"Running vpk check... ");
             foreach (string vpkFile in Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.vpk", SearchOption.AllDirectories))
             {
                 StreamReader sw;
@@ -610,8 +610,10 @@ namespace VenomCrosshairs
                         break;
                     }
             }
+            writeLineToDebugger("Done!");
 
             // Check scripts
+            writeToDebugger($"Running script check... ");
             List<string> scriptFilesTF2 = new List<string>(TF2Weapons.getWeaponScripts());
             List<string> scriptFilesCustom = new List<string>(Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.txt", SearchOption.AllDirectories));
             foreach (string customScript in scriptFilesCustom)
@@ -960,7 +962,7 @@ namespace VenomCrosshairs
             }));
             writeLineToDebugger("Done!");
 
-            doVPKCheck();
+            doVPKScriptCheck();
 
             if (!isUpdate)
             {
