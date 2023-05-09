@@ -671,7 +671,6 @@ namespace VenomCrosshairs
             var downloadedCrosshairsList = new List<string>();
             var taskList = new List<Task>();
             int newCrosshairsFileCount = 0;
-            writeLineToDebugger($"Downloading crosshairs... ({0f}%)");
 
             foreach (KeyValuePair<string, string> crosshair in gPublicCrosshairs)
                 if (!File.Exists($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair.Key}"))
@@ -686,6 +685,7 @@ namespace VenomCrosshairs
 
             bool tasksFinished = false;
             if (taskList.Count > 0)
+            {
                 while (!tasksFinished)
                 {
                     float completedTasks = 0;
@@ -700,8 +700,8 @@ namespace VenomCrosshairs
 
                     Thread.Sleep(250);
                 }
-
-            writeLineToDebugger("Downloading crosshairs... (100%)");
+                writeLineToDebugger("Downloading crosshairs... (100%)");
+            }
 
             // Keeping this as a backup if something goes wrong
             Task.WaitAll(taskList.ToArray());
