@@ -582,7 +582,7 @@ namespace VenomCrosshairs
         {
             string susFiles = "";
 
-            writeToDebugger("Preparing vpk check... ");
+            writeToDebugger("Preparing VPK check... ");
             Process vpkProcess = new Process();
             vpkProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             vpkProcess.StartInfo.UseShellExecute = false;
@@ -592,7 +592,7 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             // Check VPK
-            writeToDebugger($"Running vpk check... ");
+            writeToDebugger($"Performing VPK check... ");
             foreach (string vpkFile in Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.vpk", SearchOption.AllDirectories))
             {
                 StreamReader sw;
@@ -613,7 +613,7 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             // Check scripts
-            writeToDebugger($"Running script check... ");
+            writeToDebugger($"Performing script check... ");
             List<string> scriptFilesTF2 = new List<string>(TF2Weapons.getWeaponScripts());
             List<string> scriptFilesCustom = new List<string>(Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.txt", SearchOption.AllDirectories));
             foreach (string customScript in scriptFilesCustom)
@@ -1513,11 +1513,11 @@ namespace VenomCrosshairs
 
         private bool performSanityCheck(string path)
         {
-            writeLineToDebugger("Sanity check started!");
+            writeToDebugger("Sanity check... ");
             // Check if specified directory exist (sanity1)
             if (!Directory.Exists(path))
             {
-                writeLineToDebugger("Sanity check failed! Error: sanity1");
+                writeLineToDebugger("Failed! Error: sanity1");
                 MessageBox.Show("The specified path does not seem to exist.\nDid you set the correct path?", "Venom Crosshairs - TF2 Path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -1525,7 +1525,7 @@ namespace VenomCrosshairs
             // Check if specified TF2 Path contains hl2.exe (sanity2)
             if (!File.Exists($@"{path}\hl2.exe"))
             {
-                writeLineToDebugger("Sanity check failed! Error: sanity2");
+                writeLineToDebugger("Failed! Error: sanity2");
                 MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?\n\nHint: Select the \"Team Fortress 2\" directory.", "Venom Crosshairs - Invalid TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -1533,7 +1533,7 @@ namespace VenomCrosshairs
             // Check if vtf2tga.exe exists (sanity3)
             if (!File.Exists($@"{path}\bin\vtf2tga.exe"))
             {
-                writeLineToDebugger("Sanity check failed! Error: sanity3");
+                writeLineToDebugger("Failed! Error: sanity3");
                 MessageBox.Show("Could not find \"vtf2tga.exe\".\nPlease verify game files.", "Venom Crosshairs - vtf2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -1541,7 +1541,7 @@ namespace VenomCrosshairs
             // Check if vtf2tga.exe exists (sanity4)
             if (!File.Exists($@"{path}\bin\tier0.dll"))
             {
-                writeLineToDebugger("Sanity check failed! Error: sanity4");
+                writeLineToDebugger("Failed! Error: sanity4");
                 MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "Venom Crosshairs - tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -1549,7 +1549,7 @@ namespace VenomCrosshairs
             // Check if project contains ffmpeg.exe (sanity5)
             if (!File.Exists($@"{PATH_VC}\resources\ffmpeg.exe"))
             {
-                writeLineToDebugger("Sanity check failed! Error: sanity5");
+                writeLineToDebugger("Failed! Error: sanity5");
                 MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue.)", "Venom Crosshairs - ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -1557,12 +1557,12 @@ namespace VenomCrosshairs
             // Check if vpk.exe exists (sanity6)
             if (!File.Exists($@"{path}\bin\vpk.exe"))
             {
-                writeLineToDebugger("Sanity check failed! Error: sanity6");
+                writeLineToDebugger("Failed! Error: sanity6");
                 MessageBox.Show("Could not find \"vpk.exe\".\nPlease verify game files.", "Venom Crosshairs - vpk.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            writeLineToDebugger("Sanity check finished!");
+            writeLineToDebugger("Done!");
             return true;
         }
     }
