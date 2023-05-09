@@ -24,7 +24,7 @@ namespace VenomCrosshairs
     {
         private static readonly string VC_VERSION = "beta13.0";
 
-        private static readonly string VC_CONFIG_NAME = "VenomCrosshairsConfig";
+        private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
 
         private static readonly string PATH_VC = Directory.GetCurrentDirectory();
         private static readonly string PATH_VC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
@@ -34,7 +34,7 @@ namespace VenomCrosshairs
         private static readonly string PATH_VC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
         private static readonly string PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usersettings.cfg";
 
-        private static readonly string[] PREVIOUS_CONFIG_NAMES = { "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
+        private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
 
         private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
@@ -1248,7 +1248,7 @@ namespace VenomCrosshairs
             }));
         }
 
-        private void generateMissingCrosshairs(List<string> missingCrosshairNames) // TODO
+        private void generateMissingCrosshairs(List<string> missingCrosshairNames)
         {
             // Copy from config to VC
             writeToDebugger("Copying missing crosshairs... ");
