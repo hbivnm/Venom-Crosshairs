@@ -263,10 +263,11 @@
             this.cbExplosionEffect.FormattingEnabled = true;
             this.cbExplosionEffect.Items.AddRange(new object[] {
             "Default",
+            "Duck Trail (Invisible)",
             "Electric shock",
             "Muzzle flash",
-            "Spy sapper",
-            "Pyro pool"});
+            "Pyro pool",
+            "Spy sapper"});
             this.cbExplosionEffect.Location = new System.Drawing.Point(443, 71);
             this.cbExplosionEffect.Name = "cbExplosionEffect";
             this.cbExplosionEffect.Size = new System.Drawing.Size(105, 21);

@@ -807,14 +807,16 @@ namespace VenomCrosshairs
             {
                 case "Default":
                     return "ExplosionCore_wall";
+                case "Duck Trail (Invisible)":
+                    return "duck_collect_trail_special_red";
                 case "Electric shock":
                     return "electrocuted_red_flash";
                 case "Muzzle flash":
                     return "muzzle_minigun_starflash01";
-                case "Spy sapper":
-                    return "ExplosionCore_sapperdestroyed";
                 case "Pyro pool":
                     return "eotl_pyro_pool_explosion_flash";
+                case "Spy sapper":
+                    return "ExplosionCore_sapperdestroyed";
             }
             throw new ArgumentException($"Could not find ExplosionEffect particle name for '{name}'!");
         }
@@ -825,14 +827,16 @@ namespace VenomCrosshairs
             {
                 case "Default":
                     return "ExplosionCore_MidAir";
+                case "Duck Trail (Invisible)":
+                    return "duck_collect_trail_special_blue";
                 case "Electric shock":
                     return "electrocuted_blue_flash";
                 case "Muzzle flash":
                     return "muzzle_minigun_starflash01";
-                case "Spy sapper":
-                    return "ExplosionCore_sapperdestroyed";
                 case "Pyro pool":
                     return "eotl_pyro_pool_explosion_flash";
+                case "Spy sapper":
+                    return "ExplosionCore_sapperdestroyed";
             }
             throw new ArgumentException($"Could not find ExplosionPlayerEffect particle name for '{name}'!");
         }
@@ -843,14 +847,16 @@ namespace VenomCrosshairs
             {
                 case "Default":
                     return "ExplosionCore_MidAir_underwater";
+                case "Duck Trail (Invisible)":
+                    return "duck_collect_trail_special_red";
                 case "Electric shock":
                     return "electrocuted_red_flash";
                 case "Muzzle flash":
                     return "muzzle_minigun_starflash01";
-                case "Spy sapper":
-                    return "ExplosionCore_sapperdestroyed";
                 case "Pyro pool":
                     return "eotl_pyro_pool_explosion_flash";
+                case "Spy sapper":
+                    return "ExplosionCore_sapperdestroyed";
             }
             throw new ArgumentException($"Could not find ExplosionWaterEffect particle name for '{name}'!");
         }
