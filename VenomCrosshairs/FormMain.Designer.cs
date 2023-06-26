@@ -266,8 +266,7 @@
             "Electric shock",
             "Muzzle flash",
             "Spy sapper",
-            "Pyro pool",
-            "Rescue Ranger"});
+            "Pyro pool"});
             this.cbExplosionEffect.Location = new System.Drawing.Point(443, 71);
             this.cbExplosionEffect.Name = "cbExplosionEffect";
             this.cbExplosionEffect.Size = new System.Drawing.Size(105, 21);
