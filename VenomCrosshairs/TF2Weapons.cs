@@ -78,6 +78,13 @@ namespace VenomCrosshairs
         private static readonly string[] tf2MeleeMultiClassWeapons = { "Half-Zatoichi" };
         private static readonly string[] tf2MiscMultiClassWeapons = { "Sapper, Red-Tape Recorder, While placing a building" };
 
+        // Explosive
+        private static readonly string[] tf2ExplosiveWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Direct Hit", "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher" };
+        private static readonly string[] tf2PrimaryExplosiveWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Direct Hit", "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher" };
+        private static readonly string[] tf2SecondaryExplosiveWeapons = { };
+        private static readonly string[] tf2MeleeExplosiveWeapons = { };
+        private static readonly string[] tf2MiscExplosiveWeapons = { };
+
         // All
         private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).ToArray();
         private static readonly string[] tf2AllPrimaryWeapons = tf2PrimaryScoutWeapons.Concat(tf2PrimarySoldierWeapons).Concat(tf2PrimaryPyroWeapons).Concat(tf2PrimaryDemomanWeapons).Concat(tf2PrimaryHeavyWeapons).Concat(tf2PrimaryEngineerWeapons).Concat(tf2PrimaryMedicWeapons).Concat(tf2PrimarySniperWeapons).Concat(tf2PrimarySpyWeapons).ToArray();
@@ -120,6 +127,11 @@ namespace VenomCrosshairs
                 default:
                     return new string[] { };
             }
+        }
+
+        public static string[] getExplosiveWeapons()
+        {
+            return tf2ExplosiveWeapons;
         }
 
         public static string[] getPrimaryWeapons()

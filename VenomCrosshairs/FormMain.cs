@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta13.1";
+        private static readonly string VC_VERSION = "beta13.2";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
 
@@ -936,6 +936,7 @@ namespace VenomCrosshairs
             writeToDebugger("Adding scripts... ");
             Invoke(new MethodInvoker(delegate ()
             {
+                // Add user selection
                 foreach (ListViewItem item in listViewChosenCrosshairs.Items)
                 {
                     string crosshair = item.SubItems[0].Text;
@@ -950,8 +951,7 @@ namespace VenomCrosshairs
 
                     try
                     {
-                        File.WriteAllText(
-                            $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}",
+                        File.WriteAllText(fullScriptPath,
                             File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
@@ -963,6 +963,41 @@ namespace VenomCrosshairs
                     {
                         MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to get explosion particle name", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
+                    }
+                }
+
+                // Add explosion effects for unselected explosion weapons, crosshair is set to TF2 default
+                foreach (string explosiveWeapon in TF2Weapons.getExplosiveWeapons())
+                {
+                    bool copiedMaterial = false;
+                    string crosshair = "quarteredcircle";
+                    string weaponScriptName = TF2Weapons.getWeaponScriptFromWeaponName(explosiveWeapon);
+                    string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}";
+
+                    if (!File.Exists(fullScriptPath))
+                    {
+                        try
+                        {
+                            File.WriteAllText(fullScriptPath,
+                                File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
+                                    .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
+                                    .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
+                                    .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
+                                    .Replace("VC_PLACEHOLDER", crosshair)
+                            );
+
+                            if (!copiedMaterial)
+                            {
+                                File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vmt", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vmt", true);
+                                File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vtf", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", true);
+                                copiedMaterial = true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to get explosion particle name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            writeLineToDebugger($"For developer: Exception: {ex.Message}");
+                        }
                     }
                 }
             }));
