@@ -58,8 +58,8 @@ namespace VenomCrosshairs
         private static readonly string[] tf2MiscMedicWeapons = { };
 
         // Sniper
-        private static readonly string[] tf2SniperWeapons = { "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound", "SMG", "Cleaner's Carbine", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah" };
-        private static readonly string[] tf2PrimarySniperWeapons = { "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina", "Classic", "Hitman's Heatmaker", "Huntsman, Fortified Compound" };
+        private static readonly string[] tf2SniperWeapons = { "Sniper Rifle, Sydney Sleeper, Hitman's Heatmaker, Machina", "Bazaar Bargain", "Classic", "Huntsman, Fortified Compound", "SMG", "Cleaner's Carbine", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah" };
+        private static readonly string[] tf2PrimarySniperWeapons = { "Sniper Rifle, Sydney Sleeper, Hitman's Heatmaker, Machina", "Bazaar Bargain", "Classic", "Huntsman, Fortified Compound" };
         private static readonly string[] tf2SecondarySniperWeapons = { "SMG", "Cleaner's Carbine", "Flying Guillotine, Mad Milk, Gas Passer, Jarate" };
         private static readonly string[] tf2MeleeSniperWeapons = { "Kukri and all reskins, Tribalman's Shiv, Bushwacka, Shahanshah" };
         private static readonly string[] tf2MiscSniperWeapons = { };
@@ -394,12 +394,12 @@ namespace VenomCrosshairs
                     return "tf_weapon_bonesaw.txt";
 
                 // Sniper
-                case "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina":
+                case "Sniper Rifle, Sydney Sleeper, Hitman's Heatmaker, Machina":
                     return "tf_weapon_sniperrifle.txt";
+                case "Bazaar Bargain":
+                    return "tf_weapon_sniperrifle_decap.txt";
                 case "Classic":
                     return "tf_weapon_sniperrifle_classic.txt";
-                case "Hitman's Heatmaker":
-                    return "tf_weapon_sniperrifle_decap.txt";
                 case "Huntsman, Fortified Compound":
                     return "tf_weapon_compound_bow.txt";
                 case "SMG":
@@ -552,11 +552,11 @@ namespace VenomCrosshairs
 
                 // Sniper
                 case "tf_weapon_sniperrifle.txt":
-                    return "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina";
+                    return "Sniper Rifle, Sydney Sleeper, Hitman's Heatmaker, Machina";
+                case "tf_weapon_sniperrifle_decap.txt":
+                    return "Bazaar Bargain";
                 case "tf_weapon_sniperrifle_classic.txt":
                     return "Classic";
-                case "tf_weapon_sniperrifle_decap.txt":
-                    return "Hitman's Heatmaker";
                 case "tf_weapon_compound_bow.txt":
                     return "Huntsman, Fortified Compound";
                 case "tf_weapon_smg.txt":
@@ -663,9 +663,9 @@ namespace VenomCrosshairs
                     return "Medic";
 
                 // Sniper
-                case "Sniper Rifle, Sydney Sleeper, Bazaar Bargain, Machina":
+                case "Sniper Rifle, Sydney Sleeper, Hitman's Heatmaker, Machina":
+                case "Bazaar Bargain":
                 case "Classic":
-                case "Hitman's Heatmaker":
                 case "Huntsman, Fortified Compound":
                 case "SMG":
                 case "Cleaner's Carbine":
