@@ -6,7 +6,7 @@ Venom Crosshairs (or "Venomxhairs") is a client-side solution to automating the 
 Official [teamfortress.tv thread](https://www.teamfortress.tv/62638/venom-crosshairs-weapon-crosshairs-made-easy).
 
 ## Preview image
-![Preview image of Venom Crosshairs.](https://i.imgur.com/XSbuae5.png)
+![Preview image of Venom Crosshairs.](https://i.imgur.com/HhGqWrX.png)
 
 # Download
 Check out the releases and download [here](https://github.com/hbivnm/Venom-Crosshairs/releases).
@@ -24,32 +24,6 @@ Check out the releases and download [here](https://github.com/hbivnm/Venom-Cross
 
 # Help / FAQ
 See the [wiki](https://github.com/hbivnm/Venom-Crosshairs/wiki).
-
-# The future of Venom Crosshairs
-## Planned features
-- [ ] Add notification indicator to "Reload crosshair list" button when new crosshairs are available.
-- [ ] Add "Update Venom Crosshairs" notification when new release is available.
-
-## Implemented features
-- [x] Add clicking a weapon in the ListView should select it as "current weapon" and class.
-- [x] Dark mode.
-- [x] Add user-friendly prompts for currently (very rare) unhandled exceptions.
-- [x] Add detection for "no explosion" .vpk files (see why [here](https://github.com/hbivnm/Venom-Crosshairs/wiki/FAQ))
-- [x] Automatically rename old config folders from previous Venom Crosshairs releases.
-- [x] Change checkbox logic to toggle between adding to "ALL" or adding to "_CLASS_" (ex.) "ALL primary weapons for _CLASS_".
-- [x] Add current version label.
-- [x] Add a "Help" button.
-- [x] Add button to read current Venom Crosshairs config.
-- [x] Add a wiki to this repo.
-- [x] Add a button to sync crosshairs from a public repo.
-- [x] Show/Hide console ~~(state saved inbetween session)~~.
-- [x] Easier to read/understand state of installation/update.
-- [x] Add no explosion to scripts for explosive weapons.
-- [x] ~~Rename "Add to all" button.~~ Removed button instead.
-- [x] TF2 Path input field saved inbetween sessions.
-- [x] Add a button for adding a crosshair ONLY to selected class ("Add to *CLASS*").
-- [x] Checkboxes to "Add to all PRIMARY/SECONDARY/MELEE".
-- [x] Make console read-only.
 
 # Original idea
 Credit where it's due, the original idea of weapon-specific crosshairs in Team Fortress 2 (as far as I know) comes from a [teamfortress.tv thread](https://www.teamfortress.tv/30866/guide-weapon-specific-custom-crosshairs) by [joshuawn](https://www.teamfortress.tv/user/joshuawn).
