@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta13.2";
+        private static readonly string VC_VERSION = "beta14.0";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
 
@@ -391,6 +391,12 @@ namespace VenomCrosshairs
             checkBoxAddMiscWeapons.Enabled = true;
         }
 
+        private void onCBZoomCrosshairChangeEvent(object sender, EventArgs e)
+        {
+            gUserSettings.UserZoomCrosshair = cbZoomCrosshair.Text;
+            File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
+        }
+
         private void onCheckBoxAddClassWeaponsChangeEvent(object sender, EventArgs e)
         {
             if (checkBoxAddOnlyClass.Checked)
@@ -467,14 +473,12 @@ namespace VenomCrosshairs
                 cbWeapon.SelectedIndexChanged += new EventHandler(onCBWeaponChangeEvent);
 
                 // Crosshairs
-                cbCrosshair.Items.Clear();
-                foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
-                {
-                    string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
-                    cbCrosshair.Items.Add(crosshairName);
-                }
-                setComboBoxDropDownWidthToLongestStringPixelWidth(cbCrosshair);
+                addCrosshairsToComboBoxFromPath(cbCrosshair, PATH_VC_RESOURCES_PREVIEWS, true);
                 cbCrosshair.SelectedIndexChanged += new EventHandler(onCBCrosshairChangeEvent);
+
+                // Zoom crosshair
+                addCrosshairsToComboBoxFromPath(cbZoomCrosshair, PATH_VC_RESOURCES_PREVIEWS, new string[] { "NO CHANGE" }, true);
+                cbZoomCrosshair.SelectedIndexChanged += new EventHandler(onCBZoomCrosshairChangeEvent);
 
                 // Checkboxes
                 checkBoxAddOnlyClass.CheckStateChanged += new EventHandler(onCheckBoxAddClassWeaponsChangeEvent);
@@ -511,6 +515,12 @@ namespace VenomCrosshairs
                     try
                     {
                         gUserSettings = JsonConvert.DeserializeObject<VCUserSettings>(File.ReadAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE));
+
+                        // Zoom Crosshair
+                        if (gUserSettings.UserZoomCrosshair != null)
+                            cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
+                        else
+                            cbZoomCrosshair.Text = "NO CHANGE";
 
                         // Explosion effect
                         cbExplosionEffect.SelectedIndex = gUserSettings.UserExplosionEffectIndex;
@@ -881,6 +891,7 @@ namespace VenomCrosshairs
                 btnDownload.Enabled = false;
                 cbClass.Enabled = false;
                 cbCrosshair.Enabled = false;
+                cbZoomCrosshair.Enabled = false;
                 cbWeapon.Enabled = false;
                 btnAddCrosshair.Enabled = false;
                 checkBoxAddOnlyClass.Enabled = false;
@@ -924,6 +935,12 @@ namespace VenomCrosshairs
             writeToDebugger("Copying materials... ");
             Invoke(new MethodInvoker(delegate ()
             {
+                if (cbZoomCrosshair.Text != "NO CHANGE")
+                {
+                    File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{cbZoomCrosshair.Text}.vmt", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{cbZoomCrosshair.Text}.vmt", true);
+                    File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{cbZoomCrosshair.Text}.vtf", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{cbZoomCrosshair.Text}.vtf", true);
+                }
+
                 foreach (ListViewItem item in listViewChosenCrosshairs.Items)
                 {
                     string crosshair = item.SubItems[0].Text;
@@ -940,6 +957,11 @@ namespace VenomCrosshairs
                 foreach (ListViewItem item in listViewChosenCrosshairs.Items)
                 {
                     string crosshair = item.SubItems[0].Text;
+
+                    string zoomCrosshair = cbZoomCrosshair.Text;
+                    if (cbZoomCrosshair.Text == "NO CHANGE")
+                        zoomCrosshair = crosshair;
+
                     string weaponName = item.SubItems[1].Text;
                     string weaponScriptName = TF2Weapons.getWeaponScriptFromWeaponName(weaponName);
                     string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}";
@@ -957,6 +979,7 @@ namespace VenomCrosshairs
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
                                 .Replace("VC_PLACEHOLDER", crosshair)
+                                .Replace("VC_ZOOM_PLACEHOLDER", zoomCrosshair)
                         );
                     }
                     catch (Exception ex)
@@ -1022,6 +1045,7 @@ namespace VenomCrosshairs
                 btnDownload.Enabled = true;
                 cbClass.Enabled = true;
                 cbCrosshair.Enabled = true;
+                cbZoomCrosshair.Enabled = true;
                 cbWeapon.Enabled = true;
                 btnAddCrosshair.Enabled = true;
                 checkBoxAddOnlyClass.Enabled = true;
@@ -1053,6 +1077,7 @@ namespace VenomCrosshairs
                 btnDownload.Enabled = false;
                 cbClass.Enabled = false;
                 cbCrosshair.Enabled = false;
+                cbZoomCrosshair.Enabled = false;
                 cbWeapon.Enabled = false;
                 btnAddCrosshair.Enabled = false;
                 checkBoxAddOnlyClass.Enabled = false;
@@ -1130,15 +1155,8 @@ namespace VenomCrosshairs
             // Add to ComboBox
             Invoke(new MethodInvoker(delegate ()
             {
-                cbCrosshair.Items.Clear();
-                foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
-                {
-                    string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
-                    cbCrosshair.Items.Add(crosshairName);
-                }
-
-                // Set Crosshair ComboBox width
-                setComboBoxDropDownWidthToLongestStringPixelWidth(cbCrosshair);
+                addCrosshairsToComboBoxFromPath(cbCrosshair, PATH_VC_RESOURCES_PREVIEWS, true);
+                addCrosshairsToComboBoxFromPath(cbZoomCrosshair, PATH_VC_RESOURCES_PREVIEWS, new string[] { "NO CHANGE" }, true);
             }));
 
             Invoke(new MethodInvoker(delegate ()
@@ -1151,6 +1169,8 @@ namespace VenomCrosshairs
                 cbWeapon.SelectedIndex = -1;
                 cbCrosshair.Enabled = false;
                 cbCrosshair.SelectedIndex = -1;
+                cbZoomCrosshair.Enabled = true;
+                cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
                 btnReload.Enabled = true;
                 btnDownload.Enabled = true;
                 btnReadConfig.Enabled = true;
@@ -1173,6 +1193,7 @@ namespace VenomCrosshairs
                 btnDownload.Enabled = false;
                 cbClass.Enabled = false;
                 cbCrosshair.Enabled = false;
+                cbZoomCrosshair.Enabled = false;
                 cbWeapon.Enabled = false;
                 btnAddCrosshair.Enabled = false;
                 checkBoxAddOnlyClass.Enabled = false;
@@ -1256,15 +1277,8 @@ namespace VenomCrosshairs
                 // Add to ComboBox
                 Invoke(new MethodInvoker(delegate ()
                 {
-                    cbCrosshair.Items.Clear();
-                    foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
-                    {
-                        string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
-                        cbCrosshair.Items.Add(crosshairName);
-                    }
-
-                    // Set Crosshair ComboBox width
-                    setComboBoxDropDownWidthToLongestStringPixelWidth(cbCrosshair);
+                    addCrosshairsToComboBoxFromPath(cbCrosshair, PATH_VC_RESOURCES_PREVIEWS, true);
+                    addCrosshairsToComboBoxFromPath(cbZoomCrosshair, PATH_VC_RESOURCES_PREVIEWS, new string[] { "NO CHANGE" }, true);
                 }));
 
                 _ = isNewCrosshairsAvailable(true);
@@ -1285,6 +1299,8 @@ namespace VenomCrosshairs
                 cbWeapon.SelectedIndex = -1;
                 cbCrosshair.Enabled = false;
                 cbCrosshair.SelectedIndex = -1;
+                cbZoomCrosshair.Enabled = true;
+                cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
                 btnReload.Enabled = true;
                 btnDownload.Enabled = true;
                 btnReadConfig.Enabled = true;
@@ -1365,16 +1381,40 @@ namespace VenomCrosshairs
             // Add to ComboBox
             Invoke(new MethodInvoker(delegate ()
             {
-                cbCrosshair.Items.Clear();
-                foreach (var crosshair in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.png"))
-                {
-                    string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
-                    cbCrosshair.Items.Add(crosshairName);
-                }
-
-                // Set Crosshair ComboBox width
-                setComboBoxDropDownWidthToLongestStringPixelWidth(cbCrosshair);
+                addCrosshairsToComboBoxFromPath(cbCrosshair, PATH_VC_RESOURCES_PREVIEWS, true);
+                addCrosshairsToComboBoxFromPath(cbZoomCrosshair, PATH_VC_RESOURCES_PREVIEWS, new string[] { "NO CHANGE" }, true);
             }));
+        }
+
+        private void addCrosshairsToComboBoxFromPath(ComboBox cb, string path, string[] prependItems, bool clearComboBoxItems)
+        {
+            if (clearComboBoxItems)
+                cb.Items.Clear();
+
+            foreach (var item in prependItems)
+                cb.Items.Add(item);
+
+            foreach (var crosshair in Directory.GetFiles(path, "*.png"))
+            {
+                string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
+                cb.Items.Add(crosshairName);
+            }
+
+            setComboBoxDropDownWidthToLongestStringPixelWidth(cb);
+        }
+
+        private void addCrosshairsToComboBoxFromPath(ComboBox cb, string path, bool clearComboBoxItems)
+        {
+            if (clearComboBoxItems)
+                cb.Items.Clear();
+
+            foreach (var crosshair in Directory.GetFiles(path, "*.png"))
+            {
+                string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
+                cb.Items.Add(crosshairName);
+            }
+
+            setComboBoxDropDownWidthToLongestStringPixelWidth(cb);
         }
 
         private List<string> getCurrentCrosshairNames()

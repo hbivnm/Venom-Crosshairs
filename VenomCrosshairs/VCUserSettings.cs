@@ -11,5 +11,6 @@ namespace VenomCrosshairs
         public bool IsDarkMode { get; set; }
         public int UserExplosionEffectIndex { get; set; }
         public string UserTF2Path { get; set; }
+        public string UserZoomCrosshair { get; set; }
     }
 }

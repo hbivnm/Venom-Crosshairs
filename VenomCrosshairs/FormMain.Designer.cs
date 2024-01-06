@@ -46,7 +46,7 @@
             this.checkBoxAddMiscWeapons = new System.Windows.Forms.CheckBox();
             this.lblAdditionalSettings = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.lblNoExplosion = new System.Windows.Forms.Label();
+            this.lblExplosionEffect = new System.Windows.Forms.Label();
             this.cbExplosionEffect = new System.Windows.Forms.ComboBox();
             this.panelSettings = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
@@ -71,6 +71,8 @@
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
             this.textBoxDebugger = new System.Windows.Forms.RichTextBox();
+            this.cbZoomCrosshair = new System.Windows.Forms.ComboBox();
+            this.lblZoomCrosshair = new System.Windows.Forms.Label();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
@@ -248,14 +250,14 @@
             this.lblStatus.TabIndex = 35;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblNoExplosion
+            // lblExplosionEffect
             // 
-            this.lblNoExplosion.AutoSize = true;
-            this.lblNoExplosion.Location = new System.Drawing.Point(352, 74);
-            this.lblNoExplosion.Name = "lblNoExplosion";
-            this.lblNoExplosion.Size = new System.Drawing.Size(85, 13);
-            this.lblNoExplosion.TabIndex = 32;
-            this.lblNoExplosion.Text = "Explosion effect:";
+            this.lblExplosionEffect.AutoSize = true;
+            this.lblExplosionEffect.Location = new System.Drawing.Point(352, 74);
+            this.lblExplosionEffect.Name = "lblExplosionEffect";
+            this.lblExplosionEffect.Size = new System.Drawing.Size(85, 13);
+            this.lblExplosionEffect.TabIndex = 32;
+            this.lblExplosionEffect.Text = "Explosion effect:";
             // 
             // cbExplosionEffect
             // 
@@ -270,7 +272,7 @@
             "Spy sapper"});
             this.cbExplosionEffect.Location = new System.Drawing.Point(443, 71);
             this.cbExplosionEffect.Name = "cbExplosionEffect";
-            this.cbExplosionEffect.Size = new System.Drawing.Size(120, 21);
+            this.cbExplosionEffect.Size = new System.Drawing.Size(132, 21);
             this.cbExplosionEffect.TabIndex = 31;
             // 
             // panelSettings
@@ -534,17 +536,39 @@
             this.textBoxDebugger.TabIndex = 42;
             this.textBoxDebugger.Text = "";
             // 
+            // cbZoomCrosshair
+            // 
+            this.cbZoomCrosshair.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbZoomCrosshair.FormattingEnabled = true;
+            this.cbZoomCrosshair.Items.AddRange(new object[] {
+            "NO CHANGE"});
+            this.cbZoomCrosshair.Location = new System.Drawing.Point(443, 98);
+            this.cbZoomCrosshair.Name = "cbZoomCrosshair";
+            this.cbZoomCrosshair.Size = new System.Drawing.Size(132, 21);
+            this.cbZoomCrosshair.TabIndex = 43;
+            // 
+            // lblZoomCrosshair
+            // 
+            this.lblZoomCrosshair.AutoSize = true;
+            this.lblZoomCrosshair.Location = new System.Drawing.Point(354, 101);
+            this.lblZoomCrosshair.Name = "lblZoomCrosshair";
+            this.lblZoomCrosshair.Size = new System.Drawing.Size(82, 13);
+            this.lblZoomCrosshair.TabIndex = 44;
+            this.lblZoomCrosshair.Text = "Zoom crosshair:";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1235, 551);
+            this.Controls.Add(this.cbZoomCrosshair);
+            this.Controls.Add(this.lblZoomCrosshair);
             this.Controls.Add(this.textBoxDebugger);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.panelSettings);
             this.Controls.Add(this.cbExplosionEffect);
-            this.Controls.Add(this.lblNoExplosion);
+            this.Controls.Add(this.lblExplosionEffect);
             this.Controls.Add(this.btnReadConfig);
             this.Controls.Add(this.btnToggleConsole);
             this.Controls.Add(this.lblStatus);
@@ -622,7 +646,7 @@
         private System.Windows.Forms.Button btnToggleConsole;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Button btnReadConfig;
-        private System.Windows.Forms.Label lblNoExplosion;
+        private System.Windows.Forms.Label lblExplosionEffect;
         private System.Windows.Forms.ComboBox cbExplosionEffect;
         private System.Windows.Forms.Button btnDarkMode;
         private System.Windows.Forms.Panel panelSettings;
@@ -633,6 +657,8 @@
         private System.Windows.Forms.Label lblDarkMode;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.RichTextBox textBoxDebugger;
+        private System.Windows.Forms.ComboBox cbZoomCrosshair;
+        private System.Windows.Forms.Label lblZoomCrosshair;
     }
 }
 
