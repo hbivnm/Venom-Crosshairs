@@ -253,7 +253,7 @@
             // lblExplosionEffect
             // 
             this.lblExplosionEffect.AutoSize = true;
-            this.lblExplosionEffect.Location = new System.Drawing.Point(352, 74);
+            this.lblExplosionEffect.Location = new System.Drawing.Point(359, 74);
             this.lblExplosionEffect.Name = "lblExplosionEffect";
             this.lblExplosionEffect.Size = new System.Drawing.Size(85, 13);
             this.lblExplosionEffect.TabIndex = 32;
@@ -270,7 +270,7 @@
             "Muzzle flash",
             "Pyro pool",
             "Spy sapper"});
-            this.cbExplosionEffect.Location = new System.Drawing.Point(443, 71);
+            this.cbExplosionEffect.Location = new System.Drawing.Point(450, 71);
             this.cbExplosionEffect.Name = "cbExplosionEffect";
             this.cbExplosionEffect.Size = new System.Drawing.Size(132, 21);
             this.cbExplosionEffect.TabIndex = 31;
@@ -542,7 +542,7 @@
             this.cbZoomCrosshair.FormattingEnabled = true;
             this.cbZoomCrosshair.Items.AddRange(new object[] {
             "NO CHANGE"});
-            this.cbZoomCrosshair.Location = new System.Drawing.Point(443, 98);
+            this.cbZoomCrosshair.Location = new System.Drawing.Point(450, 98);
             this.cbZoomCrosshair.Name = "cbZoomCrosshair";
             this.cbZoomCrosshair.Size = new System.Drawing.Size(132, 21);
             this.cbZoomCrosshair.TabIndex = 43;
@@ -550,7 +550,7 @@
             // lblZoomCrosshair
             // 
             this.lblZoomCrosshair.AutoSize = true;
-            this.lblZoomCrosshair.Location = new System.Drawing.Point(354, 101);
+            this.lblZoomCrosshair.Location = new System.Drawing.Point(362, 101);
             this.lblZoomCrosshair.Name = "lblZoomCrosshair";
             this.lblZoomCrosshair.Size = new System.Drawing.Size(82, 13);
             this.lblZoomCrosshair.TabIndex = 44;
