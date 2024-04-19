@@ -22,7 +22,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta14.0";
+        private static readonly string VC_VERSION = "beta14.1";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
 
@@ -1603,11 +1603,11 @@ namespace VenomCrosshairs
                 return false;
             }
 
-            // Check if specified TF2 Path contains hl2.exe (sanity2)
-            if (!File.Exists($@"{path}\hl2.exe"))
+            // Check if specified TF2 Path contains tf.exe (sanity2)
+            if (!File.Exists($@"{path}\tf.exe") || !File.Exists($@"{path}\tf_win64.exe"))
             {
                 writeLineToDebugger("Failed! Error: sanity2");
-                MessageBox.Show("The specified TF2 path does not contain \"hl2.exe\".\nDid you set the correct path?\n\nHint: Select the \"Team Fortress 2\" directory.", "Venom Crosshairs - Invalid TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The specified TF2 path does not contain \"tf.exe\" or \"tf_win64.exe\".\nDid you set the correct path?\n\nHint: Select the \"Team Fortress 2\" directory.", "Venom Crosshairs - Invalid TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
