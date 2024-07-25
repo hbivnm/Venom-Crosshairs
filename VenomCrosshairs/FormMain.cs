@@ -280,15 +280,18 @@ namespace VenomCrosshairs
                 btnInstallClean.Enabled = true;
                 btnRemoveSelected.Enabled = true;
                 writeLineToDebugger("Read current config!");
+                cbClass.Enabled = true;
+                cbWeapon.Enabled = true;
+                cbCrosshair.Enabled = true;
             }
             else
             {
-                MessageBox.Show("No Venom Crosshairs config found!\n\nYou have not previously installed a crosshair config through Venom Crosshairs before.\nIf you have an existing crosshair config in \\tf\\custom, make sure to rename the folder to \"" + VC_CONFIG_NAME + "\".", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No Venom Crosshairs config found!\n\nYou have not previously installed a crosshair config through Venom Crosshairs before.\n\nTIP: If you have an existing crosshair config in \\tf\\custom, make sure to rename the folder to \"" + VC_CONFIG_NAME + "\"!", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 writeLineToDebugger("Failed reading current config!");
+                cbClass.Enabled = true;
+                cbWeapon.Enabled = false;
+                cbCrosshair.Enabled = false;
             }
-            cbClass.Enabled = true;
-            cbWeapon.Enabled = true;
-            cbCrosshair.Enabled = true;
             pictureBoxLoading.Visible = false;
         }
 
@@ -557,10 +560,12 @@ namespace VenomCrosshairs
                     {
                         IsDarkMode = false,
                         UserExplosionEffectIndex = 0,
-                        UserTF2Path = ""
+                        UserTF2Path = "",
+                        UserZoomCrosshair = "NO CHANGE"
                     };
                     File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
                     cbExplosionEffect.SelectedIndex = 0;
+                    cbZoomCrosshair.SelectedIndex = 0;
                     textBoxTF2Path.Text = "";
                     gIsDarkMode = false;
                     setDarkModeTheme(gIsDarkMode);
