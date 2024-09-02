@@ -1628,52 +1628,63 @@ namespace VenomCrosshairs
         private bool performSanityCheck(string path)
         {
             writeToDebugger("Sanity check... ");
-            // Check if specified directory exist (sanity1)
+            // Check if specified directory exist (1)
             if (!Directory.Exists(path))
             {
-                writeLineToDebugger("Failed! Error: sanity1");
+                writeLineToDebugger("Failed! Error code: 1");
                 MessageBox.Show("The specified path does not seem to exist.\nDid you set the correct path?", "Venom Crosshairs - TF2 Path does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if specified TF2 Path contains tf.exe (sanity2)
+            // Check if specified TF2 Path contains tf.exe (2)
             if (!File.Exists($@"{path}\tf.exe") || !File.Exists($@"{path}\tf_win64.exe"))
             {
-                writeLineToDebugger("Failed! Error: sanity2");
+                writeLineToDebugger("Failed! Error code: 2");
                 MessageBox.Show("The specified TF2 path does not contain \"tf.exe\" or \"tf_win64.exe\".\nDid you set the correct path?\n\nHint: Select the \"Team Fortress 2\" directory.", "Venom Crosshairs - Invalid TF2 path", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if vtf2tga.exe exists (sanity3)
+            // Check if vtf2tga.exe exists (3)
             if (!File.Exists($@"{path}\bin\vtf2tga.exe"))
             {
-                writeLineToDebugger("Failed! Error: sanity3");
+                writeLineToDebugger("Failed! Error code: 3");
                 MessageBox.Show("Could not find \"vtf2tga.exe\".\nPlease verify game files.", "Venom Crosshairs - vtf2tga.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if vtf2tga.exe exists (sanity4)
+            // Check if vtf2tga.exe exists (4)
             if (!File.Exists($@"{path}\bin\tier0.dll"))
             {
-                writeLineToDebugger("Failed! Error: sanity4");
+                writeLineToDebugger("Failed! Error code: 4");
                 MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "Venom Crosshairs - tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if project contains ffmpeg.exe (sanity5)
+            // Check if project contains ffmpeg.exe (5)
             if (!File.Exists($@"{PATH_VC}\resources\ffmpeg.exe"))
             {
-                writeLineToDebugger("Failed! Error: sanity5");
+                writeLineToDebugger("Failed! Error code: 5");
                 MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue.)", "Venom Crosshairs - ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            // Check if vpk.exe exists (sanity6)
+            // Check if vpk.exe exists (6)
             if (!File.Exists($@"{path}\bin\vpk.exe"))
             {
-                writeLineToDebugger("Failed! Error: sanity6");
+                writeLineToDebugger("Failed! Error code: 6");
                 MessageBox.Show("Could not find \"vpk.exe\".\nPlease verify game files.", "Venom Crosshairs - vpk.exe does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
+            }
+
+            // Check if vpk.exe exists (7)
+            foreach (string executable in Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.exe", SearchOption.AllDirectories))
+            {
+                if (Path.GetFileName(executable) == "VenomCrosshairs.exe")
+                {
+                    writeLineToDebugger("Failed! Error code: 7");
+                    MessageBox.Show("Venom Crosshairs found within TF2 custom folder!\n\nIn order for Venom Crosshairs to work properly, make sure to extract the release anywhere except your custom TF2 folder.", "Venom Crosshairs - Release extracted to custom folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
             }
 
             writeLineToDebugger("Done!");
