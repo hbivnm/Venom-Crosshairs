@@ -636,8 +636,19 @@ namespace VenomCrosshairs
                         string tf2Class = TF2Weapons.getClassFromWeaponName(weapon);
                         addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { crosshair, weapon, tf2Class }));
 
-                        if (!missingCrosshairsList.Contains(crosshair) && !File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf"))
-                            missingCrosshairsList.Add(crosshair);
+                        try
+                        {
+                            if (!File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vmt"))
+                                File.Copy($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vmt", $@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vmt", true);
+                            if (!File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf"))
+                                File.Copy($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", $@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vtf", true);
+                        }
+                        catch 
+                        { 
+                            if (!missingCrosshairsList.Contains(crosshair))
+                                missingCrosshairsList.Add(crosshair);
+                        }
+
                     }
                     catch (Exception ex)
                     {
@@ -662,7 +673,7 @@ namespace VenomCrosshairs
                         missingCrosshairsListString += $"\n - {crosshair}";
                     }
 
-                    MessageBox.Show($"WARNING: The currently installed Venom Crosshairs config contains scripts with crosshairs that you do NOT have (and are currently not a part of Venom Crosshairs)!\n\nUsing this config will cause some weapons to have missing crosshairs (black square).\n\nYou are missing the following crosshairs:{missingCrosshairsListString}", "Venom Crosshairs - Missing crosshairs found within installed config", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"WARNING: The currently installed Venom Crosshairs config contains scripts with crosshairs that you do NOT have!\n\nUsing this config will cause some weapons to have missing crosshairs (black square).\n\nYou are missing the following crosshairs:{missingCrosshairsListString}", "Venom Crosshairs - Missing crosshairs found within installed config", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
 
