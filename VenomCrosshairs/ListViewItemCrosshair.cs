@@ -8,8 +8,8 @@ namespace VenomCrosshairs
 {
     internal class ListViewItemCrosshair
     {
-        public string crosshair { get; set; }
-        public string weapon { get; set; }
-        public string tf2Class { get; set; }
+        public string Crosshair { get; set; }
+        public string Weapon { get; set; }
+        public string TF2Class { get; set; }
     }
 }

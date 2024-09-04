@@ -255,6 +255,7 @@ namespace VenomCrosshairs
                 sfd.InitialDirectory = PATH_VC_RESOURCES_PRESETS;
                 sfd.Title = "Venom Crosshairs - Export preset";
                 sfd.Filter = "Venom Crosshairs Preset|*.vnmp";
+                sfd.AddExtension = true;
 
                 if (sfd.ShowDialog() == DialogResult.OK && sfd.FileName != "")
                 {
@@ -263,10 +264,11 @@ namespace VenomCrosshairs
                         List<ListViewItemCrosshair> crosshairSelectionList = new List<ListViewItemCrosshair>();
 
                         foreach (ListViewItem item in listViewChosenCrosshairs.Items)
-                            crosshairSelectionList.Add(new ListViewItemCrosshair { crosshair = item.SubItems[0].Text, weapon = item.SubItems[1].Text, tf2Class = item.SubItems[2].Text });
+                            crosshairSelectionList.Add(new ListViewItemCrosshair { Crosshair = item.SubItems[0].Text, Weapon = item.SubItems[1].Text, TF2Class = item.SubItems[2].Text });
 
                         JsonConvert.SerializeObject(crosshairSelectionList);
                         File.WriteAllText(sfd.FileName, JsonConvert.SerializeObject(crosshairSelectionList, Formatting.Indented));
+                        writeLineToDebugger($"Exported preset as {Path.GetFileName(sfd.FileName)}");
                     } catch (Exception ex)
                     {
                         MessageBox.Show($"Unable to export preset. Are you sure you have permission to save to this location?\n\nIf this problem persists with correct permission and usage, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to export preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -291,9 +293,13 @@ namespace VenomCrosshairs
                     {
                         List<ListViewItemCrosshair> crosshairsFromPresetList = JsonConvert.DeserializeObject<List<ListViewItemCrosshair>>(File.ReadAllText(ofd.FileName));
 
+                        if (crosshairsFromPresetList == null)
+                            throw new NullReferenceException($"Object reference not set to an instance of an object. Object is 'null' from trying to deserialize {ofd.FileName}");
+                        
+                        listViewChosenCrosshairs.Items.Clear();
                         foreach (var crosshairFromPreset in crosshairsFromPresetList)
                         {
-                            addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { crosshairFromPreset.crosshair, crosshairFromPreset.weapon, crosshairFromPreset.tf2Class }));
+                            addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { crosshairFromPreset.Crosshair, crosshairFromPreset.Weapon, crosshairFromPreset.TF2Class }));
                         }
                         btnRemoveSelected.Enabled = true;
                         btnPresetExport.Enabled = true;
