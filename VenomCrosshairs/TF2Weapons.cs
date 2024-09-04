@@ -80,8 +80,8 @@ namespace VenomCrosshairs
 
         // Explosive
         private static readonly string[] tf2ExplosiveWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Direct Hit", "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher" };
-        private static readonly string[] tf2PrimaryExplosiveWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Direct Hit", "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon", "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher" };
-        private static readonly string[] tf2SecondaryExplosiveWeapons = { };
+        private static readonly string[] tf2PrimaryExplosiveWeapons = { "Rocket Launcher, Black Box, Original, Liberty Launcher, Beggar's Bazooka", "Air Strike", "Direct Hit", "Grenade Launcher, Loch-n-Load, Iron Bomber", "Loose Cannon" };
+        private static readonly string[] tf2SecondaryExplosiveWeapons = { "Stickybomb Launcher, Scottish Resistance, Sticky Jumper, Quickiebomb Launcher" };
         private static readonly string[] tf2MeleeExplosiveWeapons = { };
         private static readonly string[] tf2MiscExplosiveWeapons = { };
 

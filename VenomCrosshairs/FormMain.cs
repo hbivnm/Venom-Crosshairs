@@ -27,11 +27,12 @@ namespace VenomCrosshairs
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
 
         private static readonly string PATH_VC = Directory.GetCurrentDirectory();
-        private static readonly string PATH_VC_RESOURCES = Directory.GetCurrentDirectory() + @"\resources\";
-        private static readonly string PATH_VC_RESOURCES_MATERIALS = Directory.GetCurrentDirectory() + @"\resources\materials\";
-        private static readonly string PATH_VC_RESOURCES_PREVIEWS = Directory.GetCurrentDirectory() + @"\resources\previews\";
-        private static readonly string PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = Directory.GetCurrentDirectory() + @"\resources\previews\generatepreviews.bat";
-        private static readonly string PATH_VC_RESOURCES_SCRIPTS = Directory.GetCurrentDirectory() + @"\resources\scripts\";
+        private static readonly string PATH_VC_RESOURCES = PATH_VC + @"\resources\";
+        private static readonly string PATH_VC_RESOURCES_MATERIALS = PATH_VC + @"\resources\materials\";
+        private static readonly string PATH_VC_RESOURCES_PRESETS = PATH_VC + @"\resources\presets\";
+        private static readonly string PATH_VC_RESOURCES_PREVIEWS = PATH_VC + @"\resources\previews\";
+        private static readonly string PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = PATH_VC + @"\resources\previews\generatepreviews.bat";
+        private static readonly string PATH_VC_RESOURCES_SCRIPTS = PATH_VC + @"\resources\scripts\";
         private static readonly string PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usersettings.cfg";
 
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
@@ -143,6 +144,7 @@ namespace VenomCrosshairs
         {
             bool crosshairAdded = false;
 
+            // Add crosshair if no checkboxes are checked
             if (cbClass.Text.Length > 0
                 && cbWeapon.Text.Length > 0
                 && cbCrosshair.Text.Length > 0
@@ -248,11 +250,64 @@ namespace VenomCrosshairs
 
         private void btnPresetExport_Click(object sender, EventArgs e)
         {
-            
+            using (var sfd = new SaveFileDialog())
+            {
+                sfd.InitialDirectory = PATH_VC_RESOURCES_PRESETS;
+                sfd.Title = "Venom Crosshairs - Export preset";
+                sfd.Filter = "Venom Crosshairs Preset|*.vnmp";
+
+                if (sfd.ShowDialog() == DialogResult.OK && sfd.FileName != "")
+                {
+                    try
+                    {
+                        List<ListViewItemCrosshair> crosshairSelectionList = new List<ListViewItemCrosshair>();
+
+                        foreach (ListViewItem item in listViewChosenCrosshairs.Items)
+                            crosshairSelectionList.Add(new ListViewItemCrosshair { crosshair = item.SubItems[0].Text, weapon = item.SubItems[1].Text, tf2Class = item.SubItems[2].Text });
+
+                        JsonConvert.SerializeObject(crosshairSelectionList);
+                        File.WriteAllText(sfd.FileName, JsonConvert.SerializeObject(crosshairSelectionList, Formatting.Indented));
+                    } catch (Exception ex)
+                    {
+                        MessageBox.Show($"Unable to export preset. Are you sure you have permission to save to this location?\n\nIf this problem persists with correct permission and usage, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to export preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        writeLineToDebugger($"For developer: Exception: {ex.Message}");
+                        writeLineToDebugger($"Unable to export preset!");
+                    }
+                }
+            }
         }
+
         private void btnPresetImport_Click(object sender, EventArgs e)
         {
-            
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.InitialDirectory = PATH_VC_RESOURCES_PRESETS;
+                ofd.Title = "Venom Crosshairs - Import preset";
+                ofd.Filter = "Venom Crosshairs Preset|*.vnmp";
+
+                if (ofd.ShowDialog() == DialogResult.OK && ofd.FileName != "")
+                {
+                    try
+                    {
+                        List<ListViewItemCrosshair> crosshairsFromPresetList = JsonConvert.DeserializeObject<List<ListViewItemCrosshair>>(File.ReadAllText(ofd.FileName));
+
+                        foreach (var crosshairFromPreset in crosshairsFromPresetList)
+                        {
+                            addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { crosshairFromPreset.crosshair, crosshairFromPreset.weapon, crosshairFromPreset.tf2Class }));
+                        }
+                        btnRemoveSelected.Enabled = true;
+                        btnPresetExport.Enabled = true;
+                        btnInstall.Enabled = true;
+                        writeLineToDebugger($"Imported preset from {Path.GetFileName(ofd.FileName)}");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Unable to read preset. It may have been corrupted, damaged or manually altered in some way or form.\n\nMake sure to select *.vnmp files only. If this problem persists with correctly exported presets, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to import preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        writeLineToDebugger($"For developer: Exception: {ex.Message}");
+                        writeLineToDebugger($"Unable to import preset from {Path.GetFileName(ofd.FileName)}");
+                    }
+                }
+            }
         }
 
         private void btnInstall_Click(object sender, EventArgs e)
@@ -260,8 +315,6 @@ namespace VenomCrosshairs
             if (listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
                 Task.Run(() => performInstallation());
         }
-
-        
 
         /// 
         /// Events
@@ -351,7 +404,7 @@ namespace VenomCrosshairs
         private void onCBZoomCrosshairChangeEvent(object sender, EventArgs e)
         {
             gUserSettings.UserZoomCrosshair = cbZoomCrosshair.Text;
-            File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
+            File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings, Formatting.Indented));
         }
 
         private void onCheckBoxAddClassWeaponsChangeEvent(object sender, EventArgs e)
