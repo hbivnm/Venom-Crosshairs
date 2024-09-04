@@ -78,7 +78,7 @@ namespace VenomCrosshairs
 
         private void btnReload_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("You are about to reload the crosshair list. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Reload crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            DialogResult dialogResult = MessageBox.Show("You are about to reload the crosshair list.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Reload crosshair list", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
                 new Thread(reloadCrosshairList).Start();
@@ -86,7 +86,7 @@ namespace VenomCrosshairs
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("You are about to download new/missing crosshairs. This will clear currently selected crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Download new/missing crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            DialogResult dialogResult = MessageBox.Show("You are about to download new/missing crosshairs.\nAre you sure you want to continue?\n\nWARNING: This might take some time!", "Venom Crosshairs - Download new/missing crosshairs", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
                 new Thread(downloadAndGenerateNewCrosshairs).Start();
@@ -225,9 +225,8 @@ namespace VenomCrosshairs
             if (crosshairAdded)
             {
                 btnRemoveSelected.Enabled = true;
+                btnPresetExport.Enabled = true;
                 btnInstall.Enabled = true;
-                btnInstallClean.Enabled = true;
-                btnReadConfig.Enabled = true;
             }
         }
 
@@ -240,59 +239,20 @@ namespace VenomCrosshairs
             cleanListViewOfEmptyRows(listViewChosenCrosshairs);
 
             if (listViewChosenCrosshairs.Items.Count < 1)
+            {
                 btnRemoveSelected.Enabled = false;
+                btnPresetExport.Enabled = false;
+                btnInstall.Enabled = false;
+            }
         }
 
-        private void btnReadConfig_Click(object sender, EventArgs e)
+        private void btnPresetExport_Click(object sender, EventArgs e)
         {
-            pictureBoxLoading.Visible = true;
-            listViewChosenCrosshairs.Items.Clear();
-            writeLineToDebugger("Reading current config...");
-
-            string vcScripDir = textBoxTF2Path.Text + $@"\tf\custom\{VC_CONFIG_NAME}\scripts";
-            List<string> missingCrosshairsList = new List<string>();
-
-            if (Directory.Exists(vcScripDir))
-            {
-                foreach (string fullWeaponScriptPath in Directory.GetFiles(vcScripDir, "*.txt"))
-                {
-                    try
-                    {
-                        string crosshair = getCrosshairFromScript(fullWeaponScriptPath);
-                        string weapon = TF2Weapons.getWeaponNameFromWeaponScript(Path.GetFileName(fullWeaponScriptPath));
-                        string tf2Class = TF2Weapons.getClassFromWeaponName(weapon);
-                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { crosshair, weapon, tf2Class }));
-
-                        if (!missingCrosshairsList.Contains(crosshair) && !File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf"))
-                            missingCrosshairsList.Add(crosshair);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file manually or do \"Install (clean)\" once the config has been read.\n\nIf removing this script file causes futher errors, please contact HbiVnm.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        writeLineToDebugger($"For developer: Exception: {ex.Message}");
-                    }
-                }
-
-                if (missingCrosshairsList.Count > 0)
-                    generateMissingCrosshairs(missingCrosshairsList);
-
-                btnInstall.Enabled = true;
-                btnInstallClean.Enabled = true;
-                btnRemoveSelected.Enabled = true;
-                writeLineToDebugger("Read current config!");
-                cbClass.Enabled = true;
-                cbWeapon.Enabled = true;
-                cbCrosshair.Enabled = true;
-            }
-            else
-            {
-                MessageBox.Show("No Venom Crosshairs config found!\n\nYou have not previously installed a crosshair config through Venom Crosshairs before.\n\nTIP: If you have an existing crosshair config in \\tf\\custom, make sure to rename the folder to \"" + VC_CONFIG_NAME + "\"!", "Venom Crosshairs - Failed to read current config", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                writeLineToDebugger("Failed reading current config!");
-                cbClass.Enabled = true;
-                cbWeapon.Enabled = false;
-                cbCrosshair.Enabled = false;
-            }
-            pictureBoxLoading.Visible = false;
+            
+        }
+        private void btnPresetImport_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private void btnInstall_Click(object sender, EventArgs e)
@@ -301,13 +261,7 @@ namespace VenomCrosshairs
                 Task.Run(() => performInstallation());
         }
 
-        private void btnInstallClean_Click(object sender, EventArgs e)
-        {
-            DialogResult dialogResult = MessageBox.Show("This button would previously remove any installed config by Venom Crosshairs and create a new one. This button is obsolete.", "Venom Crosshairs - Clean installation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-            if (dialogResult == DialogResult.OK && listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
-                Task.Run(() => performInstallation());
-        }
+        
 
         /// 
         /// Events
@@ -453,7 +407,9 @@ namespace VenomCrosshairs
             isNewCrosshairsAvailable(false);
 
             // Read current config
+            writeToDebugger("Reading current config... ");
             readCurrentConfig();
+            writeLineToDebugger("Done!");
 
             writeLineToDebugger($"Venom Crosshairs version {VC_VERSION}");
         }
@@ -583,7 +539,6 @@ namespace VenomCrosshairs
 
         private void readCurrentConfig()
         {
-            writeToDebugger("Reading current config... ");
             pictureBoxLoading.Visible = true;
 
             string vcScriptDir = textBoxTF2Path.Text + $@"\tf\custom\{VC_CONFIG_NAME}\scripts";
@@ -616,16 +571,21 @@ namespace VenomCrosshairs
                 // Scroll to top
                 listViewChosenCrosshairs.EnsureVisible(0);
 
-                btnInstall.Enabled = true;
-                btnInstallClean.Enabled = true;
                 btnRemoveSelected.Enabled = true;
+                btnPresetExport.Enabled = true;
+                btnInstall.Enabled = true;
+            }
+            else
+            {
+                btnRemoveSelected.Enabled = false;
+                btnPresetExport.Enabled = false;
+                btnInstall.Enabled = false;
             }
 
             cbClass.Enabled = true;
             cbWeapon.Enabled = false;
             cbCrosshair.Enabled = false;
             pictureBoxLoading.Visible = false;
-            writeLineToDebugger("Done!");
         }
 
         private void renameOldConfig()
@@ -986,29 +946,12 @@ namespace VenomCrosshairs
                 btnRemoveSelected.Enabled = false;
                 btnPrevCrosshair.Enabled = false;
                 btnNextCrosshair.Enabled = false;
+                btnPresetImport.Enabled = false;
+                btnPresetExport.Enabled = false;
                 btnInstall.Enabled = false;
-                btnInstallClean.Enabled = false;
-                btnReadConfig.Enabled = false;
             }));
 
             bool isUpdate = false;
-            /*
-            if (removeOldConfig)
-            {
-                writeLineToDebugger("Clean installation of Venom Crosshairs config started!");
-                writeToDebugger("Removing old Venom Crosshairs config... ");
-                if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}"))
-                    Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}", true);
-                writeLineToDebugger("Done!");
-            }
-            else if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}"))
-            {
-                writeLineToDebugger("Updating current Venom Crosshairs config!");
-                isUpdate = true;
-            }
-            else
-                writeLineToDebugger("Installation of Venom Crosshairs config started!");
-            */
             if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}"))
             {
                 writeLineToDebugger("Updating current Venom Crosshairs config!");
@@ -1147,9 +1090,9 @@ namespace VenomCrosshairs
                 btnRemoveSelected.Enabled = true;
                 btnPrevCrosshair.Enabled = true;
                 btnNextCrosshair.Enabled = true;
+                btnPresetImport.Enabled = true;
+                btnPresetExport.Enabled = true;
                 btnInstall.Enabled = true;
-                btnInstallClean.Enabled = true;
-                btnReadConfig.Enabled = true;
             }));
         }
 
@@ -1179,9 +1122,9 @@ namespace VenomCrosshairs
                 btnRemoveSelected.Enabled = false;
                 btnPrevCrosshair.Enabled = false;
                 btnNextCrosshair.Enabled = false;
+                btnPresetImport.Enabled = false;
+                btnPresetExport.Enabled = false;
                 btnInstall.Enabled = false;
-                btnInstallClean.Enabled = false;
-                btnReadConfig.Enabled = false;
             }));
 
             writeToDebugger("Deleting old previews... ");
@@ -1250,6 +1193,9 @@ namespace VenomCrosshairs
                 addCrosshairsToComboBoxFromPath(cbZoomCrosshair, PATH_VC_RESOURCES_PREVIEWS, new string[] { "NO CHANGE" }, true);
             }));
 
+            writeLineToDebugger("Finished reloading crosshair list!");
+
+
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
@@ -1264,9 +1210,9 @@ namespace VenomCrosshairs
                 cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
                 btnReload.Enabled = true;
                 btnDownload.Enabled = true;
-                btnReadConfig.Enabled = true;
+                btnPresetImport.Enabled = true;
+                readCurrentConfig();
             }));
-            writeLineToDebugger("Finished reloading crosshair list!");
         }
 
         private void downloadAndGenerateNewCrosshairs()
@@ -1295,9 +1241,9 @@ namespace VenomCrosshairs
                 btnRemoveSelected.Enabled = false;
                 btnPrevCrosshair.Enabled = false;
                 btnNextCrosshair.Enabled = false;
+                btnPresetImport.Enabled = false;
+                btnPresetExport.Enabled = false;
                 btnInstall.Enabled = false;
-                btnInstallClean.Enabled = false;
-                btnReadConfig.Enabled = false;
             }));
 
             // Download publicly available crosshairs
@@ -1380,6 +1326,7 @@ namespace VenomCrosshairs
                 writeLineToDebugger("No new crosshairs available!");
             }
 
+
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
@@ -1394,7 +1341,8 @@ namespace VenomCrosshairs
                 cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
                 btnReload.Enabled = true;
                 btnDownload.Enabled = true;
-                btnReadConfig.Enabled = true;
+                btnPresetImport.Enabled = true;
+                readCurrentConfig();
             }));
         }
 

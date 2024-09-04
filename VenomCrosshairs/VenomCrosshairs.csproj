@@ -149,6 +149,7 @@
     <None Include="Resources\exclamation-red-frame.png" />
     <None Include="Resources\yin-yang.png" />
     <None Include="Resources\download-cloud.png" />
+    <None Include="Resources\drive-download.png" />
     <Content Include="VC.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

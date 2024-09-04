@@ -57,22 +57,22 @@
             this.btnDarkMode = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnReload = new System.Windows.Forms.Button();
+            this.textBoxDebugger = new System.Windows.Forms.RichTextBox();
+            this.cbZoomCrosshair = new System.Windows.Forms.ComboBox();
+            this.lblZoomCrosshair = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
-            this.btnReadConfig = new System.Windows.Forms.Button();
+            this.btnPresetExport = new System.Windows.Forms.Button();
             this.btnToggleConsole = new System.Windows.Forms.Button();
             this.pictureBoxLoading = new System.Windows.Forms.PictureBox();
             this.btnGitHub = new System.Windows.Forms.Button();
             this.btnSteam = new System.Windows.Forms.Button();
             this.btnNextCrosshair = new System.Windows.Forms.Button();
             this.btnPrevCrosshair = new System.Windows.Forms.Button();
-            this.btnInstallClean = new System.Windows.Forms.Button();
+            this.btnPresetImport = new System.Windows.Forms.Button();
             this.btnInstall = new System.Windows.Forms.Button();
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
-            this.textBoxDebugger = new System.Windows.Forms.RichTextBox();
-            this.cbZoomCrosshair = new System.Windows.Forms.ComboBox();
-            this.lblZoomCrosshair = new System.Windows.Forms.Label();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
@@ -368,6 +368,40 @@
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
+            // textBoxDebugger
+            // 
+            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
+            this.textBoxDebugger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
+            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
+            this.textBoxDebugger.Name = "textBoxDebugger";
+            this.textBoxDebugger.ReadOnly = true;
+            this.textBoxDebugger.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
+            this.textBoxDebugger.TabIndex = 42;
+            this.textBoxDebugger.Text = "";
+            // 
+            // cbZoomCrosshair
+            // 
+            this.cbZoomCrosshair.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbZoomCrosshair.FormattingEnabled = true;
+            this.cbZoomCrosshair.Items.AddRange(new object[] {
+            "NO CHANGE"});
+            this.cbZoomCrosshair.Location = new System.Drawing.Point(450, 98);
+            this.cbZoomCrosshair.Name = "cbZoomCrosshair";
+            this.cbZoomCrosshair.Size = new System.Drawing.Size(132, 21);
+            this.cbZoomCrosshair.TabIndex = 43;
+            // 
+            // lblZoomCrosshair
+            // 
+            this.lblZoomCrosshair.AutoSize = true;
+            this.lblZoomCrosshair.Location = new System.Drawing.Point(362, 101);
+            this.lblZoomCrosshair.Name = "lblZoomCrosshair";
+            this.lblZoomCrosshair.Size = new System.Drawing.Size(82, 13);
+            this.lblZoomCrosshair.TabIndex = 44;
+            this.lblZoomCrosshair.Text = "Zoom crosshair:";
+            // 
             // btnSettings
             // 
             this.btnSettings.Image = global::VenomCrosshairs.Properties.Resources.gear;
@@ -378,18 +412,19 @@
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
-            // btnReadConfig
+            // btnPresetExport
             // 
-            this.btnReadConfig.Image = global::VenomCrosshairs.Properties.Resources.drive_upload;
-            this.btnReadConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnReadConfig.Location = new System.Drawing.Point(561, 315);
-            this.btnReadConfig.Name = "btnReadConfig";
-            this.btnReadConfig.Size = new System.Drawing.Size(88, 22);
-            this.btnReadConfig.TabIndex = 38;
-            this.btnReadConfig.Text = "Read config";
-            this.btnReadConfig.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnReadConfig.UseVisualStyleBackColor = true;
-            this.btnReadConfig.Click += new System.EventHandler(this.btnReadConfig_Click);
+            this.btnPresetExport.Enabled = false;
+            this.btnPresetExport.Image = global::VenomCrosshairs.Properties.Resources.drive_upload;
+            this.btnPresetExport.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnPresetExport.Location = new System.Drawing.Point(657, 315);
+            this.btnPresetExport.Name = "btnPresetExport";
+            this.btnPresetExport.Size = new System.Drawing.Size(92, 22);
+            this.btnPresetExport.TabIndex = 38;
+            this.btnPresetExport.Text = "Export preset";
+            this.btnPresetExport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPresetExport.UseVisualStyleBackColor = true;
+            this.btnPresetExport.Click += new System.EventHandler(this.btnPresetExport_Click);
             // 
             // btnToggleConsole
             // 
@@ -454,19 +489,18 @@
             this.btnPrevCrosshair.UseVisualStyleBackColor = true;
             this.btnPrevCrosshair.Click += new System.EventHandler(this.btnPrevCrosshair_Click);
             // 
-            // btnInstallClean
+            // btnPresetImport
             // 
-            this.btnInstallClean.Enabled = false;
-            this.btnInstallClean.Image = global::VenomCrosshairs.Properties.Resources.compile_warning;
-            this.btnInstallClean.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnInstallClean.Location = new System.Drawing.Point(655, 315);
-            this.btnInstallClean.Name = "btnInstallClean";
-            this.btnInstallClean.Size = new System.Drawing.Size(94, 22);
-            this.btnInstallClean.TabIndex = 16;
-            this.btnInstallClean.Text = "Install (clean)";
-            this.btnInstallClean.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnInstallClean.UseVisualStyleBackColor = true;
-            this.btnInstallClean.Click += new System.EventHandler(this.btnInstallClean_Click);
+            this.btnPresetImport.Image = global::VenomCrosshairs.Properties.Resources.drive_download;
+            this.btnPresetImport.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnPresetImport.Location = new System.Drawing.Point(559, 315);
+            this.btnPresetImport.Name = "btnPresetImport";
+            this.btnPresetImport.Size = new System.Drawing.Size(92, 22);
+            this.btnPresetImport.TabIndex = 16;
+            this.btnPresetImport.Text = "Import preset";
+            this.btnPresetImport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPresetImport.UseVisualStyleBackColor = true;
+            this.btnPresetImport.Click += new System.EventHandler(this.btnPresetImport_Click);
             // 
             // btnInstall
             // 
@@ -522,40 +556,6 @@
             this.pictureBoxCrosshair.TabIndex = 11;
             this.pictureBoxCrosshair.TabStop = false;
             // 
-            // textBoxDebugger
-            // 
-            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
-            this.textBoxDebugger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
-            this.textBoxDebugger.Name = "textBoxDebugger";
-            this.textBoxDebugger.ReadOnly = true;
-            this.textBoxDebugger.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
-            this.textBoxDebugger.TabIndex = 42;
-            this.textBoxDebugger.Text = "";
-            // 
-            // cbZoomCrosshair
-            // 
-            this.cbZoomCrosshair.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbZoomCrosshair.FormattingEnabled = true;
-            this.cbZoomCrosshair.Items.AddRange(new object[] {
-            "NO CHANGE"});
-            this.cbZoomCrosshair.Location = new System.Drawing.Point(450, 98);
-            this.cbZoomCrosshair.Name = "cbZoomCrosshair";
-            this.cbZoomCrosshair.Size = new System.Drawing.Size(132, 21);
-            this.cbZoomCrosshair.TabIndex = 43;
-            // 
-            // lblZoomCrosshair
-            // 
-            this.lblZoomCrosshair.AutoSize = true;
-            this.lblZoomCrosshair.Location = new System.Drawing.Point(362, 101);
-            this.lblZoomCrosshair.Name = "lblZoomCrosshair";
-            this.lblZoomCrosshair.Size = new System.Drawing.Size(82, 13);
-            this.lblZoomCrosshair.TabIndex = 44;
-            this.lblZoomCrosshair.Text = "Zoom crosshair:";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -569,7 +569,7 @@
             this.Controls.Add(this.panelSettings);
             this.Controls.Add(this.cbExplosionEffect);
             this.Controls.Add(this.lblExplosionEffect);
-            this.Controls.Add(this.btnReadConfig);
+            this.Controls.Add(this.btnPresetExport);
             this.Controls.Add(this.btnToggleConsole);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pictureBoxLoading);
@@ -584,7 +584,7 @@
             this.Controls.Add(this.btnSteam);
             this.Controls.Add(this.btnNextCrosshair);
             this.Controls.Add(this.btnPrevCrosshair);
-            this.Controls.Add(this.btnInstallClean);
+            this.Controls.Add(this.btnPresetImport);
             this.Controls.Add(this.btnInstall);
             this.Controls.Add(this.btnRemoveSelected);
             this.Controls.Add(this.btnAddCrosshair);
@@ -627,8 +627,9 @@
         private System.Windows.Forms.ListView listViewChosenCrosshairs;
         private System.Windows.Forms.Button btnAddCrosshair;
         private System.Windows.Forms.Button btnRemoveSelected;
+        private System.Windows.Forms.Button btnPresetImport;
+        private System.Windows.Forms.Button btnPresetExport;
         private System.Windows.Forms.Button btnInstall;
-        private System.Windows.Forms.Button btnInstallClean;
         private System.Windows.Forms.Button btnPrevCrosshair;
         private System.Windows.Forms.Button btnNextCrosshair;
         private System.Windows.Forms.Button btnSteam;
@@ -644,7 +645,6 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnToggleConsole;
         private System.Windows.Forms.Button btnHelp;
-        private System.Windows.Forms.Button btnReadConfig;
         private System.Windows.Forms.Label lblExplosionEffect;
         private System.Windows.Forms.ComboBox cbExplosionEffect;
         private System.Windows.Forms.Button btnDarkMode;
