@@ -269,7 +269,8 @@ namespace VenomCrosshairs
                         JsonConvert.SerializeObject(crosshairSelectionList);
                         File.WriteAllText(sfd.FileName, JsonConvert.SerializeObject(crosshairSelectionList, Formatting.Indented));
                         writeLineToDebugger($"Exported preset as {Path.GetFileName(sfd.FileName)}");
-                    } catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         MessageBox.Show($"Unable to export preset. Are you sure you have permission to save to this location?\n\nIf this problem persists with correct permission and usage, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to export preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
@@ -292,23 +293,44 @@ namespace VenomCrosshairs
                     try
                     {
                         List<ListViewItemCrosshair> crosshairsFromPresetList = JsonConvert.DeserializeObject<List<ListViewItemCrosshair>>(File.ReadAllText(ofd.FileName));
+                        List<string> missingCrosshairsList = new List<string>();
+                        bool presetHasMissingCrosshairs = false;
 
                         if (crosshairsFromPresetList == null)
                             throw new NullReferenceException($"Object reference not set to an instance of an object. Object is 'null' from trying to deserialize {ofd.FileName}");
-                        
+
                         listViewChosenCrosshairs.Items.Clear();
                         foreach (var crosshairFromPreset in crosshairsFromPresetList)
                         {
+                            if (!missingCrosshairsList.Contains(crosshairFromPreset.Crosshair) && !File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshairFromPreset.Crosshair}.vtf"))
+                            {
+                                presetHasMissingCrosshairs = true;
+                                writeLineToDebugger("Missing crosshair! " + crosshairFromPreset.Crosshair);
+                                missingCrosshairsList.Add(crosshairFromPreset.Crosshair);
+                            }
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { crosshairFromPreset.Crosshair, crosshairFromPreset.Weapon, crosshairFromPreset.TF2Class }));
                         }
-                        btnRemoveSelected.Enabled = true;
-                        btnPresetExport.Enabled = true;
-                        btnInstall.Enabled = true;
+
+                        if (listViewChosenCrosshairs.Items.Count > 0)
+                        {
+                            btnRemoveSelected.Enabled = true;
+                            btnPresetExport.Enabled = true;
+                            btnInstall.Enabled = true;
+                        }
+                        if (missingCrosshairsList.Count > 0)
+                        {
+                            string missingCrosshairsListString = "";
+                            foreach (var crosshair in missingCrosshairsList)
+                            {
+                                missingCrosshairsListString += $"\n - {crosshair}";
+                            }
+                            MessageBox.Show($"WARNING: {Path.GetFileName(ofd.FileName)} contains crosshairs that you do NOT have (and are currently not a part of Venom Crosshairs)!\n\nInstalling a config from this preset will cause some weapons to have missing crosshairs (black square).\n\nYou are missing the following crosshairs from this preset:{missingCrosshairsListString}", "Venom Crosshairs - Missing crosshairs from preset", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                         writeLineToDebugger($"Imported preset from {Path.GetFileName(ofd.FileName)}");
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Unable to read preset. It may have been corrupted, damaged or manually altered in some way or form.\n\nMake sure to select *.vnmp files only. If this problem persists with correctly exported presets, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to import preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Unable to read preset. It may have been corrupted, damaged or manually altered in some way or form.\n\nMake sure to select *.vnmp files only!\n\nIf this problem persists with correctly exported presets, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to import preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         writeLineToDebugger($"Unable to import preset from {Path.GetFileName(ofd.FileName)}");
                     }
@@ -619,20 +641,40 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file manually or do \"Install (clean)\" once the config has been read.\n\nIf removing this script file causes futher errors, please contact HbiVnm.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file.\n\nIf removing this script file causes futher errors, please contact HbiVnm.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     }
                 }
 
                 if (missingCrosshairsList.Count > 0)
-                    generateMissingCrosshairs(missingCrosshairsList);
+                {
+                    /* No good solution so far, might re-add later, a warning will be good enough for now...
+                    try
+                    {
+                        generateMissingCrosshairs(missingCrosshairsList);
+                    }
+                    catch (Exception ex) { }
+                    */
 
-                // Scroll to top
-                listViewChosenCrosshairs.EnsureVisible(0);
+                    string missingCrosshairsListString = "";
+                    foreach (var crosshair in missingCrosshairsList)
+                    {
+                        missingCrosshairsListString += $"\n - {crosshair}";
+                    }
 
-                btnRemoveSelected.Enabled = true;
-                btnPresetExport.Enabled = true;
-                btnInstall.Enabled = true;
+                    MessageBox.Show($"WARNING: The currently installed Venom Crosshairs config contains scripts with crosshairs that you do NOT have (and are currently not a part of Venom Crosshairs)!\n\nUsing this config will cause some weapons to have missing crosshairs (black square).\n\nYou are missing the following crosshairs:{missingCrosshairsListString}", "Venom Crosshairs - Missing crosshairs found within installed config", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+
+                if (listViewChosenCrosshairs.Items.Count > 0)
+                {
+                    // Scroll to top
+                    listViewChosenCrosshairs.EnsureVisible(0);
+
+                    btnRemoveSelected.Enabled = true;
+                    btnPresetExport.Enabled = true;
+                    btnInstall.Enabled = true;
+                }
             }
             else
             {
@@ -1036,9 +1078,16 @@ namespace VenomCrosshairs
 
                 foreach (ListViewItem item in listViewChosenCrosshairs.Items)
                 {
-                    string crosshair = item.SubItems[0].Text;
-                    File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vmt", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vmt", true);
-                    File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vtf", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", true);
+                    try
+                    {
+                        string crosshair = item.SubItems[0].Text;
+                        File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vmt", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vmt", true);
+                        File.Copy($@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vtf", $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", true);
+                    }
+                    catch (Exception ex)
+                    {
+                        writeLineToDebugger(ex.ToString());
+                    }
                 }
             }));
             writeLineToDebugger("Done!");
@@ -1428,7 +1477,6 @@ namespace VenomCrosshairs
             {
                 if (missingCrosshairNames.Contains(Path.GetFileNameWithoutExtension(vtfFile)))
                 {
-                    writeLineToDebugger(vtfFile + " will be turned into tga");
                     vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
                     vtf2tgaProcess.Start();
                 }
@@ -1474,7 +1522,7 @@ namespace VenomCrosshairs
                 File.Delete(tgaFile);
             writeLineToDebugger("Done!");
 
-            writeLineToDebugger($"Read and generated {missingCrosshairNames.Count} new crosshairs!");
+            writeLineToDebugger($"Read and generated {missingCrosshairNames.Count} new crosshair(s)!");
 
             // Add to ComboBox
             Invoke(new MethodInvoker(delegate ()
