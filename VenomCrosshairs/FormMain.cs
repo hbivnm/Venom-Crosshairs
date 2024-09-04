@@ -298,15 +298,15 @@ namespace VenomCrosshairs
         private void btnInstall_Click(object sender, EventArgs e)
         {
             if (listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
-                Task.Run(() => performInstallation(false));
+                Task.Run(() => performInstallation());
         }
 
         private void btnInstallClean_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("This will REMOVE any installed config by Venom Crosshairs and create a new one.\nAre you sure you want to continue?", "Venom Crosshairs - Clean installation. Are you sure?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            DialogResult dialogResult = MessageBox.Show("This button would previously remove any installed config by Venom Crosshairs and create a new one. This button is obsolete.", "Venom Crosshairs - Clean installation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            if (dialogResult == DialogResult.Yes && listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
-                Task.Run(() => performInstallation(true));
+            if (dialogResult == DialogResult.OK && listViewChosenCrosshairs.Items.Count > 0 && performSanityCheck(textBoxTF2Path.Text))
+                Task.Run(() => performInstallation());
         }
 
         /// 
@@ -452,6 +452,9 @@ namespace VenomCrosshairs
             // Fetch public crosshairs, if new crosshairs are available -> prompt user
             isNewCrosshairsAvailable(false);
 
+            // Read current config
+            readCurrentConfig();
+
             writeLineToDebugger($"Venom Crosshairs version {VC_VERSION}");
         }
 
@@ -576,6 +579,53 @@ namespace VenomCrosshairs
 
                 pictureBoxLoading.Visible = false;
             }
+        }
+
+        private void readCurrentConfig()
+        {
+            writeToDebugger("Reading current config... ");
+            pictureBoxLoading.Visible = true;
+
+            string vcScriptDir = textBoxTF2Path.Text + $@"\tf\custom\{VC_CONFIG_NAME}\scripts";
+            List<string> missingCrosshairsList = new List<string>();
+
+            if (Directory.Exists(vcScriptDir))
+            {
+                foreach (string fullWeaponScriptPath in Directory.GetFiles(vcScriptDir, "*.txt"))
+                {
+                    try
+                    {
+                        string crosshair = getCrosshairFromScript(fullWeaponScriptPath);
+                        string weapon = TF2Weapons.getWeaponNameFromWeaponScript(Path.GetFileName(fullWeaponScriptPath));
+                        string tf2Class = TF2Weapons.getClassFromWeaponName(weapon);
+                        addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { crosshair, weapon, tf2Class }));
+
+                        if (!missingCrosshairsList.Contains(crosshair) && !File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf"))
+                            missingCrosshairsList.Add(crosshair);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file manually or do \"Install (clean)\" once the config has been read.\n\nIf removing this script file causes futher errors, please contact HbiVnm.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        writeLineToDebugger($"For developer: Exception: {ex.Message}");
+                    }
+                }
+
+                if (missingCrosshairsList.Count > 0)
+                    generateMissingCrosshairs(missingCrosshairsList);
+
+                // Scroll to top
+                listViewChosenCrosshairs.EnsureVisible(0);
+
+                btnInstall.Enabled = true;
+                btnInstallClean.Enabled = true;
+                btnRemoveSelected.Enabled = true;
+            }
+
+            cbClass.Enabled = true;
+            cbWeapon.Enabled = false;
+            cbCrosshair.Enabled = false;
+            pictureBoxLoading.Visible = false;
+            writeLineToDebugger("Done!");
         }
 
         private void renameOldConfig()
@@ -914,7 +964,8 @@ namespace VenomCrosshairs
                     File.Delete(file);
         }
 
-        private void performInstallation(bool removeOldConfig)
+        // private void performInstallation(bool removeOldConfig)
+        private void performInstallation()
         {
             Invoke(new MethodInvoker(delegate ()
             {
@@ -941,6 +992,7 @@ namespace VenomCrosshairs
             }));
 
             bool isUpdate = false;
+            /*
             if (removeOldConfig)
             {
                 writeLineToDebugger("Clean installation of Venom Crosshairs config started!");
@@ -956,6 +1008,12 @@ namespace VenomCrosshairs
             }
             else
                 writeLineToDebugger("Installation of Venom Crosshairs config started!");
+            */
+            if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}"))
+            {
+                writeLineToDebugger("Updating current Venom Crosshairs config!");
+                isUpdate = true;
+            }
 
             // Installation process
             writeToDebugger("Creating config structure... ");
@@ -1664,7 +1722,7 @@ namespace VenomCrosshairs
             if (!File.Exists($@"{PATH_VC}\resources\ffmpeg.exe"))
             {
                 writeLineToDebugger("Failed! Error code: 5");
-                MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue.)", "Venom Crosshairs - ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue or contact HbiVnm directly.)", "Venom Crosshairs - ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -1676,7 +1734,7 @@ namespace VenomCrosshairs
                 return false;
             }
 
-            // Check if vpk.exe exists (7)
+            // Check if Venom Crosshairs executable exists in \tf\custom (7)
             foreach (string executable in Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.exe", SearchOption.AllDirectories))
             {
                 if (Path.GetFileName(executable) == "VenomCrosshairs.exe")
