@@ -1187,6 +1187,8 @@ namespace VenomCrosshairs
 
             doVPKScriptCheck();
 
+            File.WriteAllText($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\README.txt", "This crosshair config was generated using Venom Crosshairs\n\nhttps://github.com/hbivnm/Venom-Crosshairs\n\nNeed to report a bug? Check out https://github.com/hbivnm/Venom-Crosshairs/issues\nNeed help? Check out https://github.com/hbivnm/Venom-Crosshairs/wiki");
+
             if (!isUpdate)
             {
                 writeLineToDebugger("Venom Crosshairs config successfully installed!");
