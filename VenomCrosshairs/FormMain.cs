@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
 
 namespace VenomCrosshairs
 {
@@ -264,6 +265,7 @@ namespace VenomCrosshairs
 
                 if (sfd.ShowDialog() == DialogResult.OK && sfd.FileName != "")
                 {
+                    writeLineToDebugger($"Exporting preset to {Path.GetFileName(sfd.FileName)}...");
                     try
                     {
                         List<ListViewItemCrosshair> crosshairSelectionList = new List<ListViewItemCrosshair>();
@@ -295,6 +297,7 @@ namespace VenomCrosshairs
 
                 if (ofd.ShowDialog() == DialogResult.OK && ofd.FileName != "")
                 {
+                    writeLineToDebugger($"Importing {Path.GetFileName(ofd.FileName)}...");
                     try
                     {
                         List<ListViewItemCrosshair> crosshairsFromPresetList = JsonConvert.DeserializeObject<List<ListViewItemCrosshair>>(File.ReadAllText(ofd.FileName));
@@ -333,7 +336,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Unable to read preset. It may have been corrupted, damaged or manually altered in some way or form.\n\nMake sure to select *.vnmp files only!\n\nIf this problem persists with correctly exported presets, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to import preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Unable to read preset. It may have been corrupted, damaged or manually altered in some way or form.\n\nIf this problem persists with correctly exported presets, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to import preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         writeLineToDebugger($"Unable to import preset from {Path.GetFileName(ofd.FileName)}");
                     }
