@@ -649,8 +649,8 @@ namespace VenomCrosshairs
                             if (!File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf"))
                                 File.Copy($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", $@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vtf", true);
                         }
-                        catch 
-                        { 
+                        catch
+                        {
                             if (!missingCrosshairsList.Contains(crosshair))
                                 missingCrosshairsList.Add(crosshair);
                         }
@@ -1809,13 +1809,16 @@ namespace VenomCrosshairs
             }
 
             // Check if Venom Crosshairs executable exists in \tf\custom (7)
-            foreach (string executable in Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.exe", SearchOption.AllDirectories))
+            if (Directory.Exists(path + @"\tf\custom"))
             {
-                if (Path.GetFileName(executable) == "VenomCrosshairs.exe")
+                foreach (string executable in Directory.GetFiles(path + @"\tf\custom", "*.exe", SearchOption.AllDirectories))
                 {
-                    writeLineToDebugger("Failed! Error code: 7");
-                    MessageBox.Show("Venom Crosshairs found within TF2 custom folder!\n\nIn order for Venom Crosshairs to work properly, make sure to extract the release anywhere except your custom TF2 folder.", "Venom Crosshairs - Release extracted to custom folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    if (Path.GetFileName(executable) == "VenomCrosshairs.exe")
+                    {
+                        writeLineToDebugger("Failed! Error code: 7");
+                        MessageBox.Show("Venom Crosshairs found within TF2 custom folder!\n\nIn order for Venom Crosshairs to work properly, make sure to extract the release anywhere except your custom TF2 folder.", "Venom Crosshairs - Release extracted to custom folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
                 }
             }
 
