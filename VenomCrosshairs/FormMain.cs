@@ -93,6 +93,11 @@ namespace VenomCrosshairs
                 new Thread(downloadAndGenerateNewCrosshairs).Start();
         }
 
+        private void btnPresetFolder_Click(object sender, EventArgs e)
+        {
+            Process.Start(PATH_VC_RESOURCES_PRESETS);
+        }
+
         private void btnDarkMode_Click(object sender, EventArgs e)
         {
             gIsDarkMode = !gIsDarkMode;
@@ -294,7 +299,6 @@ namespace VenomCrosshairs
                     {
                         List<ListViewItemCrosshair> crosshairsFromPresetList = JsonConvert.DeserializeObject<List<ListViewItemCrosshair>>(File.ReadAllText(ofd.FileName));
                         List<string> missingCrosshairsList = new List<string>();
-                        bool presetHasMissingCrosshairs = false;
 
                         if (crosshairsFromPresetList == null)
                             throw new NullReferenceException($"Object reference not set to an instance of an object. Object is 'null' from trying to deserialize {ofd.FileName}");
@@ -304,7 +308,6 @@ namespace VenomCrosshairs
                         {
                             if (!missingCrosshairsList.Contains(crosshairFromPreset.Crosshair) && !File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshairFromPreset.Crosshair}.vtf"))
                             {
-                                presetHasMissingCrosshairs = true;
                                 writeLineToDebugger("Missing crosshair! " + crosshairFromPreset.Crosshair);
                                 missingCrosshairsList.Add(crosshairFromPreset.Crosshair);
                             }

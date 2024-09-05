@@ -151,6 +151,7 @@
     <None Include="Resources\yin-yang.png" />
     <None Include="Resources\download-cloud.png" />
     <None Include="Resources\drive-download.png" />
+    <None Include="Resources\folder-horizontal-open.png" />
     <Content Include="VC.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
