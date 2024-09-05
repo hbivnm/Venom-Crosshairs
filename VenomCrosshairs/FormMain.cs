@@ -435,12 +435,6 @@ namespace VenomCrosshairs
             checkBoxAddMiscWeapons.Enabled = true;
         }
 
-        private void onCBZoomCrosshairChangeEvent(object sender, EventArgs e)
-        {
-            gUserSettings.UserZoomCrosshair = cbZoomCrosshair.Text;
-            File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings, Formatting.Indented));
-        }
-
         private void onCheckBoxAddClassWeaponsChangeEvent(object sender, EventArgs e)
         {
             if (checkBoxAddOnlyClass.Checked)
@@ -457,6 +451,12 @@ namespace VenomCrosshairs
                 checkBoxAddMeleeWeapons.Text = "Add to ALL melee weapons";
                 checkBoxAddMiscWeapons.Text = "Add to ALL misc. weapons";
             }
+        }
+
+        private void onCBZoomCrosshairChangeEvent(object sender, EventArgs e)
+        {
+            gUserSettings.UserZoomCrosshair = cbZoomCrosshair.Text;
+            File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings, Formatting.Indented));
         }
 
         private void onCBExplosionEffectChangeEvent(object sender, EventArgs e)
@@ -479,6 +479,19 @@ namespace VenomCrosshairs
 
                 cbClass.Text = tf2Class;
                 cbWeapon.Text = weapon;
+            }
+        }
+
+        private void onListViewSearch(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in this.listViewChosenCrosshairs.Items)
+                item.Selected = false;
+
+            ListViewItem closestMatchingItem = listViewChosenCrosshairs.FindItemWithText(textBoxSearchCrosshair.Text, true, 0);
+            if (closestMatchingItem != null)
+            {
+                closestMatchingItem.EnsureVisible();
+                closestMatchingItem.Selected = true;
             }
         }
 
@@ -541,6 +554,23 @@ namespace VenomCrosshairs
                 listViewChosenCrosshairs.Columns.Add("Class", 100);
                 listViewChosenCrosshairs.SelectedIndexChanged += new EventHandler(onListViewChosenCrosshairSelect);
                 listViewChosenCrosshairs.ColumnClick += new ColumnClickEventHandler(onListViewChosenCrosshairColumnSelect);
+
+                // Search
+                textBoxSearchCrosshair.ForeColor = Color.Gray;
+                textBoxSearchCrosshair.Text = "Search...";
+                textBoxSearchCrosshair.GotFocus += (source, e) =>
+                {
+                    textBoxSearchCrosshair.Text = "";
+                    textBoxSearchCrosshair.ForeColor = Color.Black;
+                    textBoxSearchCrosshair.TextChanged += new EventHandler(onListViewSearch);
+                };
+
+                textBoxSearchCrosshair.LostFocus += (source, e) =>
+                {
+                    textBoxSearchCrosshair.TextChanged -= new EventHandler(onListViewSearch);
+                    textBoxSearchCrosshair.Text = "Search...";
+                    textBoxSearchCrosshair.ForeColor = Color.Gray;
+                };
 
                 // Hide console
                 if (gShowConsole)
@@ -649,8 +679,8 @@ namespace VenomCrosshairs
                             if (!File.Exists(PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf"))
                                 File.Copy($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", $@"{PATH_VC_RESOURCES_MATERIALS}\{crosshair}.vtf", true);
                         }
-                        catch 
-                        { 
+                        catch
+                        {
                             if (!missingCrosshairsList.Contains(crosshair))
                                 missingCrosshairsList.Add(crosshair);
                         }
