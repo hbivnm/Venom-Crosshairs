@@ -6,7 +6,7 @@ Venom Crosshairs (or "Venomxhairs") is a client-side solution to automating the 
 Official [teamfortress.tv thread](https://www.teamfortress.tv/62638/venom-crosshairs-weapon-crosshairs-made-easy).
 
 ## Preview image
-![Preview image of Venom Crosshairs.](https://i.imgur.com/HhGqWrX.png)
+![Preview image of Venom Crosshairs.](https://i.imgur.com/QyeGbQR.png)
 
 # Download
 Check out the releases and download [here](https://github.com/hbivnm/Venom-Crosshairs/releases).
