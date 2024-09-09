@@ -165,6 +165,7 @@
             this.listViewChosenCrosshairs.GridLines = true;
             this.listViewChosenCrosshairs.HideSelection = false;
             this.listViewChosenCrosshairs.Location = new System.Drawing.Point(12, 343);
+            this.listViewChosenCrosshairs.MinimumSize = new System.Drawing.Size(840, 196);
             this.listViewChosenCrosshairs.Name = "listViewChosenCrosshairs";
             this.listViewChosenCrosshairs.Size = new System.Drawing.Size(840, 196);
             this.listViewChosenCrosshairs.TabIndex = 12;
@@ -638,6 +639,7 @@
             this.Controls.Add(this.lblTF2Path);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(876, 590);
             this.Name = "FormMain";
             this.Text = "Venom Crosshairs";
             this.Load += new System.EventHandler(this.onFormLoad);

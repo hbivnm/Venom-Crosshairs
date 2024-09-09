@@ -40,6 +40,11 @@ namespace VenomCrosshairs
 
         private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
+        private static readonly int FORM_WIDTH_DEFAULT = 876;
+        private static readonly int FORM_WIDTH_CONSOLE = 1251;
+
+        private static readonly int FORM_HEIGHT_DEFAULT = 590;
+
         private Dictionary<string, string> gPublicCrosshairs = new Dictionary<string, string>();
         private VCUserSettings gUserSettings = null;
         private bool gHasInitialized = false;
@@ -578,14 +583,14 @@ namespace VenomCrosshairs
                     gShowConsole = false;
                     textBoxDebugger.Visible = false;
                     lblStatus.Visible = true;
-                    this.Width = 876;
+                    this.Width = FORM_WIDTH_DEFAULT;
                 }
                 else
                 {
                     gShowConsole = true;
                     textBoxDebugger.Visible = true;
                     lblStatus.Visible = false;
-                    this.Width = 1246 + 5;
+                    this.Width = FORM_WIDTH_CONSOLE;
                 }
 
                 // Read user settings
@@ -920,14 +925,16 @@ namespace VenomCrosshairs
                 gShowConsole = false;
                 lblStatus.Visible = true;
                 textBoxDebugger.Visible = false;
-                ActiveForm.Width = 880;
+                this.MinimumSize = new Size(FORM_WIDTH_DEFAULT, FORM_HEIGHT_DEFAULT);
+                ActiveForm.Width = FORM_WIDTH_DEFAULT;
             }
             else
             {
                 gShowConsole = true;
                 lblStatus.Visible = false;
                 textBoxDebugger.Visible = true;
-                ActiveForm.Width = 1246 + 5;
+                this.MinimumSize = new Size(FORM_WIDTH_CONSOLE, FORM_HEIGHT_DEFAULT);
+                ActiveForm.Width = FORM_WIDTH_CONSOLE;
             }
         }
 
@@ -1216,6 +1223,8 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             doVPKScriptCheck();
+
+            File.WriteAllText($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\README.txt", "This crosshair config was generated using Venom Crosshairs\n\nhttps://github.com/hbivnm/Venom-Crosshairs\n\nNeed to report a bug? Check out https://github.com/hbivnm/Venom-Crosshairs/issues\nNeed help? Check out https://github.com/hbivnm/Venom-Crosshairs/wiki");
 
             if (!isUpdate)
             {
@@ -1837,13 +1846,16 @@ namespace VenomCrosshairs
             }
 
             // Check if Venom Crosshairs executable exists in \tf\custom (7)
-            foreach (string executable in Directory.GetFiles(textBoxTF2Path.Text + @"\tf\custom", "*.exe", SearchOption.AllDirectories))
+            if (Directory.Exists(path + @"\tf\custom"))
             {
-                if (Path.GetFileName(executable) == "VenomCrosshairs.exe")
+                foreach (string executable in Directory.GetFiles(path + @"\tf\custom", "*.exe", SearchOption.AllDirectories))
                 {
-                    writeLineToDebugger("Failed! Error code: 7");
-                    MessageBox.Show("Venom Crosshairs found within TF2 custom folder!\n\nIn order for Venom Crosshairs to work properly, make sure to extract the release anywhere except your custom TF2 folder.", "Venom Crosshairs - Release extracted to custom folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    if (Path.GetFileName(executable) == "VenomCrosshairs.exe")
+                    {
+                        writeLineToDebugger("Failed! Error code: 7");
+                        MessageBox.Show("Venom Crosshairs found within TF2 custom folder!\n\nIn order for Venom Crosshairs to work properly, make sure to extract the release anywhere except your custom TF2 folder.", "Venom Crosshairs - Release extracted to custom folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
                 }
             }
 
