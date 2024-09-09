@@ -629,6 +629,7 @@
             this.Controls.Add(this.lblTF2Path);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(876, 590);
             this.Name = "FormMain";
             this.Text = "Venom Crosshairs";
             this.Load += new System.EventHandler(this.onFormLoad);

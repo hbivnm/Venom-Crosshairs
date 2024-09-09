@@ -40,6 +40,11 @@ namespace VenomCrosshairs
 
         private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
+        private static readonly int FORM_WIDTH_DEFAULT = 876;
+        private static readonly int FORM_WIDTH_CONSOLE = 1251;
+
+        private static readonly int FORM_HEIGHT_DEFAULT = 590;
+
         private Dictionary<string, string> gPublicCrosshairs = new Dictionary<string, string>();
         private VCUserSettings gUserSettings = null;
         private bool gHasInitialized = false;
@@ -548,14 +553,14 @@ namespace VenomCrosshairs
                     gShowConsole = false;
                     textBoxDebugger.Visible = false;
                     lblStatus.Visible = true;
-                    this.Width = 876;
+                    this.Width = FORM_WIDTH_DEFAULT;
                 }
                 else
                 {
                     gShowConsole = true;
                     textBoxDebugger.Visible = true;
                     lblStatus.Visible = false;
-                    this.Width = 1246 + 5;
+                    this.Width = FORM_WIDTH_CONSOLE;
                 }
 
                 // Read user settings
@@ -890,14 +895,16 @@ namespace VenomCrosshairs
                 gShowConsole = false;
                 lblStatus.Visible = true;
                 textBoxDebugger.Visible = false;
-                ActiveForm.Width = 880;
+                this.MinimumSize = new Size(FORM_WIDTH_DEFAULT, FORM_HEIGHT_DEFAULT);
+                ActiveForm.Width = FORM_WIDTH_DEFAULT;
             }
             else
             {
                 gShowConsole = true;
                 lblStatus.Visible = false;
                 textBoxDebugger.Visible = true;
-                ActiveForm.Width = 1246 + 5;
+                this.MinimumSize = new Size(FORM_WIDTH_CONSOLE, FORM_HEIGHT_DEFAULT);
+                ActiveForm.Width = FORM_WIDTH_CONSOLE;
             }
         }
 
