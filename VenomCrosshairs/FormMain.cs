@@ -1084,6 +1084,11 @@ namespace VenomCrosshairs
                 isUpdate = true;
             }
 
+            writeToDebugger("Removing old Venom Crosshairs config... ");
+            if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}"))
+                Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}", true);
+            writeLineToDebugger("Done!");
+
             // Installation process
             writeToDebugger("Creating config structure... ");
             if (!Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails"))
@@ -1225,7 +1230,7 @@ namespace VenomCrosshairs
             FileInfo[] autosaveFiles = autosaveDirInfo.GetFiles();
             if (autosaveFiles.Length > MAX_AUTOSAVES)
             {
-                FileInfo oldestAutosaveFile = autosaveFiles.OrderBy(file  => file.CreationTime).First();
+                FileInfo oldestAutosaveFile = autosaveFiles.OrderBy(file => file.CreationTime).First();
                 oldestAutosaveFile.Delete();
             }
 
