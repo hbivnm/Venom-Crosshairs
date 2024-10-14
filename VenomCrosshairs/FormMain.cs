@@ -23,27 +23,28 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta15.0";
+        private static readonly string VC_VERSION = "beta15.1";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
+        private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
 
         private static readonly string PATH_VC = Directory.GetCurrentDirectory();
         private static readonly string PATH_VC_RESOURCES = PATH_VC + @"\resources\";
         private static readonly string PATH_VC_RESOURCES_MATERIALS = PATH_VC + @"\resources\materials\";
         private static readonly string PATH_VC_RESOURCES_PRESETS = PATH_VC + @"\resources\presets\";
+        private static readonly string PATH_VC_RESOURCES_PRESETS_AUTOSAVE = PATH_VC + @"\resources\presets\autosave\";
         private static readonly string PATH_VC_RESOURCES_PREVIEWS = PATH_VC + @"\resources\previews\";
         private static readonly string PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = PATH_VC + @"\resources\previews\generatepreviews.bat";
         private static readonly string PATH_VC_RESOURCES_SCRIPTS = PATH_VC + @"\resources\scripts\";
         private static readonly string PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usersettings.cfg";
 
-        private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
-
-        private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
+        private static readonly int MAX_AUTOSAVES = 10;
 
         private static readonly int FORM_WIDTH_DEFAULT = 876;
         private static readonly int FORM_WIDTH_CONSOLE = 1251;
-
         private static readonly int FORM_HEIGHT_DEFAULT = 590;
+
+        private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
 
         private Dictionary<string, string> gPublicCrosshairs = new Dictionary<string, string>();
         private VCUserSettings gUserSettings = null;
@@ -1133,9 +1134,7 @@ namespace VenomCrosshairs
                     string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}";
 
                     if (File.Exists(fullScriptPath))
-                    {
                         File.Delete(fullScriptPath);
-                    }
 
                     try
                     {
@@ -1194,16 +1193,46 @@ namespace VenomCrosshairs
 
             doVPKScriptCheck();
 
-            File.WriteAllText($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\README.txt", "This crosshair config was generated using Venom Crosshairs\n\nhttps://github.com/hbivnm/Venom-Crosshairs\n\nNeed to report a bug? Check out https://github.com/hbivnm/Venom-Crosshairs/issues\nNeed help? Check out https://github.com/hbivnm/Venom-Crosshairs/wiki");
+            File.WriteAllText($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\README.txt", $"This crosshair config was generated using Venom Crosshairs ({VC_VERSION})\n\nhttps://github.com/hbivnm/Venom-Crosshairs\n\nNeed to report a bug? Check out https://github.com/hbivnm/Venom-Crosshairs/issues\nNeed help? Check out https://github.com/hbivnm/Venom-Crosshairs/wiki");
+
+            // Create backup as preset
+            string presetTimestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            string autosavePresetName = $"{presetTimestamp}.vnmp";
+            Invoke(new MethodInvoker(delegate ()
+            {
+                writeLineToDebugger($"Exporting preset to {autosavePresetName}...");
+                try
+                {
+                    List<ListViewItemCrosshair> crosshairSelectionList = new List<ListViewItemCrosshair>();
+
+                    foreach (ListViewItem item in listViewChosenCrosshairs.Items)
+                        crosshairSelectionList.Add(new ListViewItemCrosshair { Crosshair = item.SubItems[0].Text, Weapon = item.SubItems[1].Text, TF2Class = item.SubItems[2].Text });
+
+                    JsonConvert.SerializeObject(crosshairSelectionList);
+                    File.WriteAllText(PATH_VC_RESOURCES_PRESETS_AUTOSAVE + autosavePresetName, JsonConvert.SerializeObject(crosshairSelectionList, Formatting.Indented));
+                    writeLineToDebugger($"Exported preset as {autosavePresetName}");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Unable to export preset. Are you sure you have permission to save to this location?\n\nIf this problem persists with correct permission and usage, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to export preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    writeLineToDebugger($"For developer: Exception: {ex.Message}");
+                    writeLineToDebugger($"Unable to export preset!");
+                }
+            }));
+
+            // Find oldest autosaved preset and delete it if there are more than 10 autosaves
+            DirectoryInfo autosaveDirInfo = new DirectoryInfo(PATH_VC_RESOURCES_PRESETS_AUTOSAVE);
+            FileInfo[] autosaveFiles = autosaveDirInfo.GetFiles();
+            if (autosaveFiles.Length > MAX_AUTOSAVES)
+            {
+                FileInfo oldestAutosaveFile = autosaveFiles.OrderBy(file  => file.CreationTime).First();
+                oldestAutosaveFile.Delete();
+            }
 
             if (!isUpdate)
-            {
                 writeLineToDebugger("Venom Crosshairs config successfully installed!");
-            }
             else
-            {
                 writeLineToDebugger("Venom Crosshairs config successfully updated!");
-            }
 
             Invoke(new MethodInvoker(delegate ()
             {
