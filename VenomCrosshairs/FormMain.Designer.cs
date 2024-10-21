@@ -552,9 +552,9 @@
             this.btnRemoveSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRemoveSelected.Location = new System.Drawing.Point(11, 315);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
-            this.btnRemoveSelected.Size = new System.Drawing.Size(113, 22);
+            this.btnRemoveSelected.Size = new System.Drawing.Size(119, 22);
             this.btnRemoveSelected.TabIndex = 14;
-            this.btnRemoveSelected.Text = "Remove selected";
+            this.btnRemoveSelected.Text = "Remove crosshairs";
             this.btnRemoveSelected.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRemoveSelected.UseVisualStyleBackColor = true;
             this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);

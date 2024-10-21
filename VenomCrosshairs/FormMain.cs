@@ -51,6 +51,7 @@ namespace VenomCrosshairs
         private bool gHasInitialized = false;
         private bool gIsDarkMode = false;
         private bool gShowConsole = true;
+        private bool gHasSelectedCrosshair = false;
 
         public FormMain()
         {
@@ -246,9 +247,17 @@ namespace VenomCrosshairs
 
         private void btnRemoveSelected_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < listViewChosenCrosshairs.Items.Count; i++)
-                if (listViewChosenCrosshairs.Items[i].Selected)
+            if (gHasSelectedCrosshair)
+            {
+                for (int i = 0; i < listViewChosenCrosshairs.Items.Count; i++)
+                    if (listViewChosenCrosshairs.Items[i].Selected)
+                        listViewChosenCrosshairs.Items[i].SubItems.Clear();
+            }
+            else
+            {
+                for (int i = 0; i < listViewChosenCrosshairs.Items.Count; i++)
                     listViewChosenCrosshairs.Items[i].SubItems.Clear();
+            }
 
             cleanListViewOfEmptyRows(listViewChosenCrosshairs);
 
@@ -258,6 +267,10 @@ namespace VenomCrosshairs
                 btnPresetExport.Enabled = false;
                 btnInstall.Enabled = false;
             }
+
+            gHasSelectedCrosshair = false;
+            btnRemoveSelected.Text = "Remove crosshairs";
+            btnRemoveSelected.Width = 119;
         }
 
         private void btnPresetExport_Click(object sender, EventArgs e)
@@ -473,6 +486,10 @@ namespace VenomCrosshairs
 
         private void onListViewChosenCrosshairSelect(object sender, EventArgs e)
         {
+            gHasSelectedCrosshair = true;
+            btnRemoveSelected.Text = "Remove selected";
+            btnRemoveSelected.Width = 113;
+
             if (this.listViewChosenCrosshairs.SelectedItems.Count == 1)
             {
                 string tf2Class = this.listViewChosenCrosshairs.SelectedItems[0].SubItems[2].Text;
