@@ -23,7 +23,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta15.1";
+        private static readonly string VC_VERSION = "beta16.0";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
@@ -1142,47 +1142,76 @@ namespace VenomCrosshairs
             writeToDebugger("Adding scripts... ");
             Invoke(new MethodInvoker(delegate ()
             {
-                // Add user selection
+                // Loop through user selection
                 foreach (ListViewItem item in listViewChosenCrosshairs.Items)
                 {
+                    // Get selected crosshair
                     string crosshair = item.SubItems[0].Text;
 
+                    // Get and set Zoom crosshair
                     string zoomCrosshair = cbZoomCrosshair.Text;
                     if (cbZoomCrosshair.Text == "NO CHANGE")
                         zoomCrosshair = crosshair;
 
+                    // Get width and height, assume default (64x64)
+                    int crosshairWidth = 64;
+                    int crosshairHeight = 64;
+                    int zoomCrosshairWidth = 64;
+                    int zoomCrosshairHeight = 64;
+
+                    using (Bitmap crosshairBitmap = new Bitmap($@"{PATH_VC_RESOURCES_PREVIEWS}\{crosshair}.png"))
+                    {
+                        crosshairWidth = crosshairBitmap.Width;
+                        crosshairHeight = crosshairBitmap.Height;
+                    }
+
+                    using (Bitmap zoomCrosshairBitmap = new Bitmap($@"{PATH_VC_RESOURCES_PREVIEWS}\{zoomCrosshair}.png"))
+                    {
+                        zoomCrosshairWidth = zoomCrosshairBitmap.Width;
+                        zoomCrosshairHeight = zoomCrosshairBitmap.Height;
+                    }
+
+                    // Get weapon script
                     string weaponName = item.SubItems[1].Text;
                     string weaponScriptName = TF2Weapons.getWeaponScriptFromWeaponName(weaponName);
-                    string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}";
 
-                    if (File.Exists(fullScriptPath))
-                        File.Delete(fullScriptPath);
+                    string fullInstallScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}";
 
+                    if (File.Exists(fullInstallScriptPath))
+                        File.Delete(fullInstallScriptPath);
+
+                    // Write script file
                     try
                     {
-                        File.WriteAllText(fullScriptPath,
+                        File.WriteAllText(fullInstallScriptPath,
                             File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
                                 .Replace("VC_PLACEHOLDER", crosshair)
+                                .Replace("VC_WIDTH_PLACEHOLDER", crosshairWidth.ToString())
+                                .Replace("VC_HEIGHT_PLACEHOLDER", crosshairHeight.ToString())
                                 .Replace("VC_ZOOM_PLACEHOLDER", zoomCrosshair)
+                                .Replace("VC_ZOOM_WIDTH_PLACEHOLDER", zoomCrosshairWidth.ToString())
+                                .Replace("VC_ZOOM_HEIGHT_PLACEHOLDER", zoomCrosshairHeight.ToString())
                         );
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to get explosion particle name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to write script file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     }
                 }
 
-                // Add explosion effects for unselected explosion weapons, crosshair is set to TF2 default
+                // Add explosion effects for unselected explosion weapons, crosshair is set to TF2 default ("quarteredcircle")
                 foreach (string explosiveWeapon in TF2Weapons.getExplosiveWeapons())
                 {
                     bool copiedMaterial = false;
                     string crosshair = "quarteredcircle";
                     string weaponScriptName = TF2Weapons.getWeaponScriptFromWeaponName(explosiveWeapon);
                     string fullScriptPath = $@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\scripts\{weaponScriptName}";
+                    int crosshairWidth = 64;
+                    int crosshairHeight = 64;
 
                     if (!File.Exists(fullScriptPath))
                     {
@@ -1194,6 +1223,8 @@ namespace VenomCrosshairs
                                     .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
                                     .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
                                     .Replace("VC_PLACEHOLDER", crosshair)
+                                    .Replace("VC_WIDTH_PLACEHOLDER", crosshairWidth.ToString())
+                                    .Replace("VC_HEIGHT_PLACEHOLDER", crosshairHeight.ToString())
                             );
 
                             if (!copiedMaterial)
@@ -1205,7 +1236,7 @@ namespace VenomCrosshairs
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to get explosion particle name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to write default script file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         }
                     }

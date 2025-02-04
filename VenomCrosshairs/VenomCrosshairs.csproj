@@ -48,7 +48,7 @@
       <HintPath>packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -106,16 +106,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\resources\gear.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\arrow-circle-double-135.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\cross.png" />
     <None Include="Resources\tick.png" />
-    <None Include="bin\Debug\resources\TF2WSC.png" />
-    <None Include="bin\Debug\resources\cp_badlands.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\compile.png" />
@@ -142,7 +137,6 @@
     <None Include="Resources\github-logo_24px.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\resources\Loading_icon.gif" />
     <None Include="Resources\loading.gif" />
     <None Include="Resources\terminal.gif" />
     <None Include="Resources\question.png" />
@@ -153,6 +147,9 @@
     <None Include="Resources\drive-download.png" />
     <None Include="Resources\folder-horizontal-open.png" />
     <Content Include="VC.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
