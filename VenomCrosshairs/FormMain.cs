@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -9,15 +8,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Media.Imaging;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System.Security.Cryptography;
+using ImageMagick;
 
 namespace VenomCrosshairs
 {
@@ -34,7 +31,6 @@ namespace VenomCrosshairs
         private static readonly string PATH_VC_RESOURCES_PRESETS = PATH_VC + @"\resources\presets\";
         private static readonly string PATH_VC_RESOURCES_PRESETS_AUTOSAVE = PATH_VC + @"\resources\presets\autosave\";
         private static readonly string PATH_VC_RESOURCES_PREVIEWS = PATH_VC + @"\resources\previews\";
-        private static readonly string PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT = PATH_VC + @"\resources\previews\generatepreviews.bat";
         private static readonly string PATH_VC_RESOURCES_SCRIPTS = PATH_VC + @"\resources\scripts\";
         private static readonly string PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE = PATH_VC_RESOURCES + @"\vc_usersettings.cfg";
 
@@ -1370,34 +1366,23 @@ namespace VenomCrosshairs
 
             moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
 
-            writeToDebugger("Generating generatepreviews.bat... ");
-            File.Create(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
-            using (StreamWriter sw = new StreamWriter(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
+            string[] tgaFiles = Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga");
+            int tgaFileCount = tgaFiles.Length;
+            int processedTgaFiles = 0;
+
+            Parallel.ForEach(tgaFiles, tgaFile =>
             {
-                foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+                using (MagickImage tgaImage = new MagickImage(tgaFile))
                 {
-                    string filename = Path.GetFileNameWithoutExtension(tgaFile);
-                    sw.WriteLine("\"" + PATH_VC_RESOURCES + "ffmpeg.exe\" -y -i \"" + tgaFile + "\" " + filename + ".png");
+                    tgaImage.Write(Path.Combine(PATH_VC_RESOURCES_PREVIEWS, Path.GetFileNameWithoutExtension(tgaFile) + ".png"));
                 }
-                sw.WriteLine("exit");
-            }
-            writeLineToDebugger("Done!");
 
-            writeToDebugger("Preparing generatepreviews process... ");
-            Process generatepreviewsProcess = new Process();
-            generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            generatepreviewsProcess.StartInfo.FileName = PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
-            writeLineToDebugger("Done!");
-
-            writeToDebugger("Running generatepreviews.bat... ");
-            generatepreviewsProcess.Start();
-            generatepreviewsProcess.WaitForExit();
-            writeLineToDebugger("Done!");
+                writeLineToDebugger($"Generating previews... ({Math.Round(((float)Interlocked.Increment(ref processedTgaFiles) / (float)tgaFileCount) * 100)}%)");
+            });
 
             writeToDebugger("Performing cleanup... ");
             // Function no longer needed due to cleanup steps, remove/refactor?
             moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
-            File.Delete(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
             foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
                 File.Delete(tgaFile);
             writeLineToDebugger("Done!");
@@ -1493,36 +1478,23 @@ namespace VenomCrosshairs
 
                 moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
 
-                writeToDebugger("Generating generatepreviews.bat... ");
-                File.Create(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
-                using (StreamWriter sw = new StreamWriter(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
+                string[] tgaFiles = Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga");
+                int tgaFileCount = tgaFiles.Length;
+                int processedTgaFiles = 0;
+
+                Parallel.ForEach(tgaFiles, tgaFile =>
                 {
-                    foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+                    using (MagickImage tgaImage = new MagickImage(tgaFile))
                     {
-                        string filename = Path.GetFileNameWithoutExtension(tgaFile);
-                        {
-                            sw.WriteLine("\"" + PATH_VC_RESOURCES + "ffmpeg.exe\" -y -i \"" + tgaFile + "\" " + filename + ".png");
-                        }
+                        tgaImage.Write(Path.Combine(PATH_VC_RESOURCES_PREVIEWS, Path.GetFileNameWithoutExtension(tgaFile) + ".png"));
                     }
-                    sw.WriteLine("exit");
-                }
-                writeLineToDebugger("Done!");
 
-                writeToDebugger("Preparing generatepreviews process... ");
-                Process generatepreviewsProcess = new Process();
-                generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                generatepreviewsProcess.StartInfo.FileName = PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
-                writeLineToDebugger("Done!");
-
-                writeToDebugger("Running generatepreviews.bat... ");
-                generatepreviewsProcess.Start();
-                generatepreviewsProcess.WaitForExit();
-                writeLineToDebugger("Done!");
+                    writeLineToDebugger($"Generating previews... ({Math.Round(((float)Interlocked.Increment(ref processedTgaFiles) / (float)tgaFileCount) * 100)}%)");
+                });
 
                 writeToDebugger("Performing cleanup... ");
                 // Function no longer needed due to cleanup steps, remove/refactor?
                 moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
-                File.Delete(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
                 foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
                     File.Delete(tgaFile);
                 writeLineToDebugger("Done!");
@@ -1598,34 +1570,23 @@ namespace VenomCrosshairs
 
             moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
 
-            writeToDebugger("Generating generatepreviews.bat... ");
-            File.Create(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT).Close();
-            using (StreamWriter sw = new StreamWriter(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT))
+            string[] tgaFiles = Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga");
+            int tgaFileCount = tgaFiles.Length;
+            int processedTgaFiles = 0;
+
+            Parallel.ForEach(tgaFiles, tgaFile =>
             {
-                foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+                using (MagickImage tgaImage = new MagickImage(tgaFile))
                 {
-                    string filename = Path.GetFileNameWithoutExtension(tgaFile);
-                    sw.WriteLine("\"" + PATH_VC_RESOURCES + "ffmpeg.exe\" -y -i \"" + tgaFile + "\" " + filename + ".png");
+                    tgaImage.Write(Path.Combine(PATH_VC_RESOURCES_PREVIEWS, Path.GetFileNameWithoutExtension(tgaFile) + ".png"));
                 }
-                sw.WriteLine("exit");
-            }
-            writeLineToDebugger("Done!");
 
-            writeToDebugger("Preparing generatepreviews process... ");
-            Process generatepreviewsProcess = new Process();
-            generatepreviewsProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            generatepreviewsProcess.StartInfo.FileName = PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT;
-            writeLineToDebugger("Done!");
-
-            writeToDebugger("Running generatepreviews.bat... ");
-            generatepreviewsProcess.Start();
-            generatepreviewsProcess.WaitForExit();
-            writeLineToDebugger("Done!");
+                writeLineToDebugger($"Generating previews... ({Math.Round(((float)Interlocked.Increment(ref processedTgaFiles) / (float)tgaFileCount) * 100)}%)");
+            });
 
             writeToDebugger("Performing cleanup... ");
             // Function no longer needed due to cleanup steps, remove/refactor?
             moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
-            File.Delete(PATH_VC_RESOURCES_PREVIEWS_GENERATEPREVIEWSBAT);
             foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
                 File.Delete(tgaFile);
             writeLineToDebugger("Done!");
@@ -1878,14 +1839,6 @@ namespace VenomCrosshairs
             {
                 writeLineToDebugger("Failed! Error code: 4");
                 MessageBox.Show("Could not find \"tier0.dll\".\nPlease verify game files.", "Venom Crosshairs - tier0.dll does not exist", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
-            // Check if project contains ffmpeg.exe (5)
-            if (!File.Exists($@"{PATH_VC}\resources\ffmpeg.exe"))
-            {
-                writeLineToDebugger("Failed! Error code: 5");
-                MessageBox.Show("Could not find \"ffmpeg.exe\".\nPlease download the latest release of Venom Crosshairs.\n(If the issue persist please create a GitHub issue or contact HbiVnm directly.)", "Venom Crosshairs - ffmpeg.exe could not be found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
