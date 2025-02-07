@@ -684,14 +684,6 @@ namespace VenomCrosshairs
 
                 if (missingCrosshairsList.Count > 0)
                 {
-                    /* No good solution so far, might re-add later, a warning will be good enough for now...
-                    try
-                    {
-                        generateMissingCrosshairs(missingCrosshairsList);
-                    }
-                    catch (Exception ex) { }
-                    */
-
                     string missingCrosshairsListString = "";
                     foreach (var crosshair in missingCrosshairsList)
                     {
