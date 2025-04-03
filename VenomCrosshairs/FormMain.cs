@@ -20,7 +20,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta16.0";
+        private static readonly string VC_VERSION = "beta16.1";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
@@ -294,7 +294,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Unable to export preset. Are you sure you have permission to save to this location?\n\nIf this problem persists with correct permission and usage, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to export preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Unable to export preset. Are you sure you have permission to save to this location?\n\nIf this problem persists with correct permission and usage, please consider creating a GitHub issue or contacting HbiVnm!\nSee console for details.", "Venom Crosshairs - Failed to export preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         writeLineToDebugger($"Unable to export preset!");
                     }
@@ -351,7 +351,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Unable to read preset. It may have been corrupted, damaged or manually altered in some way or form.\n\nIf this problem persists with correctly exported presets, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to import preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Unable to read preset. It may have been corrupted, damaged or manually altered in some way or form.\n\nIf this problem persists with correctly exported presets, please consider creating a GitHub issue or contacting HbiVnm!\nSee console for details.", "Venom Crosshairs - Failed to import preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         writeLineToDebugger($"Unable to import preset from {Path.GetFileName(ofd.FileName)}");
                     }
@@ -602,7 +602,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Something went wrong reading the user setting file.", "Venom Crosshairs - Failed to read user settings!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        writeLineToDebugger($"Something went wrong reading the user settings!");
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         File.Delete(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE);
                         gUserSettings = new VCUserSettings
@@ -677,7 +677,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file.\n\nIf removing this script file causes futher errors, please contact HbiVnm.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file.\n\nIf removing this script file causes futher errors, please contact HbiVnm.\nSee console for details.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     }
                 }
@@ -1186,7 +1186,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to write script file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!\nSee console for details.", "Venom Crosshairs - Failed to write script file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     }
                 }
@@ -1224,7 +1224,7 @@ namespace VenomCrosshairs
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!", "Venom Crosshairs - Failed to write default script file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"Something went terribly wrong! Please tell HbiVnm by adding him on Steam or creating a GitHub issue!\nSee console for details.", "Venom Crosshairs - Failed to write default script file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         }
                     }
@@ -1255,7 +1255,7 @@ namespace VenomCrosshairs
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Unable to export preset. Are you sure you have permission to save to this location?\n\nIf this problem persists with correct permission and usage, please consider creating a GitHub issue or contacting HbiVnm!", "Venom Crosshairs - Failed to export preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Unable to export preset. Are you sure you have permission to save to this location?\n\nIf this problem persists with correct permission and usage, please consider creating a GitHub issue or contacting HbiVnm!\nSee console for details.", "Venom Crosshairs - Failed to export preset", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     writeLineToDebugger($"Unable to export preset!");
                 }
