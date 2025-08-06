@@ -20,7 +20,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta16.1";
+        private static readonly string VC_VERSION = "beta17.0";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
@@ -108,9 +108,66 @@ namespace VenomCrosshairs
             setDarkModeTheme(gIsDarkMode);
         }
 
-        private void btnHelp_Click(object sender, EventArgs e)
+        private void btnRandomizeConfig_Click(object sender, EventArgs e)
         {
-            Process.Start(@"https://github.com/hbivnm/Venom-Crosshairs/wiki");
+            DialogResult dialogResult = MessageBox.Show("You are about to randomize your currently selected config! This includes crosshairs, explosion effect and zoom crosshair.\nAre you sure you want to continue?\n\nTIP: You can save your currently selected config by clicking \"Export preset\"!", "Venom Crosshairs - Randomize config", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+            if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
+            {
+                // Remove all chosen crosshairs and do cleanup on ListView
+                for (int i = 0; i < listViewChosenCrosshairs.Items.Count; i++)
+                    listViewChosenCrosshairs.Items[i].SubItems.Clear();
+                cleanListViewOfEmptyRows(listViewChosenCrosshairs);
+
+                Random r = new Random();
+                int crosshairCount = cbCrosshair.Items.Count;
+                int explosionEffectCount = cbExplosionEffect.Items.Count;
+                int zoomCrosshairCount = cbZoomCrosshair.Items.Count;
+
+                // Add a random crosshair for each existing weapon
+                foreach (var tf2Weapon in TF2Weapons.getAllWeapons())
+                {
+                    int randomIndex = r.Next(crosshairCount);
+                    string randomCrosshair = cbCrosshair.Items[randomIndex].ToString();
+                    string tf2Class = TF2Weapons.getClassFromWeaponName(tf2Weapon);
+
+                    addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] {
+                        randomCrosshair,
+                        tf2Weapon,
+                        tf2Class
+                    }));
+                }
+
+                // Pick a random explosion effect
+                cbExplosionEffect.SelectedIndex = r.Next(explosionEffectCount);
+
+                // Pick a random zoom crosshair
+                cbZoomCrosshair.SelectedIndex = r.Next(zoomCrosshairCount);
+
+                // Enable relevant buttons as if user progressed normally
+                pictureBoxLoading.Visible = false;
+                textBoxTF2Path.Enabled = true;
+                btnReload.Enabled = true;
+                btnDownload.Enabled = true;
+                cbClass.Enabled = true;
+                cbCrosshair.Enabled = true;
+                cbZoomCrosshair.Enabled = true;
+                cbWeapon.Enabled = true;
+                btnAddCrosshair.Enabled = true;
+                checkBoxAddOnlyClass.Enabled = true;
+                checkBoxAddPrimaryWeapons.Enabled = true;
+                checkBoxAddSecondaryWeapons.Enabled = true;
+                checkBoxAddMeleeWeapons.Enabled = true;
+                checkBoxAddMiscWeapons.Enabled = true;
+                btnRemoveSelected.Enabled = true;
+                btnPrevCrosshair.Enabled = true;
+                btnNextCrosshair.Enabled = true;
+                btnPresetImport.Enabled = true;
+                btnPresetExport.Enabled = true;
+                btnInstall.Enabled = true;
+
+                writeLineToDebugger("Venom Crosshairs config successfully randomized!");
+            }
         }
 
         private void btnBrowseTF2Path_Click(object sender, EventArgs e)
@@ -977,12 +1034,15 @@ namespace VenomCrosshairs
             }
             else
                 foreach (ListViewItem item in listView.Items)
+                {
+                    // Check if the Listview item has been added previously, if so ONLY change crosshair, do NOT add for same TF2 weapon again
                     if (item.SubItems[0].Text != crosshairListViewItem.SubItems[0].Text && item.SubItems[1].Text == crosshairListViewItem.SubItems[1].Text)
                     {
-                        item.SubItems[0].Text = cbCrosshair.Text;
+                        item.SubItems[0].Text = crosshairListViewItem.SubItems[0].Text;
                         item.EnsureVisible();
                         break;
                     }
+                }
         }
 
         private string getExplosionEffectParticleName(string name)

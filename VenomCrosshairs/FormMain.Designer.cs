@@ -50,19 +50,19 @@
             this.cbExplosionEffect = new System.Windows.Forms.ComboBox();
             this.panelSettings = new System.Windows.Forms.Panel();
             this.lblPresetFolder = new System.Windows.Forms.Label();
-            this.btnPresetFolder = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnDownload = new System.Windows.Forms.Button();
             this.lblReload = new System.Windows.Forms.Label();
-            this.lblHelp = new System.Windows.Forms.Label();
+            this.lblRandomizeConfig = new System.Windows.Forms.Label();
             this.lblDarkMode = new System.Windows.Forms.Label();
-            this.btnDarkMode = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.btnReload = new System.Windows.Forms.Button();
             this.textBoxDebugger = new System.Windows.Forms.RichTextBox();
             this.cbZoomCrosshair = new System.Windows.Forms.ComboBox();
             this.lblZoomCrosshair = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
+            this.btnPresetFolder = new System.Windows.Forms.Button();
+            this.btnDownload = new System.Windows.Forms.Button();
+            this.btnDarkMode = new System.Windows.Forms.Button();
+            this.btnRandomizeConfig = new System.Windows.Forms.Button();
+            this.btnReload = new System.Windows.Forms.Button();
             this.btnPresetExport = new System.Windows.Forms.Button();
             this.btnToggleConsole = new System.Windows.Forms.Button();
             this.pictureBoxLoading = new System.Windows.Forms.PictureBox();
@@ -288,10 +288,10 @@
             this.panelSettings.Controls.Add(this.label4);
             this.panelSettings.Controls.Add(this.btnDownload);
             this.panelSettings.Controls.Add(this.lblReload);
-            this.panelSettings.Controls.Add(this.lblHelp);
+            this.panelSettings.Controls.Add(this.lblRandomizeConfig);
             this.panelSettings.Controls.Add(this.lblDarkMode);
             this.panelSettings.Controls.Add(this.btnDarkMode);
-            this.panelSettings.Controls.Add(this.btnHelp);
+            this.panelSettings.Controls.Add(this.btnRandomizeConfig);
             this.panelSettings.Controls.Add(this.btnReload);
             this.panelSettings.Location = new System.Drawing.Point(620, 41);
             this.panelSettings.Name = "panelSettings";
@@ -308,16 +308,6 @@
             this.lblPresetFolder.TabIndex = 46;
             this.lblPresetFolder.Text = "Open preset folder";
             // 
-            // btnPresetFolder
-            // 
-            this.btnPresetFolder.Image = global::VenomCrosshairs.Properties.Resources.folder_horizontal_open;
-            this.btnPresetFolder.Location = new System.Drawing.Point(7, 83);
-            this.btnPresetFolder.Name = "btnPresetFolder";
-            this.btnPresetFolder.Size = new System.Drawing.Size(32, 32);
-            this.btnPresetFolder.TabIndex = 45;
-            this.btnPresetFolder.UseVisualStyleBackColor = true;
-            this.btnPresetFolder.Click += new System.EventHandler(this.btnPresetFolder_Click);
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -326,16 +316,6 @@
             this.label4.Size = new System.Drawing.Size(128, 13);
             this.label4.TabIndex = 44;
             this.label4.Text = "Download new crosshairs";
-            // 
-            // btnDownload
-            // 
-            this.btnDownload.Image = global::VenomCrosshairs.Properties.Resources.download_cloud;
-            this.btnDownload.Location = new System.Drawing.Point(7, 45);
-            this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(32, 32);
-            this.btnDownload.TabIndex = 43;
-            this.btnDownload.UseVisualStyleBackColor = true;
-            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // lblReload
             // 
@@ -346,14 +326,14 @@
             this.lblReload.TabIndex = 42;
             this.lblReload.Text = "Reload crosshairs";
             // 
-            // lblHelp
+            // lblRandomizeConfig
             // 
-            this.lblHelp.AutoSize = true;
-            this.lblHelp.Location = new System.Drawing.Point(40, 170);
-            this.lblHelp.Name = "lblHelp";
-            this.lblHelp.Size = new System.Drawing.Size(29, 13);
-            this.lblHelp.TabIndex = 41;
-            this.lblHelp.Text = "Help";
+            this.lblRandomizeConfig.AutoSize = true;
+            this.lblRandomizeConfig.Location = new System.Drawing.Point(40, 170);
+            this.lblRandomizeConfig.Name = "lblRandomizeConfig";
+            this.lblRandomizeConfig.Size = new System.Drawing.Size(92, 13);
+            this.lblRandomizeConfig.TabIndex = 41;
+            this.lblRandomizeConfig.Text = "Randomize config";
             // 
             // lblDarkMode
             // 
@@ -363,36 +343,6 @@
             this.lblDarkMode.Size = new System.Drawing.Size(72, 13);
             this.lblDarkMode.TabIndex = 40;
             this.lblDarkMode.Text = "Toggle theme";
-            // 
-            // btnDarkMode
-            // 
-            this.btnDarkMode.Image = global::VenomCrosshairs.Properties.Resources.yin_yang;
-            this.btnDarkMode.Location = new System.Drawing.Point(7, 121);
-            this.btnDarkMode.Name = "btnDarkMode";
-            this.btnDarkMode.Size = new System.Drawing.Size(32, 32);
-            this.btnDarkMode.TabIndex = 39;
-            this.btnDarkMode.UseVisualStyleBackColor = true;
-            this.btnDarkMode.Click += new System.EventHandler(this.btnDarkMode_Click);
-            // 
-            // btnHelp
-            // 
-            this.btnHelp.Image = global::VenomCrosshairs.Properties.Resources.question;
-            this.btnHelp.Location = new System.Drawing.Point(7, 159);
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(32, 32);
-            this.btnHelp.TabIndex = 37;
-            this.btnHelp.UseVisualStyleBackColor = true;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // btnReload
-            // 
-            this.btnReload.Image = global::VenomCrosshairs.Properties.Resources.arrow_circle_double_135;
-            this.btnReload.Location = new System.Drawing.Point(7, 7);
-            this.btnReload.Name = "btnReload";
-            this.btnReload.Size = new System.Drawing.Size(32, 32);
-            this.btnReload.TabIndex = 0;
-            this.btnReload.UseVisualStyleBackColor = true;
-            this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
             // textBoxDebugger
             // 
@@ -440,6 +390,56 @@
             this.btnSettings.TabIndex = 41;
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // btnPresetFolder
+            // 
+            this.btnPresetFolder.Image = global::VenomCrosshairs.Properties.Resources.folder_horizontal_open;
+            this.btnPresetFolder.Location = new System.Drawing.Point(7, 83);
+            this.btnPresetFolder.Name = "btnPresetFolder";
+            this.btnPresetFolder.Size = new System.Drawing.Size(32, 32);
+            this.btnPresetFolder.TabIndex = 45;
+            this.btnPresetFolder.UseVisualStyleBackColor = true;
+            this.btnPresetFolder.Click += new System.EventHandler(this.btnPresetFolder_Click);
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.Image = global::VenomCrosshairs.Properties.Resources.download_cloud;
+            this.btnDownload.Location = new System.Drawing.Point(7, 45);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(32, 32);
+            this.btnDownload.TabIndex = 43;
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            // 
+            // btnDarkMode
+            // 
+            this.btnDarkMode.Image = global::VenomCrosshairs.Properties.Resources.yin_yang;
+            this.btnDarkMode.Location = new System.Drawing.Point(7, 121);
+            this.btnDarkMode.Name = "btnDarkMode";
+            this.btnDarkMode.Size = new System.Drawing.Size(32, 32);
+            this.btnDarkMode.TabIndex = 39;
+            this.btnDarkMode.UseVisualStyleBackColor = true;
+            this.btnDarkMode.Click += new System.EventHandler(this.btnDarkMode_Click);
+            // 
+            // btnRandomizeConfig
+            // 
+            this.btnRandomizeConfig.Image = global::VenomCrosshairs.Properties.Resources.arrow_split;
+            this.btnRandomizeConfig.Location = new System.Drawing.Point(7, 159);
+            this.btnRandomizeConfig.Name = "btnRandomizeConfig";
+            this.btnRandomizeConfig.Size = new System.Drawing.Size(32, 32);
+            this.btnRandomizeConfig.TabIndex = 37;
+            this.btnRandomizeConfig.UseVisualStyleBackColor = true;
+            this.btnRandomizeConfig.Click += new System.EventHandler(this.btnRandomizeConfig_Click);
+            // 
+            // btnReload
+            // 
+            this.btnReload.Image = global::VenomCrosshairs.Properties.Resources.arrow_circle_double_135;
+            this.btnReload.Location = new System.Drawing.Point(7, 7);
+            this.btnReload.Name = "btnReload";
+            this.btnReload.Size = new System.Drawing.Size(32, 32);
+            this.btnReload.TabIndex = 0;
+            this.btnReload.UseVisualStyleBackColor = true;
+            this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
             // 
             // btnPresetExport
             // 
@@ -674,7 +674,7 @@
         private System.Windows.Forms.PictureBox pictureBoxLoading;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnToggleConsole;
-        private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.Button btnRandomizeConfig;
         private System.Windows.Forms.Label lblExplosionEffect;
         private System.Windows.Forms.ComboBox cbExplosionEffect;
         private System.Windows.Forms.Button btnDarkMode;
@@ -682,7 +682,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnDownload;
         private System.Windows.Forms.Label lblReload;
-        private System.Windows.Forms.Label lblHelp;
+        private System.Windows.Forms.Label lblRandomizeConfig;
         private System.Windows.Forms.Label lblDarkMode;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.RichTextBox textBoxDebugger;

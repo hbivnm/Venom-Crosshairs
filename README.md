@@ -20,6 +20,8 @@ Check out the releases and download [here](https://github.com/hbivnm/Venom-Cross
 4. Hit "Install/Update" to install config.
 5. Set `cl_crosshair_file ""` in Team Fortress 2.
 
+If you did not quit/restart Team Fortress 2 you can use `mat_reloadmaterial thumbnails` to reload the crosshair materials.
+
 **NOTE:** Malwarebytes may report the executable as `MachineLearning/Anomalous.X%`, you will have to manually exclude the `VenomCrosshairs` folder to be able to use Venom Crosshairs alongside Malwarebytes. More details on this issue can be found [here](https://forums.malwarebytes.com/topic/271784-machinelearninganomalous100-all-my-c-projects/) and [also here](https://forums.malwarebytes.com/topic/238670-machinelearninganomalous-detections-and-explanation/), explained by a Staff member on Malwarebytes forum.
 
 # Help / FAQ
