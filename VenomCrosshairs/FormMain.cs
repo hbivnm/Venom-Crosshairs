@@ -165,16 +165,19 @@ namespace VenomCrosshairs
 
                 try
                 {
+                    writeToDebugger($"Attempting to delete {VC_CONFIG_NAME}... ");
                     Directory.Delete(textBoxTF2Path.Text + @"\tf\custom\" + VC_CONFIG_NAME, true);
+                    writeLineToDebugger("Done!");
                     listViewChosenCrosshairs.Items.Clear();
                     writeLineToDebugger("Venom Crosshairs config was successfully uninstalled!");
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show($"Unable to uninstall config.\n\nHas it already been uninstalled?", "Venom Crosshairs - Uninstall config", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     writeLineToDebugger($"Unable to uninstall config.");
                 }
-                
+
                 pictureBoxLoading.Visible = false;
                 unlockUserInterface();
             }
@@ -1136,10 +1139,12 @@ namespace VenomCrosshairs
                 isUpdate = true;
             }
 
-            writeToDebugger("Removing old Venom Crosshairs config... ");
             if (Directory.Exists($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}"))
+            {
+                writeToDebugger("Removing old Venom Crosshairs config... ");
                 Directory.Delete($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}", true);
-            writeLineToDebugger("Done!");
+                writeLineToDebugger("Done!");
+            }
 
             // Installation process
             writeToDebugger("Creating config structure... ");
