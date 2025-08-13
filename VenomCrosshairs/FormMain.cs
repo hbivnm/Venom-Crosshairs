@@ -114,6 +114,8 @@ namespace VenomCrosshairs
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
             {
+                pictureBoxLoading.Visible = false;
+
                 // Remove all chosen crosshairs and do cleanup on ListView
                 for (int i = 0; i < listViewChosenCrosshairs.Items.Count; i++)
                     listViewChosenCrosshairs.Items[i].SubItems.Clear();
@@ -144,29 +146,37 @@ namespace VenomCrosshairs
                 // Pick a random zoom crosshair
                 cbZoomCrosshair.SelectedIndex = r.Next(zoomCrosshairCount);
 
-                // Enable relevant buttons as if user progressed normally
+                // Enable relevant elements as if user progressed normally
                 pictureBoxLoading.Visible = false;
-                textBoxTF2Path.Enabled = true;
-                btnReload.Enabled = true;
-                btnDownload.Enabled = true;
-                cbClass.Enabled = true;
-                cbCrosshair.Enabled = true;
-                cbZoomCrosshair.Enabled = true;
-                cbWeapon.Enabled = true;
-                btnAddCrosshair.Enabled = true;
-                checkBoxAddOnlyClass.Enabled = true;
-                checkBoxAddPrimaryWeapons.Enabled = true;
-                checkBoxAddSecondaryWeapons.Enabled = true;
-                checkBoxAddMeleeWeapons.Enabled = true;
-                checkBoxAddMiscWeapons.Enabled = true;
-                btnRemoveSelected.Enabled = true;
-                btnPrevCrosshair.Enabled = true;
-                btnNextCrosshair.Enabled = true;
-                btnPresetImport.Enabled = true;
-                btnPresetExport.Enabled = true;
-                btnInstall.Enabled = true;
+                unlockUserInterface();
 
                 writeLineToDebugger("Venom Crosshairs config successfully randomized!");
+            }
+        }
+
+        private void btnUninstall_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("You are about to uninstall your currently installed config! This includes materials and scripts within the Venom Crosshairs config under \\tf\\custom.\n\nAre you sure you want to continue?", "Venom Crosshairs - Uninstall installed config", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+            if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
+            {
+                pictureBoxLoading.Visible = true;
+                lockUserInterface();
+
+                try
+                {
+                    Directory.Delete(textBoxTF2Path.Text + @"\tf\custom\" + VC_CONFIG_NAME, true);
+                    listViewChosenCrosshairs.Items.Clear();
+                    writeLineToDebugger("Venom Crosshairs config was successfully uninstalled!");
+                } catch (Exception ex)
+                {
+                    MessageBox.Show($"Unable to uninstall config.\n\nHas it already been uninstalled?", "Venom Crosshairs - Uninstall config", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    writeLineToDebugger($"For developer: Exception: {ex.Message}");
+                    writeLineToDebugger($"Unable to uninstall config.");
+                }
+                
+                pictureBoxLoading.Visible = false;
+                unlockUserInterface();
             }
         }
 
@@ -575,6 +585,7 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             writeLineToDebugger($"Venom Crosshairs version {VC_VERSION}");
+            unlockUserInterface();
         }
 
         /// 
@@ -750,27 +761,23 @@ namespace VenomCrosshairs
                     MessageBox.Show($"WARNING: The currently installed Venom Crosshairs config contains scripts with crosshairs that you do NOT have!\n\nUsing this config will cause some weapons to have missing crosshairs (black square).\n\nYou are missing the following crosshairs:{missingCrosshairsListString}", "Venom Crosshairs - Missing crosshairs found within installed config", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-
                 if (listViewChosenCrosshairs.Items.Count > 0)
                 {
                     // Scroll to top
                     listViewChosenCrosshairs.EnsureVisible(0);
-
-                    btnRemoveSelected.Enabled = true;
-                    btnPresetExport.Enabled = true;
-                    btnInstall.Enabled = true;
                 }
             }
             else
             {
+                /*
                 btnRemoveSelected.Enabled = false;
                 btnPresetExport.Enabled = false;
-                btnInstall.Enabled = false;
+                btnInstall.Enabled = false;*/
             }
-
+            /*
             cbClass.Enabled = true;
             cbWeapon.Enabled = false;
-            cbCrosshair.Enabled = false;
+            cbCrosshair.Enabled = false;*/
             pictureBoxLoading.Visible = false;
         }
 
@@ -953,18 +960,16 @@ namespace VenomCrosshairs
 
         private void toggleConsole()
         {
-            if (gShowConsole)
+            if (gShowConsole) // Close console
             {
                 gShowConsole = false;
-                lblStatus.Visible = true;
                 textBoxDebugger.Visible = false;
                 this.MinimumSize = new Size(FORM_WIDTH_DEFAULT, FORM_HEIGHT_DEFAULT);
                 ActiveForm.Width = FORM_WIDTH_DEFAULT;
             }
-            else
+            else // Open Console
             {
                 gShowConsole = true;
-                lblStatus.Visible = false;
                 textBoxDebugger.Visible = true;
                 this.MinimumSize = new Size(FORM_WIDTH_CONSOLE, FORM_HEIGHT_DEFAULT);
                 ActiveForm.Width = FORM_WIDTH_CONSOLE;
@@ -1121,25 +1126,7 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = true;
-                textBoxTF2Path.Enabled = false;
-                btnReload.Enabled = false;
-                btnDownload.Enabled = false;
-                cbClass.Enabled = false;
-                cbCrosshair.Enabled = false;
-                cbZoomCrosshair.Enabled = false;
-                cbWeapon.Enabled = false;
-                btnAddCrosshair.Enabled = false;
-                checkBoxAddOnlyClass.Enabled = false;
-                checkBoxAddPrimaryWeapons.Enabled = false;
-                checkBoxAddSecondaryWeapons.Enabled = false;
-                checkBoxAddMeleeWeapons.Enabled = false;
-                checkBoxAddMiscWeapons.Enabled = false;
-                btnRemoveSelected.Enabled = false;
-                btnPrevCrosshair.Enabled = false;
-                btnNextCrosshair.Enabled = false;
-                btnPresetImport.Enabled = false;
-                btnPresetExport.Enabled = false;
-                btnInstall.Enabled = false;
+                lockUserInterface();
             }));
 
             bool isUpdate = false;
@@ -1338,25 +1325,7 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
-                textBoxTF2Path.Enabled = true;
-                btnReload.Enabled = true;
-                btnDownload.Enabled = true;
-                cbClass.Enabled = true;
-                cbCrosshair.Enabled = true;
-                cbZoomCrosshair.Enabled = true;
-                cbWeapon.Enabled = true;
-                btnAddCrosshair.Enabled = true;
-                checkBoxAddOnlyClass.Enabled = true;
-                checkBoxAddPrimaryWeapons.Enabled = true;
-                checkBoxAddSecondaryWeapons.Enabled = true;
-                checkBoxAddMeleeWeapons.Enabled = true;
-                checkBoxAddMiscWeapons.Enabled = true;
-                btnRemoveSelected.Enabled = true;
-                btnPrevCrosshair.Enabled = true;
-                btnNextCrosshair.Enabled = true;
-                btnPresetImport.Enabled = true;
-                btnPresetExport.Enabled = true;
-                btnInstall.Enabled = true;
+                unlockUserInterface();
             }));
         }
 
@@ -1370,25 +1339,7 @@ namespace VenomCrosshairs
 
                 listViewChosenCrosshairs.Items.Clear();
 
-                textBoxTF2Path.Enabled = false;
-                btnReload.Enabled = false;
-                btnDownload.Enabled = false;
-                cbClass.Enabled = false;
-                cbCrosshair.Enabled = false;
-                cbZoomCrosshair.Enabled = false;
-                cbWeapon.Enabled = false;
-                btnAddCrosshair.Enabled = false;
-                checkBoxAddOnlyClass.Enabled = false;
-                checkBoxAddPrimaryWeapons.Enabled = false;
-                checkBoxAddSecondaryWeapons.Enabled = false;
-                checkBoxAddMeleeWeapons.Enabled = false;
-                checkBoxAddMiscWeapons.Enabled = false;
-                btnRemoveSelected.Enabled = false;
-                btnPrevCrosshair.Enabled = false;
-                btnNextCrosshair.Enabled = false;
-                btnPresetImport.Enabled = false;
-                btnPresetExport.Enabled = false;
-                btnInstall.Enabled = false;
+                lockUserInterface();
             }));
 
             writeToDebugger("Deleting old previews... ");
@@ -1452,19 +1403,20 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
-                textBoxTF2Path.Enabled = true;
-                cbClass.Enabled = true;
+                // textBoxTF2Path.Enabled = true;
+                // cbClass.Enabled = true;
                 cbClass.SelectedIndex = -1;
-                cbWeapon.Enabled = false;
+                // cbWeapon.Enabled = false;
                 cbWeapon.SelectedIndex = -1;
-                cbCrosshair.Enabled = false;
+                // cbCrosshair.Enabled = false;
                 cbCrosshair.SelectedIndex = -1;
-                cbZoomCrosshair.Enabled = true;
+                // cbZoomCrosshair.Enabled = true;
                 cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
-                btnReload.Enabled = true;
-                btnDownload.Enabled = true;
-                btnPresetImport.Enabled = true;
+                // btnReload.Enabled = true;
+                // btnDownload.Enabled = true;
+                // btnPresetImport.Enabled = true;
                 readCurrentConfig();
+                unlockUserInterface();
             }));
         }
 
@@ -1478,25 +1430,7 @@ namespace VenomCrosshairs
 
                 listViewChosenCrosshairs.Items.Clear();
 
-                textBoxTF2Path.Enabled = false;
-                btnReload.Enabled = false;
-                btnDownload.Enabled = false;
-                cbClass.Enabled = false;
-                cbCrosshair.Enabled = false;
-                cbZoomCrosshair.Enabled = false;
-                cbWeapon.Enabled = false;
-                btnAddCrosshair.Enabled = false;
-                checkBoxAddOnlyClass.Enabled = false;
-                checkBoxAddPrimaryWeapons.Enabled = false;
-                checkBoxAddSecondaryWeapons.Enabled = false;
-                checkBoxAddMeleeWeapons.Enabled = false;
-                checkBoxAddMiscWeapons.Enabled = false;
-                btnRemoveSelected.Enabled = false;
-                btnPrevCrosshair.Enabled = false;
-                btnNextCrosshair.Enabled = false;
-                btnPresetImport.Enabled = false;
-                btnPresetExport.Enabled = false;
-                btnInstall.Enabled = false;
+                lockUserInterface();
             }));
 
             // Download publicly available crosshairs
@@ -1570,19 +1504,20 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
-                textBoxTF2Path.Enabled = true;
-                cbClass.Enabled = true;
+                // textBoxTF2Path.Enabled = true;
+                // cbClass.Enabled = true;
                 cbClass.SelectedIndex = -1;
-                cbWeapon.Enabled = false;
+                // cbWeapon.Enabled = false;
                 cbWeapon.SelectedIndex = -1;
-                cbCrosshair.Enabled = false;
+                // cbCrosshair.Enabled = false;
                 cbCrosshair.SelectedIndex = -1;
-                cbZoomCrosshair.Enabled = true;
+                // cbZoomCrosshair.Enabled = true;
                 cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
-                btnReload.Enabled = true;
-                btnDownload.Enabled = true;
-                btnPresetImport.Enabled = true;
+                // btnReload.Enabled = true;
+                // btnDownload.Enabled = true;
+                // btnPresetImport.Enabled = true;
                 readCurrentConfig();
+                unlockUserInterface();
             }));
         }
 
@@ -1857,6 +1792,107 @@ namespace VenomCrosshairs
             }
             gUserSettings.IsDarkMode = darkMode;
             File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
+        }
+
+        private void lockUserInterface()
+        {
+            // TF2 Path
+            textBoxTF2Path.Enabled = false;
+            btnBrowseTF2Path.Enabled = false;
+
+            // Weapon, Class, Crosshairs comboboxes
+            cbClass.Enabled = false;
+            cbWeapon.Enabled = false;
+            cbCrosshair.Enabled = false;
+
+            // Crosshair preview buttons
+            btnPrevCrosshair.Enabled = false; // <-
+            btnNextCrosshair.Enabled = false; // ->
+
+            // Multi-add checkboxes
+            checkBoxAddOnlyClass.Enabled = false;
+            checkBoxAddPrimaryWeapons.Enabled = false;
+            checkBoxAddSecondaryWeapons.Enabled = false;
+            checkBoxAddMeleeWeapons.Enabled = false;
+            checkBoxAddMiscWeapons.Enabled = false;
+
+            // Add button
+            btnAddCrosshair.Enabled = false;
+
+            // Additional settings
+            cbExplosionEffect.Enabled = false;
+            cbZoomCrosshair.Enabled = false;
+
+            // Selected config related buttons
+            btnRemoveSelected.Enabled = false;
+            btnPresetImport.Enabled = false;
+            btnPresetExport.Enabled = false;
+            btnInstall.Enabled = false;
+
+            // Settings
+            btnReload.Enabled = false;
+            btnDownload.Enabled = false;
+            // Preset folder button is never locked
+            // Toggle theme button is never locked
+            btnRandomizeConfig.Enabled = false;
+            btnUninstall.Enabled = false;
+        }
+
+        private void unlockUserInterface()
+        {
+            // TF2 Path
+            textBoxTF2Path.Enabled = true;
+            btnBrowseTF2Path.Enabled = true;
+
+            // Weapon, Class, Crosshairs comboboxes
+            cbClass.Enabled = true;
+
+            if (cbClass.Text != "")
+                cbWeapon.Enabled = true;
+
+            if (cbWeapon.Text != "")
+                cbCrosshair.Enabled = true;
+
+            // Crosshair preview buttons
+            if (cbCrosshair.Text != "")
+            {
+                btnPrevCrosshair.Enabled = true; // <-
+                btnNextCrosshair.Enabled = true; // ->
+            }
+
+            if (cbClass.Text != "" && cbWeapon.Text != "" && cbCrosshair.Text != "")
+            {
+                // Multi-add checkboxes
+                checkBoxAddOnlyClass.Enabled = true;
+                checkBoxAddPrimaryWeapons.Enabled = true;
+                checkBoxAddSecondaryWeapons.Enabled = true;
+                checkBoxAddMeleeWeapons.Enabled = true;
+                checkBoxAddMiscWeapons.Enabled = true;
+
+                // Add button
+                btnAddCrosshair.Enabled = true;
+            }
+
+            // Additional settings
+            cbExplosionEffect.Enabled = true;
+            cbZoomCrosshair.Enabled = true;
+
+            // Selected config related buttons
+            if (listViewChosenCrosshairs.Items.Count > 0)
+            {
+                btnRemoveSelected.Enabled = true;
+                btnPresetExport.Enabled = true;
+                btnInstall.Enabled = true;
+            }
+            btnPresetImport.Enabled = true;
+
+            // Settings
+            btnReload.Enabled = true;
+            btnDownload.Enabled = true;
+            // Preset folder button is never locked
+            // Toggle theme button is never locked
+            btnRandomizeConfig.Enabled = true;
+            btnUninstall.Enabled = true;
         }
 
         private bool performSanityCheck(string path)

@@ -154,6 +154,7 @@
     <None Include="Resources\folder-horizontal-open.png" />
     <None Include="Resources\arrow-join.png" />
     <None Include="Resources\arrow-split.png" />
+    <None Include="Resources\cross-circle.png" />
     <Content Include="VC.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -58,6 +58,7 @@
             this.cbZoomCrosshair = new System.Windows.Forms.ComboBox();
             this.lblZoomCrosshair = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
+            this.btnUninstall = new System.Windows.Forms.Button();
             this.btnPresetFolder = new System.Windows.Forms.Button();
             this.btnDownload = new System.Windows.Forms.Button();
             this.btnDarkMode = new System.Windows.Forms.Button();
@@ -75,6 +76,7 @@
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
+            this.lblUninstall = new System.Windows.Forms.Label();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
@@ -283,6 +285,8 @@
             // panelSettings
             // 
             this.panelSettings.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelSettings.Controls.Add(this.lblUninstall);
+            this.panelSettings.Controls.Add(this.btnUninstall);
             this.panelSettings.Controls.Add(this.lblPresetFolder);
             this.panelSettings.Controls.Add(this.btnPresetFolder);
             this.panelSettings.Controls.Add(this.label4);
@@ -295,14 +299,14 @@
             this.panelSettings.Controls.Add(this.btnReload);
             this.panelSettings.Location = new System.Drawing.Point(620, 41);
             this.panelSettings.Name = "panelSettings";
-            this.panelSettings.Size = new System.Drawing.Size(200, 202);
+            this.panelSettings.Size = new System.Drawing.Size(200, 234);
             this.panelSettings.TabIndex = 40;
             this.panelSettings.Visible = false;
             // 
             // lblPresetFolder
             // 
             this.lblPresetFolder.AutoSize = true;
-            this.lblPresetFolder.Location = new System.Drawing.Point(40, 93);
+            this.lblPresetFolder.Location = new System.Drawing.Point(40, 90);
             this.lblPresetFolder.Name = "lblPresetFolder";
             this.lblPresetFolder.Size = new System.Drawing.Size(94, 13);
             this.lblPresetFolder.TabIndex = 46;
@@ -311,7 +315,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(40, 55);
+            this.label4.Location = new System.Drawing.Point(40, 52);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 13);
             this.label4.TabIndex = 44;
@@ -320,7 +324,7 @@
             // lblReload
             // 
             this.lblReload.AutoSize = true;
-            this.lblReload.Location = new System.Drawing.Point(40, 17);
+            this.lblReload.Location = new System.Drawing.Point(40, 14);
             this.lblReload.Name = "lblReload";
             this.lblReload.Size = new System.Drawing.Size(91, 13);
             this.lblReload.TabIndex = 42;
@@ -329,7 +333,7 @@
             // lblRandomizeConfig
             // 
             this.lblRandomizeConfig.AutoSize = true;
-            this.lblRandomizeConfig.Location = new System.Drawing.Point(40, 170);
+            this.lblRandomizeConfig.Location = new System.Drawing.Point(40, 167);
             this.lblRandomizeConfig.Name = "lblRandomizeConfig";
             this.lblRandomizeConfig.Size = new System.Drawing.Size(92, 13);
             this.lblRandomizeConfig.TabIndex = 41;
@@ -338,7 +342,7 @@
             // lblDarkMode
             // 
             this.lblDarkMode.AutoSize = true;
-            this.lblDarkMode.Location = new System.Drawing.Point(40, 132);
+            this.lblDarkMode.Location = new System.Drawing.Point(40, 129);
             this.lblDarkMode.Name = "lblDarkMode";
             this.lblDarkMode.Size = new System.Drawing.Size(72, 13);
             this.lblDarkMode.TabIndex = 40;
@@ -391,10 +395,20 @@
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
+            // btnUninstall
+            // 
+            this.btnUninstall.Image = global::VenomCrosshairs.Properties.Resources.cross_circle;
+            this.btnUninstall.Location = new System.Drawing.Point(7, 194);
+            this.btnUninstall.Name = "btnUninstall";
+            this.btnUninstall.Size = new System.Drawing.Size(32, 32);
+            this.btnUninstall.TabIndex = 47;
+            this.btnUninstall.UseVisualStyleBackColor = true;
+            this.btnUninstall.Click += new System.EventHandler(this.btnUninstall_Click);
+            // 
             // btnPresetFolder
             // 
             this.btnPresetFolder.Image = global::VenomCrosshairs.Properties.Resources.folder_horizontal_open;
-            this.btnPresetFolder.Location = new System.Drawing.Point(7, 83);
+            this.btnPresetFolder.Location = new System.Drawing.Point(7, 80);
             this.btnPresetFolder.Name = "btnPresetFolder";
             this.btnPresetFolder.Size = new System.Drawing.Size(32, 32);
             this.btnPresetFolder.TabIndex = 45;
@@ -404,7 +418,7 @@
             // btnDownload
             // 
             this.btnDownload.Image = global::VenomCrosshairs.Properties.Resources.download_cloud;
-            this.btnDownload.Location = new System.Drawing.Point(7, 45);
+            this.btnDownload.Location = new System.Drawing.Point(7, 42);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(32, 32);
             this.btnDownload.TabIndex = 43;
@@ -414,7 +428,7 @@
             // btnDarkMode
             // 
             this.btnDarkMode.Image = global::VenomCrosshairs.Properties.Resources.yin_yang;
-            this.btnDarkMode.Location = new System.Drawing.Point(7, 121);
+            this.btnDarkMode.Location = new System.Drawing.Point(7, 118);
             this.btnDarkMode.Name = "btnDarkMode";
             this.btnDarkMode.Size = new System.Drawing.Size(32, 32);
             this.btnDarkMode.TabIndex = 39;
@@ -424,7 +438,7 @@
             // btnRandomizeConfig
             // 
             this.btnRandomizeConfig.Image = global::VenomCrosshairs.Properties.Resources.arrow_split;
-            this.btnRandomizeConfig.Location = new System.Drawing.Point(7, 159);
+            this.btnRandomizeConfig.Location = new System.Drawing.Point(7, 156);
             this.btnRandomizeConfig.Name = "btnRandomizeConfig";
             this.btnRandomizeConfig.Size = new System.Drawing.Size(32, 32);
             this.btnRandomizeConfig.TabIndex = 37;
@@ -434,7 +448,7 @@
             // btnReload
             // 
             this.btnReload.Image = global::VenomCrosshairs.Properties.Resources.arrow_circle_double_135;
-            this.btnReload.Location = new System.Drawing.Point(7, 7);
+            this.btnReload.Location = new System.Drawing.Point(7, 4);
             this.btnReload.Name = "btnReload";
             this.btnReload.Size = new System.Drawing.Size(32, 32);
             this.btnReload.TabIndex = 0;
@@ -585,6 +599,15 @@
             this.pictureBoxCrosshair.TabIndex = 11;
             this.pictureBoxCrosshair.TabStop = false;
             // 
+            // lblUninstall
+            // 
+            this.lblUninstall.AutoSize = true;
+            this.lblUninstall.Location = new System.Drawing.Point(40, 204);
+            this.lblUninstall.Name = "lblUninstall";
+            this.lblUninstall.Size = new System.Drawing.Size(120, 13);
+            this.lblUninstall.TabIndex = 48;
+            this.lblUninstall.Text = "Uninstall installed config";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -690,6 +713,8 @@
         private System.Windows.Forms.Label lblZoomCrosshair;
         private System.Windows.Forms.Label lblPresetFolder;
         private System.Windows.Forms.Button btnPresetFolder;
+        private System.Windows.Forms.Button btnUninstall;
+        private System.Windows.Forms.Label lblUninstall;
     }
 }
 
