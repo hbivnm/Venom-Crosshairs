@@ -156,7 +156,7 @@ namespace VenomCrosshairs
 
         private void btnUninstall_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("You are about to uninstall your currently installed config! This includes materials and scripts within the Venom Crosshairs config under \\tf\\custom.\n\nAre you sure you want to continue?", "Venom Crosshairs - Uninstall installed config", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            DialogResult dialogResult = MessageBox.Show("You are about to uninstall your currently installed config! This includes all materials and scripts within the Venom Crosshairs config under \"\\tf\\custom\".\n\nAre you sure you want to continue?", "Venom Crosshairs - Uninstall installed config", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (dialogResult == DialogResult.Yes && performSanityCheck(textBoxTF2Path.Text))
             {
@@ -165,15 +165,20 @@ namespace VenomCrosshairs
 
                 try
                 {
+                    var pathToConfig = Path.Combine(textBoxTF2Path.Text, "tf", "custom", VC_CONFIG_NAME);
+
                     writeToDebugger($"Attempting to delete {VC_CONFIG_NAME}... ");
-                    Directory.Delete(textBoxTF2Path.Text + @"\tf\custom\" + VC_CONFIG_NAME, true);
+                    if (Directory.Exists(pathToConfig))
+                        Directory.Delete(pathToConfig, true);
+                    else
+                        throw new DirectoryNotFoundException($"Unable to locate \"{VC_CONFIG_NAME}\" in \\tf\\custom");
                     writeLineToDebugger("Done!");
                     listViewChosenCrosshairs.Items.Clear();
                     writeLineToDebugger("Venom Crosshairs config was successfully uninstalled!");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Unable to uninstall config.\n\nHas it already been uninstalled?", "Venom Crosshairs - Uninstall config", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Unable to uninstall config. Has it already been uninstalled?\n\nError: {ex.Message}", "Venom Crosshairs - Uninstall config", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     writeLineToDebugger($"Unable to uninstall config.");
                 }
