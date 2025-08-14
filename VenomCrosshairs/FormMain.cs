@@ -775,17 +775,6 @@ namespace VenomCrosshairs
                     listViewChosenCrosshairs.EnsureVisible(0);
                 }
             }
-            else
-            {
-                /*
-                btnRemoveSelected.Enabled = false;
-                btnPresetExport.Enabled = false;
-                btnInstall.Enabled = false;*/
-            }
-            /*
-            cbClass.Enabled = true;
-            cbWeapon.Enabled = false;
-            cbCrosshair.Enabled = false;*/
             pictureBoxLoading.Visible = false;
         }
 
@@ -1413,18 +1402,10 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
-                // textBoxTF2Path.Enabled = true;
-                // cbClass.Enabled = true;
                 cbClass.SelectedIndex = -1;
-                // cbWeapon.Enabled = false;
                 cbWeapon.SelectedIndex = -1;
-                // cbCrosshair.Enabled = false;
                 cbCrosshair.SelectedIndex = -1;
-                // cbZoomCrosshair.Enabled = true;
                 cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
-                // btnReload.Enabled = true;
-                // btnDownload.Enabled = true;
-                // btnPresetImport.Enabled = true;
                 readCurrentConfig();
                 unlockUserInterface();
             }));
@@ -1514,18 +1495,10 @@ namespace VenomCrosshairs
             Invoke(new MethodInvoker(delegate ()
             {
                 pictureBoxLoading.Visible = false;
-                // textBoxTF2Path.Enabled = true;
-                // cbClass.Enabled = true;
                 cbClass.SelectedIndex = -1;
-                // cbWeapon.Enabled = false;
                 cbWeapon.SelectedIndex = -1;
-                // cbCrosshair.Enabled = false;
                 cbCrosshair.SelectedIndex = -1;
-                // cbZoomCrosshair.Enabled = true;
                 cbZoomCrosshair.Text = gUserSettings.UserZoomCrosshair;
-                // btnReload.Enabled = true;
-                // btnDownload.Enabled = true;
-                // btnPresetImport.Enabled = true;
                 readCurrentConfig();
                 unlockUserInterface();
             }));
