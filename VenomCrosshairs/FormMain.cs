@@ -20,7 +20,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta17.0";
+        private static readonly string VC_VERSION = "beta17.1";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
@@ -124,6 +124,7 @@ namespace VenomCrosshairs
                 Random r = new Random();
                 int crosshairCount = cbCrosshair.Items.Count;
                 int explosionEffectCount = cbExplosionEffect.Items.Count;
+                int explosionEffectCountOnhit = cbExplosionEffectOnHit.Items.Count;
                 int zoomCrosshairCount = cbZoomCrosshair.Items.Count;
 
                 // Add a random crosshair for each existing weapon
@@ -142,6 +143,9 @@ namespace VenomCrosshairs
 
                 // Pick a random explosion effect
                 cbExplosionEffect.SelectedIndex = r.Next(explosionEffectCount);
+
+                // Pick a random on-hit explosion effect
+                cbExplosionEffectOnHit.SelectedIndex = r.Next(explosionEffectCount);
 
                 // Pick a random zoom crosshair
                 cbZoomCrosshair.SelectedIndex = r.Next(zoomCrosshairCount);
@@ -555,6 +559,12 @@ namespace VenomCrosshairs
             File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
         }
 
+        private void onCBExplosionEffectOnhitChangeEvent(object sender, EventArgs e)
+        {
+            gUserSettings.UserExplosionEffectOnHitIndex = cbExplosionEffectOnHit.SelectedIndex;
+            File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
+        }
+
         private void onListViewChosenCrosshairSelect(object sender, EventArgs e)
         {
             gHasSelectedCrosshair = true;
@@ -627,8 +637,9 @@ namespace VenomCrosshairs
                 // Checkboxes
                 checkBoxAddOnlyClass.CheckStateChanged += new EventHandler(onCheckBoxAddClassWeaponsChangeEvent);
 
-                // Explosion effect
+                // Explosion effect / Explosion effect on hit
                 cbExplosionEffect.SelectedIndexChanged += new EventHandler(onCBExplosionEffectChangeEvent);
+                cbExplosionEffectOnHit.SelectedIndexChanged += new EventHandler(onCBExplosionEffectOnhitChangeEvent);
 
                 // ListView
                 listViewChosenCrosshairs.Columns.Add("Crosshair", 220);
@@ -664,8 +675,9 @@ namespace VenomCrosshairs
                         gIsDarkMode = gUserSettings.IsDarkMode;
                         setDarkModeTheme(gIsDarkMode);
 
-                        // Explosion effect
-                        cbExplosionEffect.SelectedIndex = gUserSettings.UserExplosionEffectIndex;
+                        // Explosion effects
+                        cbExplosionEffect.SelectedIndex = gUserSettings.UserExplosionEffectIndex > -1 ? gUserSettings.UserExplosionEffectIndex : 0;
+                        cbExplosionEffectOnHit.SelectedIndex = gUserSettings.UserExplosionEffectIndex > -1 ? gUserSettings.UserExplosionEffectOnHitIndex : 0;
 
                         // User path
                         textBoxTF2Path.Text = gUserSettings.UserTF2Path;
@@ -678,13 +690,12 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        writeLineToDebugger($"Something went wrong reading the user settings!");
-                        writeLineToDebugger($"For developer: Exception: {ex.Message}");
                         File.Delete(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE);
                         gUserSettings = new VCUserSettings
                         {
                             IsDarkMode = false,
                             UserExplosionEffectIndex = 0,
+                            UserExplosionEffectOnHitIndex = 0,
                             UserTF2Path = ""
                         };
                         File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
@@ -701,11 +712,13 @@ namespace VenomCrosshairs
                     {
                         IsDarkMode = false,
                         UserExplosionEffectIndex = 0,
+                        UserExplosionEffectOnHitIndex = 0,
                         UserTF2Path = "",
                         UserZoomCrosshair = "NO CHANGE"
                     };
                     File.WriteAllText(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE, JsonConvert.SerializeObject(gUserSettings));
                     cbExplosionEffect.SelectedIndex = 0;
+                    cbExplosionEffectOnHit.SelectedIndex = 0;
                     cbZoomCrosshair.SelectedIndex = 0;
                     textBoxTF2Path.Text = "";
                     gIsDarkMode = false;
@@ -1117,7 +1130,6 @@ namespace VenomCrosshairs
                     File.Delete(file);
         }
 
-        // private void performInstallation(bool removeOldConfig)
         private void performInstallation()
         {
             Invoke(new MethodInvoker(delegate ()
@@ -1167,7 +1179,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        writeLineToDebugger(ex.ToString());
+                        writeLineToDebugger(ex.ToString()); // TODO: Add log directory
                     }
                 }
             }));
@@ -1220,7 +1232,7 @@ namespace VenomCrosshairs
                         File.WriteAllText(fullInstallScriptPath,
                             File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
-                                .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
+                                .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffectOnHit.Text))
                                 .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
                                 .Replace("VC_PLACEHOLDER", crosshair)
                                 .Replace("VC_WIDTH_PLACEHOLDER", crosshairWidth.ToString())
@@ -1254,7 +1266,7 @@ namespace VenomCrosshairs
                             File.WriteAllText(fullScriptPath,
                                 File.ReadAllText($@"{PATH_VC_RESOURCES_SCRIPTS}\{weaponScriptName}")
                                     .Replace("VC_PLACEHOLDER_EXPLOSION_EFFECT", getExplosionEffectParticleName(cbExplosionEffect.Text))
-                                    .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffect.Text))
+                                    .Replace("VC_PLACEHOLDER_EXPLOSION_PLAYER_EFFECT", getExplosionPlayerEffectParticleName(cbExplosionEffectOnHit.Text))
                                     .Replace("VC_PLACEHOLDER_EXPLOSION_WATER_EFFECT", getExplosionWaterEffectParticleName(cbExplosionEffect.Text))
                                     .Replace("VC_PLACEHOLDER", crosshair)
                                     .Replace("VC_WIDTH_PLACEHOLDER", crosshairWidth.ToString())
@@ -1804,6 +1816,7 @@ namespace VenomCrosshairs
 
             // Additional settings
             cbExplosionEffect.Enabled = false;
+            cbExplosionEffectOnHit.Enabled = false;
             cbZoomCrosshair.Enabled = false;
 
             // Selected config related buttons
@@ -1858,6 +1871,7 @@ namespace VenomCrosshairs
 
             // Additional settings
             cbExplosionEffect.Enabled = true;
+            cbExplosionEffectOnHit.Enabled = true;
             cbZoomCrosshair.Enabled = true;
 
             // Selected config related buttons

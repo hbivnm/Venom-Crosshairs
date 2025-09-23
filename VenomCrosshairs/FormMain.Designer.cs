@@ -49,21 +49,22 @@
             this.lblExplosionEffect = new System.Windows.Forms.Label();
             this.cbExplosionEffect = new System.Windows.Forms.ComboBox();
             this.panelSettings = new System.Windows.Forms.Panel();
+            this.lblUninstall = new System.Windows.Forms.Label();
+            this.btnUninstall = new System.Windows.Forms.Button();
             this.lblPresetFolder = new System.Windows.Forms.Label();
+            this.btnPresetFolder = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnDownload = new System.Windows.Forms.Button();
             this.lblReload = new System.Windows.Forms.Label();
             this.lblRandomizeConfig = new System.Windows.Forms.Label();
             this.lblDarkMode = new System.Windows.Forms.Label();
+            this.btnDarkMode = new System.Windows.Forms.Button();
+            this.btnRandomizeConfig = new System.Windows.Forms.Button();
+            this.btnReload = new System.Windows.Forms.Button();
             this.textBoxDebugger = new System.Windows.Forms.RichTextBox();
             this.cbZoomCrosshair = new System.Windows.Forms.ComboBox();
             this.lblZoomCrosshair = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
-            this.btnUninstall = new System.Windows.Forms.Button();
-            this.btnPresetFolder = new System.Windows.Forms.Button();
-            this.btnDownload = new System.Windows.Forms.Button();
-            this.btnDarkMode = new System.Windows.Forms.Button();
-            this.btnRandomizeConfig = new System.Windows.Forms.Button();
-            this.btnReload = new System.Windows.Forms.Button();
             this.btnPresetExport = new System.Windows.Forms.Button();
             this.btnToggleConsole = new System.Windows.Forms.Button();
             this.pictureBoxLoading = new System.Windows.Forms.PictureBox();
@@ -76,7 +77,8 @@
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnAddCrosshair = new System.Windows.Forms.Button();
             this.pictureBoxCrosshair = new System.Windows.Forms.PictureBox();
-            this.lblUninstall = new System.Windows.Forms.Label();
+            this.cbExplosionEffectOnHit = new System.Windows.Forms.ComboBox();
+            this.lblExplosionEffectOnHit = new System.Windows.Forms.Label();
             this.panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCrosshair)).BeginInit();
@@ -260,11 +262,11 @@
             // lblExplosionEffect
             // 
             this.lblExplosionEffect.AutoSize = true;
-            this.lblExplosionEffect.Location = new System.Drawing.Point(359, 74);
+            this.lblExplosionEffect.Location = new System.Drawing.Point(344, 74);
             this.lblExplosionEffect.Name = "lblExplosionEffect";
-            this.lblExplosionEffect.Size = new System.Drawing.Size(85, 13);
+            this.lblExplosionEffect.Size = new System.Drawing.Size(129, 13);
             this.lblExplosionEffect.TabIndex = 32;
-            this.lblExplosionEffect.Text = "Explosion effect:";
+            this.lblExplosionEffect.Text = "Explosion effect (on-miss):";
             // 
             // cbExplosionEffect
             // 
@@ -277,7 +279,7 @@
             "Muzzle flash",
             "Pyro pool",
             "Spy sapper"});
-            this.cbExplosionEffect.Location = new System.Drawing.Point(450, 71);
+            this.cbExplosionEffect.Location = new System.Drawing.Point(479, 71);
             this.cbExplosionEffect.Name = "cbExplosionEffect";
             this.cbExplosionEffect.Size = new System.Drawing.Size(132, 21);
             this.cbExplosionEffect.TabIndex = 31;
@@ -303,6 +305,25 @@
             this.panelSettings.TabIndex = 40;
             this.panelSettings.Visible = false;
             // 
+            // lblUninstall
+            // 
+            this.lblUninstall.AutoSize = true;
+            this.lblUninstall.Location = new System.Drawing.Point(40, 204);
+            this.lblUninstall.Name = "lblUninstall";
+            this.lblUninstall.Size = new System.Drawing.Size(120, 13);
+            this.lblUninstall.TabIndex = 48;
+            this.lblUninstall.Text = "Uninstall installed config";
+            // 
+            // btnUninstall
+            // 
+            this.btnUninstall.Image = global::VenomCrosshairs.Properties.Resources.cross_circle;
+            this.btnUninstall.Location = new System.Drawing.Point(7, 194);
+            this.btnUninstall.Name = "btnUninstall";
+            this.btnUninstall.Size = new System.Drawing.Size(32, 32);
+            this.btnUninstall.TabIndex = 47;
+            this.btnUninstall.UseVisualStyleBackColor = true;
+            this.btnUninstall.Click += new System.EventHandler(this.btnUninstall_Click);
+            // 
             // lblPresetFolder
             // 
             this.lblPresetFolder.AutoSize = true;
@@ -312,6 +333,16 @@
             this.lblPresetFolder.TabIndex = 46;
             this.lblPresetFolder.Text = "Open preset folder";
             // 
+            // btnPresetFolder
+            // 
+            this.btnPresetFolder.Image = global::VenomCrosshairs.Properties.Resources.folder_horizontal_open;
+            this.btnPresetFolder.Location = new System.Drawing.Point(7, 80);
+            this.btnPresetFolder.Name = "btnPresetFolder";
+            this.btnPresetFolder.Size = new System.Drawing.Size(32, 32);
+            this.btnPresetFolder.TabIndex = 45;
+            this.btnPresetFolder.UseVisualStyleBackColor = true;
+            this.btnPresetFolder.Click += new System.EventHandler(this.btnPresetFolder_Click);
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -320,6 +351,16 @@
             this.label4.Size = new System.Drawing.Size(128, 13);
             this.label4.TabIndex = 44;
             this.label4.Text = "Download new crosshairs";
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.Image = global::VenomCrosshairs.Properties.Resources.download_cloud;
+            this.btnDownload.Location = new System.Drawing.Point(7, 42);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(32, 32);
+            this.btnDownload.TabIndex = 43;
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // lblReload
             // 
@@ -347,83 +388,6 @@
             this.lblDarkMode.Size = new System.Drawing.Size(72, 13);
             this.lblDarkMode.TabIndex = 40;
             this.lblDarkMode.Text = "Toggle theme";
-            // 
-            // textBoxDebugger
-            // 
-            this.textBoxDebugger.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
-            this.textBoxDebugger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
-            this.textBoxDebugger.Name = "textBoxDebugger";
-            this.textBoxDebugger.ReadOnly = true;
-            this.textBoxDebugger.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
-            this.textBoxDebugger.TabIndex = 42;
-            this.textBoxDebugger.Text = "";
-            // 
-            // cbZoomCrosshair
-            // 
-            this.cbZoomCrosshair.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbZoomCrosshair.FormattingEnabled = true;
-            this.cbZoomCrosshair.Items.AddRange(new object[] {
-            "NO CHANGE"});
-            this.cbZoomCrosshair.Location = new System.Drawing.Point(450, 98);
-            this.cbZoomCrosshair.Name = "cbZoomCrosshair";
-            this.cbZoomCrosshair.Size = new System.Drawing.Size(132, 21);
-            this.cbZoomCrosshair.TabIndex = 43;
-            // 
-            // lblZoomCrosshair
-            // 
-            this.lblZoomCrosshair.AutoSize = true;
-            this.lblZoomCrosshair.Location = new System.Drawing.Point(362, 101);
-            this.lblZoomCrosshair.Name = "lblZoomCrosshair";
-            this.lblZoomCrosshair.Size = new System.Drawing.Size(82, 13);
-            this.lblZoomCrosshair.TabIndex = 44;
-            this.lblZoomCrosshair.Text = "Zoom crosshair:";
-            // 
-            // btnSettings
-            // 
-            this.btnSettings.Image = global::VenomCrosshairs.Properties.Resources.gear;
-            this.btnSettings.Location = new System.Drawing.Point(820, 47);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(32, 32);
-            this.btnSettings.TabIndex = 41;
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-            // 
-            // btnUninstall
-            // 
-            this.btnUninstall.Image = global::VenomCrosshairs.Properties.Resources.cross_circle;
-            this.btnUninstall.Location = new System.Drawing.Point(7, 194);
-            this.btnUninstall.Name = "btnUninstall";
-            this.btnUninstall.Size = new System.Drawing.Size(32, 32);
-            this.btnUninstall.TabIndex = 47;
-            this.btnUninstall.UseVisualStyleBackColor = true;
-            this.btnUninstall.Click += new System.EventHandler(this.btnUninstall_Click);
-            // 
-            // btnPresetFolder
-            // 
-            this.btnPresetFolder.Image = global::VenomCrosshairs.Properties.Resources.folder_horizontal_open;
-            this.btnPresetFolder.Location = new System.Drawing.Point(7, 80);
-            this.btnPresetFolder.Name = "btnPresetFolder";
-            this.btnPresetFolder.Size = new System.Drawing.Size(32, 32);
-            this.btnPresetFolder.TabIndex = 45;
-            this.btnPresetFolder.UseVisualStyleBackColor = true;
-            this.btnPresetFolder.Click += new System.EventHandler(this.btnPresetFolder_Click);
-            // 
-            // btnDownload
-            // 
-            this.btnDownload.Image = global::VenomCrosshairs.Properties.Resources.download_cloud;
-            this.btnDownload.Location = new System.Drawing.Point(7, 42);
-            this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(32, 32);
-            this.btnDownload.TabIndex = 43;
-            this.btnDownload.UseVisualStyleBackColor = true;
-            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // btnDarkMode
             // 
@@ -454,6 +418,53 @@
             this.btnReload.TabIndex = 0;
             this.btnReload.UseVisualStyleBackColor = true;
             this.btnReload.Click += new System.EventHandler(this.btnReload_Click);
+            // 
+            // textBoxDebugger
+            // 
+            this.textBoxDebugger.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDebugger.BackColor = System.Drawing.Color.Black;
+            this.textBoxDebugger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxDebugger.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDebugger.ForeColor = System.Drawing.SystemColors.Control;
+            this.textBoxDebugger.Location = new System.Drawing.Point(864, 9);
+            this.textBoxDebugger.Name = "textBoxDebugger";
+            this.textBoxDebugger.ReadOnly = true;
+            this.textBoxDebugger.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.textBoxDebugger.Size = new System.Drawing.Size(365, 530);
+            this.textBoxDebugger.TabIndex = 42;
+            this.textBoxDebugger.Text = "";
+            // 
+            // cbZoomCrosshair
+            // 
+            this.cbZoomCrosshair.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbZoomCrosshair.FormattingEnabled = true;
+            this.cbZoomCrosshair.Items.AddRange(new object[] {
+            "NO CHANGE"});
+            this.cbZoomCrosshair.Location = new System.Drawing.Point(479, 125);
+            this.cbZoomCrosshair.Name = "cbZoomCrosshair";
+            this.cbZoomCrosshair.Size = new System.Drawing.Size(132, 21);
+            this.cbZoomCrosshair.TabIndex = 43;
+            // 
+            // lblZoomCrosshair
+            // 
+            this.lblZoomCrosshair.AutoSize = true;
+            this.lblZoomCrosshair.Location = new System.Drawing.Point(391, 128);
+            this.lblZoomCrosshair.Name = "lblZoomCrosshair";
+            this.lblZoomCrosshair.Size = new System.Drawing.Size(82, 13);
+            this.lblZoomCrosshair.TabIndex = 44;
+            this.lblZoomCrosshair.Text = "Zoom crosshair:";
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Image = global::VenomCrosshairs.Properties.Resources.gear;
+            this.btnSettings.Location = new System.Drawing.Point(820, 47);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(32, 32);
+            this.btnSettings.TabIndex = 41;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // btnPresetExport
             // 
@@ -599,14 +610,30 @@
             this.pictureBoxCrosshair.TabIndex = 11;
             this.pictureBoxCrosshair.TabStop = false;
             // 
-            // lblUninstall
+            // cbExplosionEffectOnHit
             // 
-            this.lblUninstall.AutoSize = true;
-            this.lblUninstall.Location = new System.Drawing.Point(40, 204);
-            this.lblUninstall.Name = "lblUninstall";
-            this.lblUninstall.Size = new System.Drawing.Size(120, 13);
-            this.lblUninstall.TabIndex = 48;
-            this.lblUninstall.Text = "Uninstall installed config";
+            this.cbExplosionEffectOnHit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbExplosionEffectOnHit.FormattingEnabled = true;
+            this.cbExplosionEffectOnHit.Items.AddRange(new object[] {
+            "Default",
+            "Duck Trail (Invisible)",
+            "Electric shock",
+            "Muzzle flash",
+            "Pyro pool",
+            "Spy sapper"});
+            this.cbExplosionEffectOnHit.Location = new System.Drawing.Point(479, 98);
+            this.cbExplosionEffectOnHit.Name = "cbExplosionEffectOnHit";
+            this.cbExplosionEffectOnHit.Size = new System.Drawing.Size(132, 21);
+            this.cbExplosionEffectOnHit.TabIndex = 45;
+            // 
+            // lblExplosionEffectOnHit
+            // 
+            this.lblExplosionEffectOnHit.AutoSize = true;
+            this.lblExplosionEffectOnHit.Location = new System.Drawing.Point(353, 101);
+            this.lblExplosionEffectOnHit.Name = "lblExplosionEffectOnHit";
+            this.lblExplosionEffectOnHit.Size = new System.Drawing.Size(120, 13);
+            this.lblExplosionEffectOnHit.TabIndex = 46;
+            this.lblExplosionEffectOnHit.Text = "Explosion effect (on-hit):";
             // 
             // FormMain
             // 
@@ -614,6 +641,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1235, 551);
+            this.Controls.Add(this.cbExplosionEffectOnHit);
+            this.Controls.Add(this.lblExplosionEffectOnHit);
             this.Controls.Add(this.cbZoomCrosshair);
             this.Controls.Add(this.lblZoomCrosshair);
             this.Controls.Add(this.textBoxDebugger);
@@ -715,6 +744,8 @@
         private System.Windows.Forms.Button btnPresetFolder;
         private System.Windows.Forms.Button btnUninstall;
         private System.Windows.Forms.Label lblUninstall;
+        private System.Windows.Forms.ComboBox cbExplosionEffectOnHit;
+        private System.Windows.Forms.Label lblExplosionEffectOnHit;
     }
 }
 
