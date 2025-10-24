@@ -85,8 +85,11 @@ namespace VenomCrosshairs
         private static readonly string[] tf2MeleeExplosiveWeapons = { };
         private static readonly string[] tf2MiscExplosiveWeapons = { };
 
+        // Special
+        private static readonly string[] tf2SpecialWeapons = { "JACK" };
+
         // All
-        private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).ToArray();
+        private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).Concat(tf2SpecialWeapons).ToArray();
         private static readonly string[] tf2AllPrimaryWeapons = tf2PrimaryScoutWeapons.Concat(tf2PrimarySoldierWeapons).Concat(tf2PrimaryPyroWeapons).Concat(tf2PrimaryDemomanWeapons).Concat(tf2PrimaryHeavyWeapons).Concat(tf2PrimaryEngineerWeapons).Concat(tf2PrimaryMedicWeapons).Concat(tf2PrimarySniperWeapons).Concat(tf2PrimarySpyWeapons).ToArray();
         private static readonly string[] tf2AllSecondaryWeapons = tf2SecondaryScoutWeapons.Concat(tf2SecondarySoldierWeapons).Concat(tf2SecondaryPyroWeapons).Concat(tf2SecondaryDemomanWeapons).Concat(tf2SecondaryHeavyWeapons).Concat(tf2SecondaryEngineerWeapons).Concat(tf2SecondaryMedicWeapons).Concat(tf2SecondarySniperWeapons).Concat(tf2SecondarySpyWeapons).ToArray();
         private static readonly string[] tf2AllMeleeWeapons = tf2MeleeScoutWeapons.Concat(tf2MeleeSoldierWeapons).Concat(tf2MeleePyroWeapons).Concat(tf2MeleeDemomanWeapons).Concat(tf2MeleeHeavyWeapons).Concat(tf2MeleeEngineerWeapons).Concat(tf2MeleeMedicWeapons).Concat(tf2MeleeSniperWeapons).Concat(tf2MeleeSpyWeapons).ToArray();
@@ -124,6 +127,8 @@ namespace VenomCrosshairs
                     return tf2SpyWeapons;
                 case "Multi-class":
                     return tf2MultiClassWeapons;
+                case "Special":
+                    return tf2SpecialWeapons;
                 default:
                     return new string[] { };
             }
@@ -424,6 +429,10 @@ namespace VenomCrosshairs
                     return "tf_weapon_katana.txt"; // Soldier/Demoman
                 case "Sapper, Red-Tape Recorder, While placing a building":
                     return "tf_weapon_builder.txt"; // Spy/Engineer
+
+                // Special
+                case "JACK":
+                    return "tf_weapon_passtime_gun.txt";
             }
             throw new ArgumentException($"'{weaponName}' does not have a weapon script!");
         }
@@ -581,6 +590,10 @@ namespace VenomCrosshairs
                     return "Half-Zatoichi";
                 case "tf_weapon_builder.txt": // Spy/Engineer
                     return "Sapper, Red-Tape Recorder, While placing a building";
+
+                // Special
+                case "tf_weapon_passtime_gun.txt":
+                    return "JACK";
             }
             throw new ArgumentException($"'{weaponScript}' does not have a weapon associated with it!");
         }
@@ -683,6 +696,10 @@ namespace VenomCrosshairs
                 case "Half-Zatoichi": // Soldier/Demoman
                 case "Sapper, Red-Tape Recorder, While placing a building": // Spy/Engineer
                     return "Multi-class";
+
+                // Special
+                case "JACK":
+                    return "Special";
             }
             throw new ArgumentException($"'{weaponName}' does not have a class associated with it!");
         }

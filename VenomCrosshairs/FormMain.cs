@@ -20,7 +20,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta17.1";
+        private static readonly string VC_VERSION = "beta17.2";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
@@ -40,7 +40,7 @@ namespace VenomCrosshairs
         private static readonly int FORM_WIDTH_CONSOLE = 1251;
         private static readonly int FORM_HEIGHT_DEFAULT = 590;
 
-        private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
+        private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy", "Special" };
 
         private Dictionary<string, string> gPublicCrosshairs = new Dictionary<string, string>();
         private VCUserSettings gUserSettings = null;
@@ -496,6 +496,9 @@ namespace VenomCrosshairs
                 case "Multi-class":
                     cbWeapon.DropDownWidth = 265;
                     break;
+                case "Special":
+                    cbWeapon.DropDownWidth = 100;
+                    break;
             }
             cbWeapon.Enabled = true;
             cbCrosshair.Enabled = true;
@@ -766,7 +769,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file.\n\nIf removing this script file causes futher errors, please contact HbiVnm.\nSee console for details.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"\"{Path.GetFileName(fullWeaponScriptPath)}\" is unused.\nYou can safely remove this script file.\n\nIf the script file is used or removing this script file causes futher errors please create a GitHub issue.\nSee console for details.", "Venom Crosshairs - Could not find weapon from script", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         writeLineToDebugger($"For developer: Exception: {ex.Message}");
                     }
                 }
