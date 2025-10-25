@@ -20,7 +20,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta17.2";
+        private static readonly string VC_VERSION = "beta17.2.1";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
@@ -39,8 +39,6 @@ namespace VenomCrosshairs
         private static readonly int FORM_WIDTH_DEFAULT = 876;
         private static readonly int FORM_WIDTH_CONSOLE = 1251;
         private static readonly int FORM_HEIGHT_DEFAULT = 590;
-
-        private static readonly string[] TF2_CLASSES = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy", "Special" };
 
         private Dictionary<string, string> gPublicCrosshairs = new Dictionary<string, string>();
         private VCUserSettings gUserSettings = null;
@@ -281,7 +279,7 @@ namespace VenomCrosshairs
             {
                 if (checkBoxAddPrimaryWeapons.Checked)
                 {
-                    foreach (var tf2Class in TF2_CLASSES)
+                    foreach (var tf2Class in TF2Weapons.getAllClasses())
                         foreach (var weapon in TF2Weapons.getPrimaryWeapons(tf2Class))
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon, tf2Class }));
                     crosshairAdded = true;
@@ -289,7 +287,7 @@ namespace VenomCrosshairs
 
                 if (checkBoxAddSecondaryWeapons.Checked)
                 {
-                    foreach (var tf2Class in TF2_CLASSES)
+                    foreach (var tf2Class in TF2Weapons.getAllClasses())
                         foreach (var weapon in TF2Weapons.getSecondaryWeapons(tf2Class))
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon, tf2Class }));
                     crosshairAdded = true;
@@ -297,7 +295,7 @@ namespace VenomCrosshairs
 
                 if (checkBoxAddMeleeWeapons.Checked)
                 {
-                    foreach (var tf2Class in TF2_CLASSES)
+                    foreach (var tf2Class in TF2Weapons.getAllClasses())
                         foreach (var weapon in TF2Weapons.getMeleeWeapons(tf2Class))
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon, tf2Class }));
                     crosshairAdded = true;
@@ -305,7 +303,7 @@ namespace VenomCrosshairs
 
                 if (checkBoxAddMiscWeapons.Checked)
                 {
-                    foreach (var tf2Class in TF2_CLASSES)
+                    foreach (var tf2Class in TF2Weapons.getAllClasses())
                         foreach (var weapon in TF2Weapons.getMiscWeapons(tf2Class))
                             addCrosshairToListView(listViewChosenCrosshairs, new ListViewItem(new string[] { cbCrosshair.Text, weapon, tf2Class }));
                     crosshairAdded = true;
@@ -620,7 +618,7 @@ namespace VenomCrosshairs
                 pictureBoxLoading.Visible = true;
 
                 // Classes
-                foreach (var tf2Class in TF2_CLASSES)
+                foreach (var tf2Class in TF2Weapons.getAllClasses())
                     cbClass.Items.Add(tf2Class);
 
                 cbClass.SelectedIndexChanged += new EventHandler(onCBClassChangeEvent);

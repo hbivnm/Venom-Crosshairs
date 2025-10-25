@@ -6,7 +6,7 @@ namespace VenomCrosshairs
     public static class TF2Weapons
     {
         // Classes
-        private static readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy" };
+        private static readonly string[] tf2Classes = { "Scout", "Soldier", "Pyro", "Demoman", "Heavy", "Engineer", "Medic", "Sniper", "Spy", "Special" };
 
         // Scout
         private static readonly string[] tf2ScoutWeapons = { "Scattergun, Back Scatter, Force-A-Nature", "Baby Face's Blaster", "Shortstop", "Soda Popper", "Pistol and all reskins (Scout)", "Bonk! Atomic Punch, Crit-a-Cola", "Flying Guillotine, Mad Milk, Gas Passer, Jarate", "Pretty Boy's Pocket Pistol, Winger", "Bat and all reskins, Atomizer, Boston Basher, Candy Cane, Fan O'War, Sun-on-a-Stick", "Holy Mackerel", "Sandman", "Wrap Assassin" };
@@ -101,6 +101,11 @@ namespace VenomCrosshairs
 
         // All scripts
         private static readonly string[] tf2AllWeaponScripts = { "tf_weapon_scattergun.txt", "tf_weapon_pep_brawler_blaster.txt", "tf_weapon_handgun_scout_primary.txt", "tf_weapon_soda_popper.txt", "tf_weapon_pistol_scout.txt", "tf_weapon_lunchbox_drink.txt", "tf_weapon_handgun_scout_secondary.txt", "tf_weapon_bat.txt", "tf_weapon_bat_fish.txt", "tf_weapon_bat_wood.txt", "tf_weapon_bat_giftwrap.txt", "tf_weapon_rocketlauncher.txt", "tf_weapon_rocketlauncher_airstrike.txt", "tf_weapon_particle_cannon.txt", "tf_weapon_rocketlauncher_directhit.txt", "tf_weapon_shotgun_soldier.txt", "tf_weapon_buff_item.txt", "tf_weapon_raygun.txt", "tf_weapon_shovel.txt", "tf_weapon_flamethrower.txt", "tf_weapon_rocketlauncher_fireball.txt", "tf_weapon_shotgun_pyro.txt", "tf_weapon_flaregun.txt", "tf_weapon_flaregun_revenge.txt", "tf_weapon_rocketpack.txt", "tf_weapon_fireaxe.txt", "tf_weapon_slap.txt", "tf_weapon_grenadelauncher.txt", "tf_weapon_cannon.txt", "tf_weapon_pipebomblauncher.txt", "tf_weapon_bottle.txt", "tf_weapon_sword.txt", "tf_weapon_stickbomb.txt", "tf_weapon_minigun.txt", "tf_weapon_shotgun_hwg.txt", "tf_weapon_lunchbox.txt", "tf_weapon_fists.txt", "tf_weapon_shotgun_primary.txt", "tf_weapon_sentry_revenge.txt", "tf_weapon_drg_pomson.txt", "tf_weapon_shotgun_building_rescue.txt", "tf_weapon_pistol.txt", "tf_weapon_mechanical_arm.txt", "tf_weapon_laser_pointer.txt", "tf_weapon_wrench.txt", "tf_weapon_robot_arm.txt", "tf_weapon_pda_engineer_build.txt", "tf_weapon_pda_engineer_destroy.txt", "tf_weapon_syringegun_medic.txt", "tf_weapon_crossbow.txt", "tf_weapon_medigun.txt", "tf_weapon_bonesaw.txt", "tf_weapon_sniperrifle.txt", "tf_weapon_sniperrifle_classic.txt", "tf_weapon_sniperrifle_decap.txt", "tf_weapon_compound_bow.txt", "tf_weapon_smg.txt", "tf_weapon_charged_smg.txt", "tf_weapon_club.txt", "tf_weapon_revolver.txt", "tf_weapon_knife.txt", "tf_weapon_pda_spy.txt", "tf_weapon_jar.txt", "tf_weapon_katana.txt", "tf_weapon_builder.txt" };
+
+        public static string[] getAllClasses()
+        {
+            return tf2Classes;
+        }
 
         public static string[] getAllWeapons()
         {
