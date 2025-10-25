@@ -87,6 +87,10 @@ namespace VenomCrosshairs
 
         // Special
         private static readonly string[] tf2SpecialWeapons = { "JACK" };
+        private static readonly string[] tf2PrimarySpecialWeapons = { "JACK" };
+        private static readonly string[] tf2SecondarySpecialWeapons = { };
+        private static readonly string[] tf2MeleeSpecialWeapons = { };
+        private static readonly string[] tf2MiscSpecialWeapons = { };
 
         // All
         private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).Concat(tf2SpecialWeapons).ToArray();
@@ -168,6 +172,8 @@ namespace VenomCrosshairs
                     return tf2PrimarySpyWeapons;
                 case "Multi-class":
                     return tf2PrimaryMultiClassWeapons;
+                case "Special":
+                    return tf2PrimarySpecialWeapons;
             }
             throw new ArgumentException($"'{tf2Class}' is not a Team Fortress 2 class!");
         }
@@ -201,6 +207,8 @@ namespace VenomCrosshairs
                     return tf2SecondarySpyWeapons;
                 case "Multi-class":
                     return tf2SecondaryMultiClassWeapons;
+                case "Special":
+                    return tf2SecondarySpecialWeapons;
             }
             throw new ArgumentException($"'{tf2Class}' is not a Team Fortress 2 class!");
         }
@@ -234,6 +242,8 @@ namespace VenomCrosshairs
                     return tf2MeleeSpyWeapons;
                 case "Multi-class":
                     return tf2MeleeMultiClassWeapons;
+                case "Special":
+                    return tf2MeleeSpecialWeapons;
             }
             throw new ArgumentException($"'{tf2Class}' is not a Team Fortress 2 class!");
         }
@@ -267,6 +277,8 @@ namespace VenomCrosshairs
                     return tf2MiscSpyWeapons;
                 case "Multi-class":
                     return tf2MiscMultiClassWeapons;
+                case "Special":
+                    return tf2MiscSpecialWeapons;
             }
             throw new ArgumentException($"'{tf2Class}' is not a Team Fortress 2 class!");
         }
