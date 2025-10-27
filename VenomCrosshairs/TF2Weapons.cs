@@ -86,11 +86,11 @@ namespace VenomCrosshairs
         private static readonly string[] tf2MiscExplosiveWeapons = { };
 
         // Special
-        private static readonly string[] tf2SpecialWeapons = { "JACK" };
+        private static readonly string[] tf2SpecialWeapons = { "JACK", "Spellbook" };
         private static readonly string[] tf2PrimarySpecialWeapons = { "JACK" };
         private static readonly string[] tf2SecondarySpecialWeapons = { };
         private static readonly string[] tf2MeleeSpecialWeapons = { };
-        private static readonly string[] tf2MiscSpecialWeapons = { };
+        private static readonly string[] tf2MiscSpecialWeapons = { "Spellbook" };
 
         // All
         private static readonly string[] tf2AllWeapons = tf2ScoutWeapons.Concat(tf2SoldierWeapons).Concat(tf2PyroWeapons).Concat(tf2DemomanWeapons).Concat(tf2HeavyWeapons).Concat(tf2EngineerWeapons).Concat(tf2MedicWeapons).Concat(tf2SniperWeapons).Concat(tf2SpyWeapons).Concat(tf2SpecialWeapons).ToArray();
@@ -100,7 +100,7 @@ namespace VenomCrosshairs
         private static readonly string[] tf2AllMiscWeapons = tf2MiscScoutWeapons.Concat(tf2MiscSoldierWeapons).Concat(tf2MiscPyroWeapons).Concat(tf2MiscDemomanWeapons).Concat(tf2MiscHeavyWeapons).Concat(tf2MiscEngineerWeapons).Concat(tf2MiscMedicWeapons).Concat(tf2MiscSniperWeapons).Concat(tf2MiscSpyWeapons).ToArray();
 
         // All scripts
-        private static readonly string[] tf2AllWeaponScripts = { "tf_weapon_scattergun.txt", "tf_weapon_pep_brawler_blaster.txt", "tf_weapon_handgun_scout_primary.txt", "tf_weapon_soda_popper.txt", "tf_weapon_pistol_scout.txt", "tf_weapon_lunchbox_drink.txt", "tf_weapon_handgun_scout_secondary.txt", "tf_weapon_bat.txt", "tf_weapon_bat_fish.txt", "tf_weapon_bat_wood.txt", "tf_weapon_bat_giftwrap.txt", "tf_weapon_rocketlauncher.txt", "tf_weapon_rocketlauncher_airstrike.txt", "tf_weapon_particle_cannon.txt", "tf_weapon_rocketlauncher_directhit.txt", "tf_weapon_shotgun_soldier.txt", "tf_weapon_buff_item.txt", "tf_weapon_raygun.txt", "tf_weapon_shovel.txt", "tf_weapon_flamethrower.txt", "tf_weapon_rocketlauncher_fireball.txt", "tf_weapon_shotgun_pyro.txt", "tf_weapon_flaregun.txt", "tf_weapon_flaregun_revenge.txt", "tf_weapon_rocketpack.txt", "tf_weapon_fireaxe.txt", "tf_weapon_slap.txt", "tf_weapon_grenadelauncher.txt", "tf_weapon_cannon.txt", "tf_weapon_pipebomblauncher.txt", "tf_weapon_bottle.txt", "tf_weapon_sword.txt", "tf_weapon_stickbomb.txt", "tf_weapon_minigun.txt", "tf_weapon_shotgun_hwg.txt", "tf_weapon_lunchbox.txt", "tf_weapon_fists.txt", "tf_weapon_shotgun_primary.txt", "tf_weapon_sentry_revenge.txt", "tf_weapon_drg_pomson.txt", "tf_weapon_shotgun_building_rescue.txt", "tf_weapon_pistol.txt", "tf_weapon_mechanical_arm.txt", "tf_weapon_laser_pointer.txt", "tf_weapon_wrench.txt", "tf_weapon_robot_arm.txt", "tf_weapon_pda_engineer_build.txt", "tf_weapon_pda_engineer_destroy.txt", "tf_weapon_syringegun_medic.txt", "tf_weapon_crossbow.txt", "tf_weapon_medigun.txt", "tf_weapon_bonesaw.txt", "tf_weapon_sniperrifle.txt", "tf_weapon_sniperrifle_classic.txt", "tf_weapon_sniperrifle_decap.txt", "tf_weapon_compound_bow.txt", "tf_weapon_smg.txt", "tf_weapon_charged_smg.txt", "tf_weapon_club.txt", "tf_weapon_revolver.txt", "tf_weapon_knife.txt", "tf_weapon_pda_spy.txt", "tf_weapon_jar.txt", "tf_weapon_katana.txt", "tf_weapon_builder.txt", "tf_weapon_passtime_gun.txt" };
+        private static readonly string[] tf2AllWeaponScripts = { "tf_weapon_scattergun.txt", "tf_weapon_pep_brawler_blaster.txt", "tf_weapon_handgun_scout_primary.txt", "tf_weapon_soda_popper.txt", "tf_weapon_pistol_scout.txt", "tf_weapon_lunchbox_drink.txt", "tf_weapon_handgun_scout_secondary.txt", "tf_weapon_bat.txt", "tf_weapon_bat_fish.txt", "tf_weapon_bat_wood.txt", "tf_weapon_bat_giftwrap.txt", "tf_weapon_rocketlauncher.txt", "tf_weapon_rocketlauncher_airstrike.txt", "tf_weapon_particle_cannon.txt", "tf_weapon_rocketlauncher_directhit.txt", "tf_weapon_shotgun_soldier.txt", "tf_weapon_buff_item.txt", "tf_weapon_raygun.txt", "tf_weapon_shovel.txt", "tf_weapon_flamethrower.txt", "tf_weapon_rocketlauncher_fireball.txt", "tf_weapon_shotgun_pyro.txt", "tf_weapon_flaregun.txt", "tf_weapon_flaregun_revenge.txt", "tf_weapon_rocketpack.txt", "tf_weapon_fireaxe.txt", "tf_weapon_slap.txt", "tf_weapon_grenadelauncher.txt", "tf_weapon_cannon.txt", "tf_weapon_pipebomblauncher.txt", "tf_weapon_bottle.txt", "tf_weapon_sword.txt", "tf_weapon_stickbomb.txt", "tf_weapon_minigun.txt", "tf_weapon_shotgun_hwg.txt", "tf_weapon_lunchbox.txt", "tf_weapon_fists.txt", "tf_weapon_shotgun_primary.txt", "tf_weapon_sentry_revenge.txt", "tf_weapon_drg_pomson.txt", "tf_weapon_shotgun_building_rescue.txt", "tf_weapon_pistol.txt", "tf_weapon_mechanical_arm.txt", "tf_weapon_laser_pointer.txt", "tf_weapon_wrench.txt", "tf_weapon_robot_arm.txt", "tf_weapon_pda_engineer_build.txt", "tf_weapon_pda_engineer_destroy.txt", "tf_weapon_syringegun_medic.txt", "tf_weapon_crossbow.txt", "tf_weapon_medigun.txt", "tf_weapon_bonesaw.txt", "tf_weapon_sniperrifle.txt", "tf_weapon_sniperrifle_classic.txt", "tf_weapon_sniperrifle_decap.txt", "tf_weapon_compound_bow.txt", "tf_weapon_smg.txt", "tf_weapon_charged_smg.txt", "tf_weapon_club.txt", "tf_weapon_revolver.txt", "tf_weapon_knife.txt", "tf_weapon_pda_spy.txt", "tf_weapon_jar.txt", "tf_weapon_katana.txt", "tf_weapon_builder.txt", "tf_weapon_passtime_gun.txt", "tf_weapon_spellbook.txt" };
 
         public static string[] getAllClasses()
         {
@@ -450,6 +450,8 @@ namespace VenomCrosshairs
                 // Special
                 case "JACK":
                     return "tf_weapon_passtime_gun.txt";
+                case "Spellbook":
+                    return "tf_weapon_spellbook.txt";
             }
             throw new ArgumentException($"'{weaponName}' does not have a weapon script!");
         }
@@ -611,6 +613,8 @@ namespace VenomCrosshairs
                 // Special
                 case "tf_weapon_passtime_gun.txt":
                     return "JACK";
+                case "tf_weapon_spellbook.txt":
+                    return "Spellbook";
             }
             throw new ArgumentException($"'{weaponScript}' does not have a weapon associated with it!");
         }
@@ -716,6 +720,7 @@ namespace VenomCrosshairs
 
                 // Special
                 case "JACK":
+                case "Spellbook":
                     return "Special";
             }
             throw new ArgumentException($"'{weaponName}' does not have a class associated with it!");
