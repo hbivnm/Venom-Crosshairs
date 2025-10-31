@@ -275,8 +275,10 @@
             this.cbExplosionEffect.Items.AddRange(new object[] {
             "Default",
             "Duck Trail (Invisible)",
-            "Electric shock",
+            "Electric shock (Blue)",
+            "Electric shock (Red)",
             "Muzzle flash",
+            "MvM Shield Impact",
             "Pyro pool",
             "Spy sapper"});
             this.cbExplosionEffect.Location = new System.Drawing.Point(479, 71);
@@ -617,8 +619,10 @@
             this.cbExplosionEffectOnHit.Items.AddRange(new object[] {
             "Default",
             "Duck Trail (Invisible)",
-            "Electric shock",
+            "Electric shock (Blue)",
+            "Electric shock (Red)",
             "Muzzle flash",
+            "MvM Shield Impact",
             "Pyro pool",
             "Spy sapper"});
             this.cbExplosionEffectOnHit.Location = new System.Drawing.Point(479, 98);

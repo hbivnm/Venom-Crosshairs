@@ -1094,14 +1094,18 @@ namespace VenomCrosshairs
                     return "ExplosionCore_wall";
                 case "Duck Trail (Invisible)":
                     return "duck_collect_trail_special_red";
-                case "Electric shock":
+                case "Electric shock (Red)":
                     return "electrocuted_red_flash";
+                case "Electric shock (Blue)":
+                    return "electrocuted_blue_flash";
                 case "Muzzle flash":
                     return "muzzle_minigun_starflash01";
                 case "Pyro pool":
                     return "eotl_pyro_pool_explosion_flash";
                 case "Spy sapper":
                     return "ExplosionCore_sapperdestroyed";
+                case "MvM Shield Impact":
+                    return "mvm_shield_impact";
             }
             throw new ArgumentException($"Could not find ExplosionEffect particle name for '{name}'!");
         }
@@ -1114,7 +1118,9 @@ namespace VenomCrosshairs
                     return "ExplosionCore_MidAir";
                 case "Duck Trail (Invisible)":
                     return "duck_collect_trail_special_blue";
-                case "Electric shock":
+                case "Electric shock (Red)":
+                    return "electrocuted_red_flash";
+                case "Electric shock (Blue)":
                     return "electrocuted_blue_flash";
                 case "Muzzle flash":
                     return "muzzle_minigun_starflash01";
@@ -1122,6 +1128,8 @@ namespace VenomCrosshairs
                     return "eotl_pyro_pool_explosion_flash";
                 case "Spy sapper":
                     return "ExplosionCore_sapperdestroyed";
+                case "MvM Shield Impact":
+                    return "mvm_shield_impact";
             }
             throw new ArgumentException($"Could not find ExplosionPlayerEffect particle name for '{name}'!");
         }
@@ -1134,14 +1142,18 @@ namespace VenomCrosshairs
                     return "ExplosionCore_MidAir_underwater";
                 case "Duck Trail (Invisible)":
                     return "duck_collect_trail_special_red";
-                case "Electric shock":
+                case "Electric shock (Red)":
                     return "electrocuted_red_flash";
+                case "Electric shock (Blue)":
+                    return "electrocuted_blue_flash";
                 case "Muzzle flash":
                     return "muzzle_minigun_starflash01";
                 case "Pyro pool":
                     return "eotl_pyro_pool_explosion_flash";
                 case "Spy sapper":
                     return "ExplosionCore_sapperdestroyed";
+                case "MvM Shield Impact":
+                    return "mvm_shield_impact";
             }
             throw new ArgumentException($"Could not find ExplosionWaterEffect particle name for '{name}'!");
         }
