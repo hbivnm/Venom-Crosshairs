@@ -143,7 +143,7 @@ namespace VenomCrosshairs
                 cbExplosionEffect.SelectedIndex = r.Next(explosionEffectCount);
 
                 // Pick a random on-hit explosion effect
-                cbExplosionEffectOnHit.SelectedIndex = r.Next(explosionEffectCount);
+                cbExplosionEffectOnHit.SelectedIndex = r.Next(explosionEffectCountOnhit);
 
                 // Pick a random zoom crosshair
                 cbZoomCrosshair.SelectedIndex = r.Next(zoomCrosshairCount);
@@ -511,15 +511,28 @@ namespace VenomCrosshairs
 
         private void onCBCrosshairChangeEvent(object sender, EventArgs e)
         {
+            string crosshair = cbCrosshair.Text;
+            string previewImagePath = $@"{PATH_VC_RESOURCES_PREVIEWS}\{crosshair}";
+
+            if (Directory.GetFiles(previewImagePath, "*.gif").Length > 0)
+            {
+                previewImagePath += $@"\{crosshair}.gif";
+            }
+            else
+            {
+                previewImagePath += $@"\{crosshair}.png";
+            }
+
+            pictureBoxCrosshair.Image?.Dispose();
             if (cbCrosshair.Text.Length > 0)
             {
                 pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.CenterImage;
-                pictureBoxCrosshair.ImageLocation = $@"{PATH_VC_RESOURCES_PREVIEWS}\{cbCrosshair.Text}.png";
+                pictureBoxCrosshair.Image = Image.FromFile(previewImagePath);
             }
             else
             {
                 pictureBoxCrosshair.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBoxCrosshair.ImageLocation = $@"{PATH_VC_RESOURCES}\VC.png";
+                pictureBoxCrosshair.Image = Image.FromFile($@"{PATH_VC_RESOURCES}\VC.png");
             }
 
             btnAddCrosshair.Enabled = true;
@@ -689,7 +702,7 @@ namespace VenomCrosshairs
                         else
                             cbZoomCrosshair.Text = "NO CHANGE";
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         File.Delete(PATH_VC_RESOURCES_VC_USERSETTINGS_CFG_FILE);
                         gUserSettings = new VCUserSettings
@@ -1013,6 +1026,18 @@ namespace VenomCrosshairs
             }));
         }
 
+        private string GetPreviewImagePathFromCrosshairName(string name)
+        {
+            string dir = Path.Combine(PATH_VC_RESOURCES_PREVIEWS, name);
+            string png = Path.Combine(dir, $"{name}.png");
+            string gif = Path.Combine(dir, $"{name}.gif");
+
+            if (File.Exists(png)) return png;
+            if (File.Exists(gif)) return gif;
+
+            throw new FileNotFoundException($"No preview found for crosshair \"{name}\".");
+        }
+
         private void cleanListViewOfEmptyRows(ListView listView)
         {
             List<ListViewItem> oldListViewItems = new List<ListViewItem>();
@@ -1121,16 +1146,6 @@ namespace VenomCrosshairs
             throw new ArgumentException($"Could not find ExplosionWaterEffect particle name for '{name}'!");
         }
 
-        // Should probably re-write so it overwrites, not sure of the thoughtprocess of moving or deleting (same filename =/= same file content)
-        private void moveFilesByExtensionOrDelete(string sourceDirectory, string targetDirectory, string extension)
-        {
-            foreach (string file in Directory.GetFiles(sourceDirectory, "*." + extension))
-                if (!File.Exists(targetDirectory + Path.GetFileName(file)))
-                    File.Move(file, targetDirectory + Path.GetFileName(file));
-                else
-                    File.Delete(file);
-        }
-
         private void performInstallation()
         {
             Invoke(new MethodInvoker(delegate ()
@@ -1180,7 +1195,7 @@ namespace VenomCrosshairs
                     }
                     catch (Exception ex)
                     {
-                        writeLineToDebugger(ex.ToString()); // TODO: Add log directory
+                        writeLineToDebugger(ex.ToString());
                     }
                 }
             }));
@@ -1197,22 +1212,26 @@ namespace VenomCrosshairs
 
                     // Get and set Zoom crosshair
                     string zoomCrosshair = cbZoomCrosshair.Text;
-                    if (cbZoomCrosshair.Text == "NO CHANGE")
+                    if (zoomCrosshair == "NO CHANGE")
                         zoomCrosshair = crosshair;
 
-                    // Get width and height, assume default (64x64)
+                    // Get the proper file paths
+                    string crosshairPath = GetPreviewImagePathFromCrosshairName(crosshair);
+                    string zoomCrosshairPath = GetPreviewImagePathFromCrosshairName(zoomCrosshair);
+
+                    // Default sizes
                     int crosshairWidth = 64;
                     int crosshairHeight = 64;
                     int zoomCrosshairWidth = 64;
                     int zoomCrosshairHeight = 64;
 
-                    using (Bitmap crosshairBitmap = new Bitmap($@"{PATH_VC_RESOURCES_PREVIEWS}\{crosshair}.png"))
+                    using (Bitmap crosshairBitmap = new Bitmap(crosshairPath))
                     {
                         crosshairWidth = crosshairBitmap.Width;
                         crosshairHeight = crosshairBitmap.Height;
                     }
 
-                    using (Bitmap zoomCrosshairBitmap = new Bitmap($@"{PATH_VC_RESOURCES_PREVIEWS}\{zoomCrosshair}.png"))
+                    using (Bitmap zoomCrosshairBitmap = new Bitmap(zoomCrosshairPath))
                     {
                         zoomCrosshairWidth = zoomCrosshairBitmap.Width;
                         zoomCrosshairHeight = zoomCrosshairBitmap.Height;
@@ -1354,9 +1373,13 @@ namespace VenomCrosshairs
                 lockUserInterface();
             }));
 
+            string[] vtfFiles = Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf");
+
             writeToDebugger("Deleting old previews... ");
-            foreach (string previewFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS))
-                File.Delete(previewFile);
+            foreach (string crosshairPreviewDirectory in Directory.GetDirectories(PATH_VC_RESOURCES_PREVIEWS))
+            {
+                Directory.Delete(crosshairPreviewDirectory, true);
+            }
             writeLineToDebugger("Done!");
 
             // Generate previews
@@ -1367,11 +1390,20 @@ namespace VenomCrosshairs
             writeLineToDebugger("Done!");
 
             writeToDebugger("Running vtf2tga.exe... ");
-            foreach (string vtfFile in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
+            foreach (string vtfFile in vtfFiles)
             {
-                vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
+                string crosshairName = Path.GetFileNameWithoutExtension(vtfFile);
+
+                string outputDir = Path.Combine(PATH_VC_RESOURCES_PREVIEWS, crosshairName);
+                Directory.CreateDirectory(outputDir);
+
+                string outputFile = Path.Combine(outputDir, crosshairName + ".tga");
+
+                vtf2tgaProcess.StartInfo.Arguments = $"-i \"{vtfFile}\" -o \"{outputFile}\"";
+
                 vtf2tgaProcess.Start();
             }
+
             try
             {
                 vtf2tgaProcess.WaitForExit();
@@ -1379,27 +1411,82 @@ namespace VenomCrosshairs
             catch { }
             writeLineToDebugger("Done!");
 
-            moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
+            string[] crosshairPreviewDirectories = Directory.GetDirectories(PATH_VC_RESOURCES_PREVIEWS);
+            int directoryCount = crosshairPreviewDirectories.Length;
+            int processedDirectories = 0;
 
-            string[] tgaFiles = Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga");
-            int tgaFileCount = tgaFiles.Length;
-            int processedTgaFiles = 0;
+            List<Task> previewTasks = new List<Task>();
 
-            Parallel.ForEach(tgaFiles, tgaFile =>
+            writeLineToDebugger("Generating previews... (0%)");
+            foreach (string crosshairPreviewDirectory in crosshairPreviewDirectories)
             {
-                using (MagickImage tgaImage = new MagickImage(tgaFile))
+                Task task = Task.Run(() =>
                 {
-                    tgaImage.Write(Path.Combine(PATH_VC_RESOURCES_PREVIEWS, Path.GetFileNameWithoutExtension(tgaFile) + ".png"));
-                }
+                    string[] tgaFiles = Directory.GetFiles(crosshairPreviewDirectory, "*.tga");
 
-                writeLineToDebugger($"Generating previews... ({Math.Round(((float)Interlocked.Increment(ref processedTgaFiles) / (float)tgaFileCount) * 100)}%)");
-            });
+                    // Convert from .tga to .png
+                    Parallel.ForEach(tgaFiles, tgaFile =>
+                    {
+                        using (MagickImage tgaImage = new MagickImage(tgaFile))
+                        {
+                            string output = Path.Combine(
+                                crosshairPreviewDirectory,
+                                Path.GetFileNameWithoutExtension(tgaFile) + ".png"
+                            );
+                            tgaImage.Write(output);
+                        }
+
+                        File.Delete(tgaFile);
+                    });
+
+                    // If there are more than one preview image, we turn it into a gif (animated crosshair)
+                    string[] pngFiles = Directory.GetFiles(crosshairPreviewDirectory, "*.png");
+                    if (pngFiles.Length > 1)
+                    {
+                        Array.Sort(pngFiles);
+
+                        using (MagickImageCollection collection = new MagickImageCollection())
+                        {
+                            foreach (string png in pngFiles)
+                            {
+                                MagickImage frame = new MagickImage(png)
+                                {
+                                    AnimationTicksPerSecond = 100, // Default: 100
+                                    AnimationDelay = 1, // Lowest possible frame timing: 10ms
+                                    GifDisposeMethod = GifDisposeMethod.Background
+                                };
+                                collection.Add(frame);
+                            }
+                            collection[0].AnimationIterations = 0; // Loop the animation
+
+                            string gifPath = Path.Combine(crosshairPreviewDirectory, $"{Path.GetFileName(crosshairPreviewDirectory)}.gif");
+                            collection.Write(gifPath);
+
+                            foreach (var png in pngFiles)
+                            {
+                                File.Delete(png);
+                            }
+                        }
+                    }
+
+                    int finished = Interlocked.Increment(ref processedDirectories);
+                    int percent = (int)Math.Round(((float)finished / directoryCount) * 100);
+                    Invoke(new Action(() =>
+                    {
+                        writeLineToDebugger($"Generating previews... ({percent}%)");
+                    }));
+                });
+
+                previewTasks.Add(task);
+            }
+
+            Task.WaitAll(previewTasks.ToArray());
 
             writeToDebugger("Performing cleanup... ");
-            // Function no longer needed due to cleanup steps, remove/refactor?
-            moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
             foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+            {
                 File.Delete(tgaFile);
+            }
             writeLineToDebugger("Done!");
 
             // Add to ComboBox
@@ -1442,6 +1529,9 @@ namespace VenomCrosshairs
 
             if (downloadedCrosshairsList.Count > 0)
             {
+                string[] vtfFiles = Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf");
+                List<string> newCrosshairPreviewDirectories = new List<string>();
+
                 // Generate previews
                 writeToDebugger("Preparing vtf2tga process... ");
                 Process vtf2tgaProcess = new Process();
@@ -1450,15 +1540,25 @@ namespace VenomCrosshairs
                 writeLineToDebugger("Done!");
 
                 writeToDebugger("Running vtf2tga.exe... ");
-                foreach (string vtfFile in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
+                foreach (string vtfFile in vtfFiles)
                 {
                     string filename = Path.GetFileNameWithoutExtension(vtfFile) + ".vtf";
                     if (downloadedCrosshairsList.Contains(filename))
                     {
-                        vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
+                        string crosshairName = Path.GetFileNameWithoutExtension(vtfFile);
+
+                        string outputDir = Path.Combine(PATH_VC_RESOURCES_PREVIEWS, crosshairName);
+                        Directory.CreateDirectory(outputDir);
+                        newCrosshairPreviewDirectories.Add(outputDir);
+
+                        string outputFile = Path.Combine(outputDir, crosshairName + ".tga");
+
+                        vtf2tgaProcess.StartInfo.Arguments = $"-i \"{vtfFile}\" -o \"{outputFile}\"";
+
                         vtf2tgaProcess.Start();
                     }
                 }
+
                 try
                 {
                     vtf2tgaProcess.WaitForExit();
@@ -1466,27 +1566,79 @@ namespace VenomCrosshairs
                 catch { }
                 writeLineToDebugger("Done!");
 
-                moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
+                int directoryCount = newCrosshairPreviewDirectories.Count;
+                int processedDirectories = 0;
 
-                string[] tgaFiles = Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga");
-                int tgaFileCount = tgaFiles.Length;
-                int processedTgaFiles = 0;
-
-                Parallel.ForEach(tgaFiles, tgaFile =>
+                writeLineToDebugger("Generating previews... (0%)");
+                List<Task> previewTasks = new List<Task>();
+                foreach (string newCrosshairPreviewDirectory in newCrosshairPreviewDirectories)
                 {
-                    using (MagickImage tgaImage = new MagickImage(tgaFile))
+                    Task task = Task.Run(() =>
                     {
-                        tgaImage.Write(Path.Combine(PATH_VC_RESOURCES_PREVIEWS, Path.GetFileNameWithoutExtension(tgaFile) + ".png"));
-                    }
+                        string[] tgaFiles = Directory.GetFiles(newCrosshairPreviewDirectory, "*.tga");
 
-                    writeLineToDebugger($"Generating previews... ({Math.Round(((float)Interlocked.Increment(ref processedTgaFiles) / (float)tgaFileCount) * 100)}%)");
-                });
+                        // Convert from .tga to .png
+                        Parallel.ForEach(tgaFiles, tgaFile =>
+                        {
+                            using (MagickImage tgaImage = new MagickImage(tgaFile))
+                            {
+                                string output = Path.Combine(
+                                    newCrosshairPreviewDirectory,
+                                    Path.GetFileNameWithoutExtension(tgaFile) + ".png"
+                                );
+                                tgaImage.Write(output);
+                            }
+
+                            File.Delete(tgaFile);
+                        });
+
+                        // If there are more than one preview image, we turn it into a gif (animated crosshair)
+                        string[] pngFiles = Directory.GetFiles(newCrosshairPreviewDirectory, "*.png");
+                        if (pngFiles.Length > 1)
+                        {
+                            Array.Sort(pngFiles);
+
+                            using (MagickImageCollection collection = new MagickImageCollection())
+                            {
+                                foreach (string png in pngFiles)
+                                {
+                                    MagickImage frame = new MagickImage(png)
+                                    {
+                                        AnimationTicksPerSecond = 100, // Default: 100
+                                        AnimationDelay = 1, // Lowest possible frame timing: 10ms
+                                        GifDisposeMethod = GifDisposeMethod.Background
+                                    };
+                                    collection.Add(frame);
+                                }
+                                collection[0].AnimationIterations = 0; // Loop the animation
+
+                                string gifPath = Path.Combine(newCrosshairPreviewDirectory, $"{Path.GetFileName(newCrosshairPreviewDirectory)}.gif");
+                                collection.Write(gifPath);
+
+                                foreach (var png in pngFiles)
+                                {
+                                    File.Delete(png);
+                                }
+                            }
+                        }
+
+                        int finished = Interlocked.Increment(ref processedDirectories);
+                        int percent = (int)Math.Round(((float)finished / directoryCount) * 100);
+                        Invoke(new Action(() =>
+                        {
+                            writeLineToDebugger($"Generating previews... ({percent}%)");
+                        }));
+                    });
+
+                    previewTasks.Add(task);
+                }
+                Task.WaitAll(previewTasks.ToArray());
 
                 writeToDebugger("Performing cleanup... ");
-                // Function no longer needed due to cleanup steps, remove/refactor?
-                moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
                 foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
+                {
                     File.Delete(tgaFile);
+                }
                 writeLineToDebugger("Done!");
 
                 // Add to ComboBox
@@ -1517,84 +1669,21 @@ namespace VenomCrosshairs
             }));
         }
 
-        private void generateMissingCrosshairs(List<string> missingCrosshairNames)
-        {
-            // Copy from config to VC
-            writeToDebugger("Copying missing crosshairs... ");
-            foreach (var crosshair in missingCrosshairNames)
-            {
-                File.Copy($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vtf", PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vtf", true);
-                File.Copy($@"{textBoxTF2Path.Text}\tf\custom\{VC_CONFIG_NAME}\materials\vgui\replay\thumbnails\{crosshair}.vmt", PATH_VC_RESOURCES_MATERIALS + $"{crosshair}.vmt", true);
-            }
-            writeLineToDebugger("Done!");
-
-            // Generate missing
-            writeToDebugger("Preparing vtf2tga process... ");
-            Process vtf2tgaProcess = new Process();
-            vtf2tgaProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            vtf2tgaProcess.StartInfo.FileName = textBoxTF2Path.Text + @"\bin\vtf2tga.exe";
-            writeLineToDebugger("Done!");
-
-            writeToDebugger("Running vtf2tga.exe... ");
-            foreach (string vtfFile in Directory.GetFiles(PATH_VC_RESOURCES_MATERIALS, "*.vtf"))
-            {
-                if (missingCrosshairNames.Contains(Path.GetFileNameWithoutExtension(vtfFile)))
-                {
-                    vtf2tgaProcess.StartInfo.Arguments = @"/C -i " + "\"" + vtfFile + "\"";
-                    vtf2tgaProcess.Start();
-                }
-            }
-            try
-            {
-                vtf2tgaProcess.WaitForExit();
-            }
-            catch { }
-            writeLineToDebugger("Done!");
-
-            moveFilesByExtensionOrDelete(PATH_VC_RESOURCES_MATERIALS, PATH_VC_RESOURCES_PREVIEWS, "tga");
-
-            string[] tgaFiles = Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga");
-            int tgaFileCount = tgaFiles.Length;
-            int processedTgaFiles = 0;
-
-            Parallel.ForEach(tgaFiles, tgaFile =>
-            {
-                using (MagickImage tgaImage = new MagickImage(tgaFile))
-                {
-                    tgaImage.Write(Path.Combine(PATH_VC_RESOURCES_PREVIEWS, Path.GetFileNameWithoutExtension(tgaFile) + ".png"));
-                }
-
-                writeLineToDebugger($"Generating previews... ({Math.Round(((float)Interlocked.Increment(ref processedTgaFiles) / (float)tgaFileCount) * 100)}%)");
-            });
-
-            writeToDebugger("Performing cleanup... ");
-            // Function no longer needed due to cleanup steps, remove/refactor?
-            moveFilesByExtensionOrDelete(PATH_VC, PATH_VC_RESOURCES_PREVIEWS, "png");
-            foreach (string tgaFile in Directory.GetFiles(PATH_VC_RESOURCES_PREVIEWS, "*.tga"))
-                File.Delete(tgaFile);
-            writeLineToDebugger("Done!");
-
-            writeLineToDebugger($"Read and generated {missingCrosshairNames.Count} new crosshair(s)!");
-
-            // Add to ComboBox
-            Invoke(new MethodInvoker(delegate ()
-            {
-                addCrosshairsToComboBoxFromPath(cbCrosshair, PATH_VC_RESOURCES_PREVIEWS, true);
-                addCrosshairsToComboBoxFromPath(cbZoomCrosshair, PATH_VC_RESOURCES_PREVIEWS, new string[] { "NO CHANGE" }, true);
-            }));
-        }
-
         private void addCrosshairsToComboBoxFromPath(ComboBox cb, string path, string[] prependItems, bool clearComboBoxItems)
         {
             if (clearComboBoxItems)
+            {
                 cb.Items.Clear();
+            }
 
             foreach (var item in prependItems)
-                cb.Items.Add(item);
-
-            foreach (var crosshair in Directory.GetFiles(path, "*.png"))
             {
-                string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
+                cb.Items.Add(item);
+            }
+
+            foreach (string crosshair in Directory.GetDirectories(path))
+            {
+                string crosshairName = Path.GetFileName(crosshair);
                 cb.Items.Add(crosshairName);
             }
 
@@ -1604,11 +1693,13 @@ namespace VenomCrosshairs
         private void addCrosshairsToComboBoxFromPath(ComboBox cb, string path, bool clearComboBoxItems)
         {
             if (clearComboBoxItems)
-                cb.Items.Clear();
-
-            foreach (var crosshair in Directory.GetFiles(path, "*.png"))
             {
-                string crosshairName = Path.GetFileNameWithoutExtension(crosshair);
+                cb.Items.Clear();
+            }
+
+            foreach (string crosshair in Directory.GetDirectories(path))
+            {
+                string crosshairName = Path.GetFileName(crosshair);
                 cb.Items.Add(crosshairName);
             }
 
@@ -1678,9 +1769,8 @@ namespace VenomCrosshairs
             // Controllers
             foreach (Control controlComponent in this.Controls)
             {
-                if (controlComponent is Button)
+                if (controlComponent is Button btnComponent)
                 {
-                    Button btnComponent = (Button)controlComponent;
                     if (darkMode)
                     {
                         btnComponent.FlatStyle = FlatStyle.Popup;
@@ -1705,9 +1795,8 @@ namespace VenomCrosshairs
                         controlComponent.ForeColor = SystemColors.ControlText;
                     }
                 }
-                else if (controlComponent is ComboBox)
+                else if (controlComponent is ComboBox comboBoxComponent)
                 {
-                    ComboBox comboBoxComponent = (ComboBox)controlComponent;
                     if (darkMode)
                     {
                         comboBoxComponent.BackColor = Color.FromArgb(45, 45, 45);
@@ -1730,9 +1819,8 @@ namespace VenomCrosshairs
                         controlComponent.ForeColor = SystemColors.ControlText;
                     }
                 }
-                else if (controlComponent is ListView)
+                else if (controlComponent is ListView listViewComponent)
                 {
-                    ListView listViewComponent = (ListView)controlComponent;
                     if (darkMode)
                     {
                         listViewComponent.BorderStyle = BorderStyle.FixedSingle;
@@ -1748,9 +1836,8 @@ namespace VenomCrosshairs
                         listViewComponent.ForeColor = SystemColors.WindowText;
                     }
                 }
-                else if (controlComponent is Panel)
+                else if (controlComponent is Panel panelComponent)
                 {
-                    Panel panelComponent = (Panel)controlComponent;
                     if (darkMode)
                     {
                         panelComponent.BorderStyle = BorderStyle.FixedSingle;
@@ -1766,11 +1853,11 @@ namespace VenomCrosshairs
                 {
                     // No changes between light/dark mode right now..
                 }
-                else if (controlComponent is TextBox)
+                else if (controlComponent is TextBox textBox)
                 {
                     if (controlComponent.Name != "textBoxDebugger")
                     {
-                        TextBox txtBoxComponent = (TextBox)controlComponent;
+                        TextBox txtBoxComponent = textBox;
                         if (darkMode)
                         {
                             txtBoxComponent.BorderStyle = BorderStyle.FixedSingle;
