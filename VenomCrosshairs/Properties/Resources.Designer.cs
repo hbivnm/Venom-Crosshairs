@@ -93,16 +93,6 @@ namespace VenomCrosshairs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap arrow_join {
-            get {
-                object obj = ResourceManager.GetObject("arrow-join", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap arrow_split {
             get {
                 object obj = ResourceManager.GetObject("arrow-split", resourceCulture);
@@ -116,16 +106,6 @@ namespace VenomCrosshairs.Properties {
         internal static System.Drawing.Bitmap compile {
             get {
                 object obj = ResourceManager.GetObject("compile", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap compile_warning {
-            get {
-                object obj = ResourceManager.GetObject("compile-warning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,16 +173,6 @@ namespace VenomCrosshairs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap exclamation_red_frame {
-            get {
-                object obj = ResourceManager.GetObject("exclamation-red-frame", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap folder_horizontal_open {
             get {
                 object obj = ResourceManager.GetObject("folder-horizontal-open", resourceCulture);
@@ -236,16 +206,6 @@ namespace VenomCrosshairs.Properties {
         internal static System.Drawing.Bitmap loading {
             get {
                 object obj = ResourceManager.GetObject("loading", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap question {
-            get {
-                object obj = ResourceManager.GetObject("question", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
