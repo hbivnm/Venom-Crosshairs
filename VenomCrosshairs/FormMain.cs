@@ -20,7 +20,7 @@ namespace VenomCrosshairs
 {
     public partial class FormMain : Form
     {
-        private static readonly string VC_VERSION = "beta17.3";
+        private static readonly string VC_VERSION = "beta18.0";
 
         private static readonly string VC_CONFIG_NAME = "_VenomCrosshairsConfig";
         private static readonly string[] PREVIOUS_CONFIG_NAMES = { "VenomCrosshairsConfig", "TF2WeaponSpecificCrosshairs", "VenomCrosshairConfig" };
@@ -122,7 +122,7 @@ namespace VenomCrosshairs
                 Random r = new Random();
                 int crosshairCount = cbCrosshair.Items.Count;
                 int explosionEffectCount = cbExplosionEffect.Items.Count;
-                int explosionEffectCountOnhit = cbExplosionEffectOnHit.Items.Count;
+                int explosionEffectOnhitCount = cbExplosionEffectOnHit.Items.Count;
                 int zoomCrosshairCount = cbZoomCrosshair.Items.Count;
 
                 // Add a random crosshair for each existing weapon
@@ -143,7 +143,7 @@ namespace VenomCrosshairs
                 cbExplosionEffect.SelectedIndex = r.Next(explosionEffectCount);
 
                 // Pick a random on-hit explosion effect
-                cbExplosionEffectOnHit.SelectedIndex = r.Next(explosionEffectCountOnhit);
+                cbExplosionEffectOnHit.SelectedIndex = r.Next(explosionEffectOnhitCount);
 
                 // Pick a random zoom crosshair
                 cbZoomCrosshair.SelectedIndex = r.Next(zoomCrosshairCount);
